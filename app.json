@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "IDC HRM",
+    "slug": "idc-hrm",
+    "version": "1.0.7",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "splash": {
+      "image": "./assets/idc-splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier" : "com.idc.hrm",
+      "buildNumber" : "1.0.7",
+
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.idc.hrm",
+      "versionCode":7,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
