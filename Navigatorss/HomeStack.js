@@ -17,9 +17,11 @@ import SalarySlipScreen from '../Screens/FrontScreens/Salary';
 import AttendanceScreen from '../Screens/FrontScreens/Attendance';
 import SalaryFisicalScreen from '../Screens/FrontScreens/SalaryFisicalScreen';
 import AttendanceFisicalScreen from '../Screens/FrontScreens/AttandanceFisical';
+import MainAttendanceScreen from '../Screens/FrontScreens/AttandanceMainScreen';
 import LeaveFisicalScreen from '../Screens/FrontScreens/LeaveFiscal';
 import MainSalarySlip from '../Screens/FrontScreens/mainSalarySlip';
 import SalaryFisicalYearScreen from '../Screens/FrontScreens/SalaryFiscalYear';
+
 const HomeStack = createStackNavigator();
 const { height, width } = Dimensions.get('window');
 import { Foundation } from '@expo/vector-icons';
@@ -189,7 +191,9 @@ export default function HomeStackScreen({ navigation }) {
             }} /> */}
 
 
-            <HomeStack.Screen name="AttendanceFisicalScreen" component={AttendanceFisicalScreen} options={{
+
+
+            <HomeStack.Screen name="MainAttendanceScreen" component={MainAttendanceScreen} options={{
                 title: "Attendance",
                 headerTintColor: "#fff",
                 headerStyle: {
@@ -198,7 +202,14 @@ export default function HomeStackScreen({ navigation }) {
                 headerShown: true,
             }} />
 
-
+            <HomeStack.Screen name="AttendanceFisicalScreen" component={AttendanceFisicalScreen} options={{
+                title: "Attendance",
+                headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: "#008080"
+                },
+                headerShown: true,
+            }} />
 
 
             <HomeStack.Screen name="AttendanceScreen" component={AttendanceScreen} options={{

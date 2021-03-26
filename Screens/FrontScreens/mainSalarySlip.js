@@ -27,27 +27,30 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-
+    // ............. Begin: GetdatafromHelper  useEffect...............//
     useEffect(() => {
-
         Helper.getLoggedInData().then((response) => {
             SetData(response);
 
         }).catch((e) => {
             console.log('eee', e);
         });
-
     }, [])
+    // ............. End: GetdatafromHelper useEffect...............//
 
 
+
+
+    // ............. Begin: salaryapi useEffect ...............//
     useEffect(() => {
         if (data.length > 0 && maxperiodid !== null) {
             // console.log(route.params.SalPeriodId[0].PeriodId);
             SalaryApiData();
             // IsLoading(false);
         }
-
     }, [data, maxperiodid])
+    // ............. End: salaryapi useEffect ...............//
+
 
 
     useEffect(() => {
@@ -67,6 +70,9 @@ export default function MainSalarySlip({ navigation }) {
         }
     }, [maxfiscalid])
 
+
+    // ............. Begin: GetFiscalID ...............//
+
     useEffect(() => {
         let Maxfiscalvalue = [];
         if (fisicalapidata.length > 0) {
@@ -74,15 +80,19 @@ export default function MainSalarySlip({ navigation }) {
             fisicalapidata.map((item) => {
                 Maxfiscalvalue = Math.max(item.fiscalyearid)
             })
-            console.log('map lop', Maxfiscalvalue);
+            // console.log('map lop', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
         }
     }, [fisicalapidata])
+    // ............. End: GetFiscalID ...............//
 
 
+
+
+
+    // ............. Begin: GetMaxPeriodID ...............//
     useEffect(() => {
-
         // let abc = [];
         let MaxPeriodValue = [];
         if (monthapidata.length > 0) {
@@ -93,16 +103,17 @@ export default function MainSalarySlip({ navigation }) {
                 }
             })
             setMaxPeriodId(MaxPeriodValue)
-            console.log('maxperidvalue', MaxPeriodValue)
+            // console.log('maxperidvalue', MaxPeriodValue)
 
         }
 
     }, [monthapidata])
+    // ............. End: GetMaxPeriodID ...............//
 
 
 
 
-    // Year Api data
+    // ........... Begin: Fiscal Year ApiCall ............... //
     const FicicalYearApiCall = async (signal) => {
         try {
 
@@ -120,9 +131,9 @@ export default function MainSalarySlip({ navigation }) {
                 let payloadData = JSON.parse(responseObj.payload);
                 // console.log('aaa', payloadData)
                 if (payloadData.length > 0) {
-                    console.log('FiscalYear', payloadData)
+                    // console.log('FiscalYear', payloadData)
                     SetFiscalApiData(payloadData);
-                    IsLoading(false);
+                    // IsLoading(false);
                 }
                 else {
                     Alert.alert('Error')
@@ -133,8 +144,11 @@ export default function MainSalarySlip({ navigation }) {
             console.log('Error', e);
         }
     }
+    // ........... End: Fiscal Year ApiCall ............... //
 
-    // month Api Data
+
+
+    // ........... Begin: Month ApiCall ............... //
     const MonthApiCall = async () => {
         try {
 
@@ -157,10 +171,10 @@ export default function MainSalarySlip({ navigation }) {
             //bbbcbcbc
             if (responseObj.statusCode == 200) {
                 let monthpayload = JSON.parse(responseObj.payload);
-                console.log('month', monthpayload)
+                //  console.log('month', monthpayload)
                 if (monthpayload.length > 0) {
                     SetMonthApiData(monthpayload);
-                    IsLoading(false);
+                    // IsLoading(false);
                 }
                 else {
                     Alert.alert('Error')
@@ -171,6 +185,9 @@ export default function MainSalarySlip({ navigation }) {
             console.log('Error', e);
         }
     }
+    // ........... End: Month ApiCall ............... //
+
+
 
 
     //..................Begin: SalaryApiData ...................//
@@ -331,7 +348,7 @@ export default function MainSalarySlip({ navigation }) {
                 <>
                     <View style={styles.salarytmaincontainer}>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: wp('1%') }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: wp('1%'), marginRight: wp('2%') }}>
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('SalaryFisicalYearScreen', {
                                     FiscalYears: fisicalapidata
@@ -341,10 +358,11 @@ export default function MainSalarySlip({ navigation }) {
                             // style={{ borderWidth: 1, backgroundColor: '#0041c4', borderColor: '#0041c4' }}
                             >
                                 {/* <MaterialIcons name="navigate-next" size={22} color="#008080" /> */}
-                                <MaterialCommunityIcons name="skip-previous-circle-outline" size={22} color="#008080" />
-                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', marginRight: wp('2%') }}>
+                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center' }}>
                                     Previous Record
                                 </Text>
+                                <MaterialCommunityIcons name="skip-previous-circle-outline" size={22} color="#008080" />
+
 
 
                             </TouchableOpacity>
@@ -519,7 +537,7 @@ export default function MainSalarySlip({ navigation }) {
                             }}>
 
                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                         Allowance
                                     </Text>
                                 </View>
@@ -627,7 +645,7 @@ export default function MainSalarySlip({ navigation }) {
                             }}>
 
                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                         Deduction
                                     </Text>
                                 </View>
@@ -747,7 +765,7 @@ export default function MainSalarySlip({ navigation }) {
                                 }}>
 
                                     <View style={{ justifyContent: 'flex-end' }}>
-                                        <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+                                        <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                             Loan Information
                                     </Text>
                                     </View>
@@ -883,24 +901,6 @@ export default function MainSalarySlip({ navigation }) {
 
                             </View>
                         }
-
-
-                        {/* <View style={styles.container}>
-                            <TouchableOpacity onPress={() => { createPDF() }}>
-                                <Text>Create PDF</Text>
-                            </TouchableOpacity>
-                        </View> */}
-
-
-
-
-
-
-
-
-
-
-
 
                     </View >
                 </>}

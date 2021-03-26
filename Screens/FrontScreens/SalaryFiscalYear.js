@@ -24,18 +24,7 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
 
 
 
-    // ,, 
-    // useEffect(() => {
-    //     // const abortController = new AbortController();
-    //     // const signal = abortController.signal;
-    //     // FicicalYearApiCall(signal);
-    //     // return function cleanup() {
-    //     //     abortController.abort();
 
-
-
-
-    // }, [])
 
 
     useEffect(() => {
@@ -55,38 +44,6 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
 
     }, [selectedyearvalue])
 
-
-    // // Year Api data
-    // const FicicalYearApiCall = async (signal) => {
-    //     try {
-
-    //         const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
-    //             signal: signal,
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json'
-    //             },
-    //         });
-    //         const responseObj = await response.json();
-    //         //console.log(responseObj)
-    //         if (responseObj.statusCode == 200) {
-    //             let payloadData = JSON.parse(responseObj.payload);
-    //             // console.log('aaa', payloadData)
-    //             if (payloadData.length > 0) {
-    //                 // console.log('bbb', payloadData)
-    //                 setYearApiData(payloadData);
-    //                 IsLoading(false);
-    //             }
-    //             else {
-    //                 Alert.alert('Error')
-    //             }
-    //         }
-    //     }
-    //     catch (e) {
-    //         console.log('Error', e);
-    //     }
-    // }
 
     // month Api Data
     const MonthApiCall = async () => {
@@ -146,31 +103,6 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
                             Select Fiscal Year
                     </Text>
                     </View>
-
-
-                    {/* <View style={{ marginTop: wp('2%'), marginHorizontal: wp('2%'), alignSelf: 'center' }}>
-                <Picker
-                    mode="dropdown"
-                    iosIcon={<AntDesign name="down" size={24} color="blue"
-                        style={{ paddingRight: wp('1.3%') }} />}
-                    placeholder="Select Year"
-                    placeholderStyle={{ color: "blue", }}
-                    placeholderIconColor="#007aff"
-                    selectedValue={selectedyearvalue}
-                    style={{ height: wp('10%'), width: wp('90%'), borderWidth: 2, borderColor: 'green' }}
-                    onValueChange={(itemValue, itemIndex) => {
-                        setSelectedYearValue(itemValue)
-                    }
-                    }
-
-                >
-                    {yearapidata.length > 0 ? yearapidata.map((item, index) => {
-                        return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
-
-                    }) : null}
-
-                </Picker>
-            </View> */}
 
 
 
@@ -234,31 +166,8 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
                             <View style={{ marginTop: wp('5%'), marginHorizontal: wp('5%'), }}>
                                 <Text style={{ fontSize: wp('5%'), fontWeight: 'bold' }}>
                                     Select Month
-                        </Text>
+                                </Text>
                             </View>
-
-                            {/* <View style={{ marginTop: wp('2%'), marginHorizontal: wp('2%'), alignSelf: 'center' }}>
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<AntDesign name="down" size={24} color="blue"
-                                style={{ paddingRight: wp('1.3%') }} />}
-                            placeholder="Select Month"
-                            placeholderStyle={{ color: "blue", textAlign: 'center' }}
-                            placeholderIconColor="#007aff"
-                            selectedValue={selectedmonthvalue}
-                            style={{ height: wp('10%'), width: wp('90%'), borderWidth: 2, borderColor: 'green' }}
-                            onValueChange={(itemValue, itemIndex) => {
-
-                                setSelectedMonthValue(itemValue)
-                                //  console.log('aaa', itemValue)
-                            }}>
-                            {monthapidata.length > 0 ? monthapidata.map((item, index) => {
-                                return (<Picker.Item label={item.Name} value={item.PeriodId} />)
-                            }) : null}
-                        </Picker>
-                    </View> */}
-
-
 
 
                             <View style={{

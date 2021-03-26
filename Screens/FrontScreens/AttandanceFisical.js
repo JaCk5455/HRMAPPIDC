@@ -9,21 +9,23 @@ import { ActivityIndicator } from 'react-native-paper';
 
 const { height, width } = Dimensions.get('window');
 
-export default function AttendanceFisicalScreen({ navigation }) {
+export default function AttendanceFisicalScreen({ navigation, route }) {
 
     const [yearapidata, setYearApiData] = useState([]);
     const [selectedyearvalue, setSelectedYearValue] = useState(null);
-
     const [monthapidata, setMonthApiData] = useState([]);
     const [selectedmonthvalue, setSelectedMonthValue] = useState(null);
     const [loading, IsLoading] = useState(true);
     const [selectmonthlabel, setSelectedMonthLabel] = useState('');
-    const [selectfiscalyearlabel , setSelectedFiscalYearLabel] = useState('');
+    const [selectfiscalyearlabel, setSelectedFiscalYearLabel] = useState('');
 
 
 
     useEffect(() => {
-        FicicalYearApiCall();
+        // console.log('abbbbbbbb', route.params.FiscalYears)
+        if (route.params.FiscalYears.length > 0) {
+            IsLoading(false)
+        }
     }, [])
 
     useEffect(() => {
@@ -31,49 +33,43 @@ export default function AttendanceFisicalScreen({ navigation }) {
             // console.log('aaa', yearapidata[0].fiscalyearid)
             MonthApiCall();
         }
-
-
     }, [selectedyearvalue])
 
 
 
-    const Pickeritem = () => {
-        var lablVal;
-        return (<Picker.Item label={item.Name} value={item.PeriodId} />)
-    }
 
-    //............. Begin: Year Api Data ............... //
-    const FicicalYearApiCall = async () => {
-        try {
+    // //............. Begin: Year Api Data ............... //
+    // const FicicalYearApiCall = async () => {
+    //     try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+    //         const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
 
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            });
-            const responseObj = await response.json();
-            //console.log(responseObj)
-            if (responseObj.statusCode == 200) {
-                let payloadData = JSON.parse(responseObj.payload);
-                // console.log('aaa', payloadData)
-                if (payloadData.length > 0) {
-                    // console.log('bbb', payloadData)
-                    setYearApiData(payloadData);
-                    IsLoading(false);
-                }
-                else {
-                    Alert.alert('Error')
-                }
-            }
-        }
-        catch (e) {
-            console.log('Error', e);
-        }
-    }
-        //............. End: Year Api Data ............... //
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //         });
+    //         const responseObj = await response.json();
+    //         //console.log(responseObj)
+    //         if (responseObj.statusCode == 200) {
+    //             let payloadData = JSON.parse(responseObj.payload);
+    //             // console.log('aaa', payloadData)
+    //             if (payloadData.length > 0) {
+    //                 // console.log('bbb', payloadData)
+    //                 setYearApiData(payloadData);
+    //                 IsLoading(false);
+    //             }
+    //             else {
+    //                 Alert.alert('Error')
+    //             }
+    //         }
+    //     }
+    //     catch (e) {
+    //         console.log('Error', e);
+    //     }
+    // }
+    //     //............. End: Year Api Data ............... //
 
 
 
@@ -112,7 +108,7 @@ export default function AttendanceFisicalScreen({ navigation }) {
             console.log('Error', e);
         }
     }
-       //............. End: Month Api Data ............... //
+    //............. End: Month Api Data ............... //
 
 
 
@@ -120,11 +116,11 @@ export default function AttendanceFisicalScreen({ navigation }) {
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
             {loading ?
-                <View style={{flex:1 , justifyContent:'center'}}> 
-            
-                <ActivityIndicator size="small" color="#008080" />
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+
+                    <ActivityIndicator size="small" color="#008080" />
                 </View>
-                
+
                 :
                 <>
 
@@ -151,7 +147,7 @@ export default function AttendanceFisicalScreen({ navigation }) {
                                     selectedValue={selectedyearvalue}
                                     onValueChange={(itemValue, itemIndex) => {
                                         setSelectedYearValue(itemValue)
-                                        yearapidata.map((item, index) => {
+                                        route.params.FiscalYears.map((item, index) => {
                                             if (item.fiscalyearid == itemValue) {
                                                 setSelectedFiscalYearLabel(item.name)
                                             }
@@ -161,7 +157,7 @@ export default function AttendanceFisicalScreen({ navigation }) {
 
                                 >
                                     <Picker.Item label="Select Year" value="" />
-                                    {yearapidata.length > 0 ? yearapidata.map((item, index) => {
+                                    {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
                                         return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                     }) : null}
@@ -181,12 +177,13 @@ export default function AttendanceFisicalScreen({ navigation }) {
                                         selectedValue={selectedyearvalue}
                                         onValueChange={(itemValue, itemIndex) => {
                                             setSelectedYearValue(itemValue)
-                                            yearapidata.map((item, index) => {
+                                            route.params.FiscalYears.map((item, index) => {
                                                 if (item.fiscalyearid == itemValue) {
                                                     setSelectedFiscalYearLabel(item.name)
                                                 }
-                                            })}}>
-                                        {yearapidata.length > 0 ? yearapidata.map((item, index) => {
+                                            })
+                                        }}>
+                                        {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
                                             return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                         }) : null}
@@ -276,13 +273,13 @@ export default function AttendanceFisicalScreen({ navigation }) {
                                                 navigation.navigate('AttendanceScreen', {
                                                     AttendancePeriodId: selectedmonthvalue,
                                                     AttendancePeriodName: selectmonthlabel,
-                                                    AttendanceFiscalName : selectfiscalyearlabel,
+                                                    AttendanceFiscalName: selectfiscalyearlabel,
                                                 }) :
                                                 <View>
                                                     <Text style={{ color: 'red' }}>
                                                         {
                                                             Alert.alert(
-                                                                
+
                                                                 "Please Fill Out All Fields",
                                                                 [
                                                                     {

@@ -12,7 +12,7 @@ export default function HomeScreen() {
     const gridItems = [
         { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'LeaveFisicalScreen', style: { borderColor: 'blue' } },
         { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
-        { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'AttendanceFisicalScreen' },
+        { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
         // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
         { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
         // { name: 'F.A.Q.', icon: require('../assets/qa.png'), navigateTo: 'FAQScreen' },

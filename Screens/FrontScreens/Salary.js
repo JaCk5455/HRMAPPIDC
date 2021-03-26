@@ -382,7 +382,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                             }}>
 
                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                         Allowance
                                     </Text>
                                 </View>
@@ -490,7 +490,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                             }}>
 
                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                         Deduction
                                     </Text>
                                 </View>
@@ -610,7 +610,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 }}>
 
                                     <View style={{ justifyContent: 'flex-end' }}>
-                                        <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+                                        <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                             Loan Information
                                     </Text>
                                     </View>

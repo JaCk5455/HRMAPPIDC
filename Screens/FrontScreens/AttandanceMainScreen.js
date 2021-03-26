@@ -1,17 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StatusBar, StyleSheet, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Dimensions, StatusBar, Alert, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Contants from '../../constants/constants';
 import { Helper } from '../../Components/Helpers';
 import moment from 'moment';
-import Collapsible from 'react-native-collapsible';
+import { Picker, Item } from "native-base";
+import { Icon } from 'react-native-elements'
+import { AntDesign } from '@expo/vector-icons';
+// import { ActivityIndicator } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export default function AttendanceScreen({ navigation, route }) {
+const { height, width } = Dimensions.get('window');
+
+
+export default function MainAttendanceScreen({ navigation }) {
 
     const [data, SetData] = useState([]);
     const [apidata, setApiData] = useState([]);
     const [loading, IsLoading] = useState(true);
+    const [yearapidata, setYearApiData] = useState([]);
+    const [monthapidata, SetMonthApiData] = useState([]);
+    const [maxfiscalid, setMaxFiscalId] = useState(null);
+    const [maxperiodid, setMaxPeriodId] = useState(null);
+
+
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -28,16 +41,146 @@ export default function AttendanceScreen({ navigation, route }) {
     // ......... End: AsynStorageData for EmpId ........ //
 
 
-
     // ......... Begin:  AttandaveApiCall useEffect ........ //
     useEffect(() => {
-        if (data.length > 0) {
+        if (data.length > 0 && maxperiodid !== null) {
             // console.log('cccc', route.params.AttendancePeriodId.PeriodId);
             AttandanceApiCall();
         }
-    }, [data])
+    }, [data, maxperiodid])
     // ......... End:  AttandaveApiCall useEffect ........ //
 
+
+
+    // .......... Begin: Fiscalyear useEffect ........... //
+    useEffect(() => {
+        FicicalYearApiCall();
+    }, [])
+    // ........... End: Fiscalyear useEffect ...........//
+
+
+
+
+    useEffect(() => {
+        let Maxfiscalvalue = [];
+        if (yearapidata.length > 0) {
+
+            yearapidata.map((item) => {
+                Maxfiscalvalue = Math.max(item.fiscalyearid)
+            })
+            // console.log('map lop', Maxfiscalvalue);
+
+            setMaxFiscalId(Maxfiscalvalue);
+        }
+    }, [yearapidata])
+
+
+
+    useEffect(() => {
+        if (maxfiscalid !== null) {
+            // console.log('aaa', yearapidata[0].fiscalyearid)
+            MonthApiCall();
+        }
+    }, [maxfiscalid])
+
+
+
+    useEffect(() => {
+        let abc = [];
+        let MaxPeriodValue = [];
+        if (monthapidata.length > 0) {
+            monthapidata.map((value) => {
+                // abc = value.IsPayGenerated
+                if (value.IsPayGenerated == 1) {
+                    MaxPeriodValue = Math.max(value.PeriodId + 1)
+                }
+                // abc.push(MaxPeriodValue + 1)
+
+            })
+            setMaxPeriodId(MaxPeriodValue)
+            // setMaxPeriodId(abc)
+
+            //  console.log('maxperidvalue', MaxPeriodValue)
+
+        }
+
+    }, [monthapidata])
+
+
+
+
+
+    //............. Begin: Year Api Data ............... //   
+    const FicicalYearApiCall = async () => {
+        try {
+
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            const responseObj = await response.json();
+            //console.log(responseObj)
+            if (responseObj.statusCode == 200) {
+                let payloadData = JSON.parse(responseObj.payload);
+                // console.log('aaa', payloadData)
+                if (payloadData.length > 0) {
+                    //console.log('fescalyear', payloadData)
+                    setYearApiData(payloadData);
+                    // IsLoading(false);
+                }
+                else {
+                    Alert.alert('Error')
+                }
+            }
+        }
+        catch (e) {
+            console.log('Error', e);
+        }
+    }
+    //............. End: Year Api Data ............... //
+
+
+
+    //............. Begin: Month Api Data ............... //
+    const MonthApiCall = async () => {
+        try {
+
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fiscalyearId: maxfiscalid
+
+
+                })
+            });
+            const responseObj = await response.json();
+            //console.log(responseObj)
+            if (responseObj.statusCode == 200) {
+                let payloaddata = JSON.parse(responseObj.payload);
+                // console.log('month', payloaddata)
+                if (payloaddata.length > 0) {
+                    SetMonthApiData(payloaddata);
+                    // IsLoading(false);
+                }
+                else {
+                    Alert.alert('Error')
+                }
+            }
+        }
+        catch (e) {
+            console.log('Error', e);
+        }
+    }
+    //............. End: Month Api Data ............... //
 
 
 
@@ -46,7 +189,7 @@ export default function AttendanceScreen({ navigation, route }) {
         try {
             // console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + route.params.AttendancePeriodId)
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + route.params.AttendancePeriodId, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -55,7 +198,7 @@ export default function AttendanceScreen({ navigation, route }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                    periodId: route.params.AttendancePeriodId
+                    periodId: maxperiodid
 
                 })
             });
@@ -63,7 +206,7 @@ export default function AttendanceScreen({ navigation, route }) {
             // console.log('responceapi', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                // console.log('aaa', payload)
+                //console.log('Attandancedata', payload)
                 if (payload.length > 0) {
                     setApiData(payload);
                     IsLoading(false);
@@ -75,10 +218,10 @@ export default function AttendanceScreen({ navigation, route }) {
                         [
                             {
                                 text: "Cancel",
-                                onPress: () => navigation.navigate("AttendanceFisicalScreen"),
+                                onPress: () => navigation.navigate("HomeScreen"),
                                 style: "cancel"
                             },
-                            { text: "OK", onPress: () => navigation.navigate("AttendanceFisicalScreen") }
+                            { text: "OK", onPress: () => navigation.navigate("HomeScreen") }
                         ],
                         { cancelable: false }
                     )
@@ -92,8 +235,6 @@ export default function AttendanceScreen({ navigation, route }) {
         }
     }
     // ........... End: AttandanceApiCall ....... //
-
-
 
 
     // .........Begin: FlatList Function(_RenderItem) ........... //
@@ -283,9 +424,6 @@ export default function AttendanceScreen({ navigation, route }) {
 
     // .........End: FlatList Function(_RenderItem) ........... //
 
-
-
-
     const _Refresh = () => {
         <View style={{ flex: 1, justifyContent: 'center' }}>
 
@@ -296,10 +434,93 @@ export default function AttendanceScreen({ navigation, route }) {
     // ......... End: FlatList Function(_Refresh & getItemLayout ) ........... //
 
 
-    return (
 
+
+    return (
         <View style={styles.AttanMainContainer}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
+
+
+            {/* <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
+
+                    {route.params.AttendanceFiscalName == '' || route.params.AttendanceFiscalName == null ?
+                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
+                        :
+                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendanceFiscalName}</Text>
+                    }
+
+
+                    {route.params.AttendancePeriodName == '' || route.params.AttendancePeriodName == null ?
+                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
+                        :
+                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendancePeriodName}</Text>
+                    }
+
+                </View> */}
+
+
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 3, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
+                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Total Working Hours</Text>
+
+
+                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
+                        {apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}
+                    </Text>
+                </View>
+
+
+                <View style={{ flex: 1.5, marginTop: wp('2%'), borderRadius: 8, padding: wp('1%'), backgroundColor: '#0041c4', marginHorizontal: wp('1.5%'), justifyContent: 'center', }}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('AttendanceFisicalScreen', {
+                            FiscalYears: yearapidata
+                        })
+                    }}
+                    // style={{ borderWidth: 1, backgroundColor: '#0041c4', borderColor: '#0041c4' }}
+                    >
+                        {/* <MaterialIcons name="navigate-next" size={22} color="#008080" /> */}
+                        {/* <MaterialCommunityIcons name="skip-previous-circle-outline" size={22} color="#008080" /> */}
+                        <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center' }}>
+                            Previous Record
+                                </Text>
+
+
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+
+            <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
+
+                {/* <View style={styles.Attanempinfoview}>
+                        <View style={{ flex: 1.9, justifyContent: 'center' }}>
+                            <Text style={styles.Attanemptxt}>Employee Name :</Text>
+
+                        </View>
+
+                        <View style={{ flex: 2, justifyContent: 'center' }}>
+                            <Text style={styles.Attanempsubtxt}>{apidata.length > 0 ? (apidata[0].FullName == null || apidata[0].FullName == '' ? 'N/A' : apidata[0].FullName) : 'N/A'}</Text>
+
+                        </View>
+
+                    </View> */}
+
+
+                {/* <View style={styles.Attanempinfoview}>
+                        <View style={{ flex: 1.9, justifyContent: 'center' }}>
+                            <Text style={styles.Attanemptxt}>Total Working Hours :</Text>
+                        </View>
+
+                        <View style={{ flex: 2, justifyContent: 'center' }}>
+
+                            <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text>
+
+
+                        </View>
+
+                    </View> */}
+
+            </View>
 
             {loading ?
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -309,68 +530,7 @@ export default function AttendanceScreen({ navigation, route }) {
 
                 :
                 <>
-
-                    <View style={[styles.ViewSection, { marginBottom: wp('1%') }]}>
-
-                        <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
-
-
-
-
-                            {route.params.AttendancePeriodName == '' || route.params.AttendancePeriodName == null ?
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
-                                :
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendancePeriodName}</Text>
-                            }
-
-
-                            {route.params.AttendanceFiscalName == '' || route.params.AttendanceFiscalName == null ?
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
-                                :
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendanceFiscalName}</Text>
-                            }
-
-                        </View>
-
-
-
-
-                        <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
-
-                            <View style={styles.Attanempinfoview}>
-                                <View style={{ flex: 1.9, justifyContent: 'center' }}>
-                                    <Text style={styles.Attanemptxt}>Employee Name :</Text>
-
-                                </View>
-
-                                <View style={{ flex: 2, justifyContent: 'center' }}>
-                                    <Text style={styles.Attanempsubtxt}>{apidata.length > 0 ? (apidata[0].FullName == null || apidata[0].FullName == '' ? 'N/A' : apidata[0].FullName) : 'N/A'}</Text>
-
-                                    {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text> */}
-                                </View>
-
-                            </View>
-
-
-                            <View style={styles.Attanempinfoview}>
-                                <View style={{ flex: 1.9, justifyContent: 'center' }}>
-                                    <Text style={styles.Attanemptxt}>Total Working Hours :</Text>
-                                </View>
-
-                                <View style={{ flex: 2, justifyContent: 'center' }}>
-
-                                    <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text>
-
-                                    {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
-
-                                </View>
-
-                            </View>
-                        </View>
-
-                    </View>
-
-                    <View style={{ marginBottom: wp('45%') }}>
+                    <View style={{ marginBottom: wp('20%') }}>
                         <FlatList
                             data={apidata}
                             renderItem={_RenderItem}
@@ -394,6 +554,7 @@ const styles = StyleSheet.create({
     },
     ViewSection: {
 
+        resizeMode: 'contain',
         backgroundColor: '#fff',
         marginTop: wp('1.5%'),
         marginHorizontal: wp('1%'),
@@ -401,7 +562,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#CBCBCB',
         paddingBottom: wp('2%'),
-
 
     },
     Attanempinfoview: {
