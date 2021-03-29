@@ -358,10 +358,10 @@ export default function MainSalarySlip({ navigation }) {
                             // style={{ borderWidth: 1, backgroundColor: '#0041c4', borderColor: '#0041c4' }}
                             >
                                 {/* <MaterialIcons name="navigate-next" size={22} color="#008080" /> */}
-                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center' }}>
+                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center' , fontSize:wp('4%')}}>
                                     Previous Record
                                 </Text>
-                                <MaterialCommunityIcons name="skip-previous-circle-outline" size={22} color="#008080" />
+                                <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
 
 
 

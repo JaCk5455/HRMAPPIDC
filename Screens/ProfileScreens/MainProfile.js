@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View, StyleSheet, TouchableOpacity, Dimensions, StatusBar,
-    ActivityIndicator
+    ActivityIndicator , Platform
 } from 'react-native'
 import {
     Avatar,
@@ -22,6 +22,7 @@ import { MaterialIcons, MaterialCommunityIcons, Ionicons, AntDesign, FontAwesome
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import * as Device from 'expo-device';
 
 const { height, width } = Dimensions.get('window');
 
@@ -31,7 +32,7 @@ export default function MainProfileScreen({ navigation }) {
     const [personalapidata, SetPersonalApiData] = useState([]);
     const [eduapidata, SetEduApiData] = useState([]);
     const [loading, IsLoading] = useState(true);
-
+    // const [deviceType,setDeviceType] = useState(null);
 
     useEffect(() => {
 
@@ -43,6 +44,8 @@ export default function MainProfileScreen({ navigation }) {
         }).catch((e) => {
             console.log('eee', e);
         });
+
+        // getDeviceType();
 
     }, [])
     useEffect(() => {
@@ -59,6 +62,9 @@ export default function MainProfileScreen({ navigation }) {
 
     }, [data])
 
+    // const getDeviceType = async () => {
+    //     setDeviceType(await Device.getDeviceTypeAsync());
+    // }
 
 
     // const StoreData = async (payload) => {
@@ -164,9 +170,9 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-                                <Title style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Title>
+                                <Text style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Text>
 
-                                <Caption style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Caption>
+                                <Text style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Text>
 
                             </View>
                         </View>
@@ -192,21 +198,21 @@ export default function MainProfileScreen({ navigation }) {
                         </View> */}
 
                         <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
-                            <View style={{ flexDirection: 'row', marginTop: wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
 
                                 <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].Location == null || personalapidata[0].Location == '' ? 'N/A' : personalapidata[0].Location) : ''}</Text>
                             </View>
 
 
-                            <View style={{ flexDirection: 'row', marginTop: wp('4%'), paddingLeft: wp('2.5%') }}>
+                            <View style={{ flexDirection: 'row', marginTop:Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%') }}>
                                 <Icon name="phone" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].Cell == null || personalapidata[0].Cell == '' ? 'N/A' : personalapidata[0].Cell) : ''}</Text>
 
                             </View>
 
 
-                            <View style={{ flexDirection: 'row', marginTop: wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
+                            <View style={{ flexDirection: 'row', marginTop:Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
                                 <Icon name="email" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].EmployeeContactEmail == null || personalapidata[0].EmployeeContactEmail == '' ? 'N/A' : personalapidata[0].EmployeeContactEmail) : ''}</Text>
 
@@ -323,11 +329,11 @@ const styles = StyleSheet.create({
 
     title: {
         marginTop: wp('2%'),
-        fontSize: wp('7%'),
+        fontSize:Platform.isPad ? wp('5%') :  wp('7%'),
         fontWeight: 'bold',
     },
     caption: {
-        fontSize: wp('5%'),
+        fontSize: Platform.isPad ? wp('4%') : wp('5%'),
         fontWeight: '500',
         marginTop: wp('1%'),
         marginBottom: wp('1%')
@@ -337,10 +343,15 @@ const styles = StyleSheet.create({
         paddingTop: wp('4%')
     },
 
+    profileinfo:{
+
+        
+    },
+
     profileinfotext: {
         color: "#777777",
         marginLeft: wp('6%'),
-        fontSize: wp('4%')
+        fontSize:  wp('4%')
     },
 
 
@@ -350,20 +361,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: wp('2%'),
     },
-    menuItem: {
+    menuItem : {
         flexDirection: 'row',
         paddingVertical: 15,
         paddingHorizontal: 10,
-        paddingLeft: wp('4%'),
+        paddingLeft:wp('4%'),
         borderBottomWidth: 0.5,
         borderBottomColor: '#CBCBCB',
     },
 
     menuItemText: {
         color: '#777777',
-        paddingLeft: wp('6%'),
+        paddingLeft: Platform.isPad  ? wp('5.5%') : wp('6%'),
         fontWeight: 'bold',
         fontSize: wp('4.5%'),
-        lineHeight: 26,
+        lineHeight: Platform.isPad ? wp('8%') : wp('6%'),
     },
+
+
+    //  (deviceType) =>()
+    // Platform.isPad || deviceType == 2 ? wp('9%') : wp('1%')
 });

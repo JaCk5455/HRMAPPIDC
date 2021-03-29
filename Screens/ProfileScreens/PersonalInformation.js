@@ -45,7 +45,7 @@ export default function PersonalInformationScreen({ route }) {
                 <View>
                     <View style={styles.profileItem}>
                         <Feather
-                            name="user" size={30} color="#006666" />
+                            name="user" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>FirstName</Text>
                             {route.params.data[0].FirstName == '' || route.params.data[0].FirstName == null ?
@@ -83,7 +83,7 @@ export default function PersonalInformationScreen({ route }) {
 
                     <View style={styles.profileItem}>
                         <Feather
-                            name="user" size={30} color="#006666" />
+                            name="user" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>FatherName</Text>
                             {route.params.data[0].FatherName == '' || route.params.data[0].FatherName == null ?
@@ -100,7 +100,7 @@ export default function PersonalInformationScreen({ route }) {
 
 
                     <View style={styles.profileItem}>
-                        <AntDesign name="idcard" size={28} color="#006666" />
+                        <AntDesign name="idcard" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Cnic</Text>
                             {route.params.data[0].CNIC == '' || route.params.data[0].CNIC == null ?
@@ -114,7 +114,7 @@ export default function PersonalInformationScreen({ route }) {
                     </View>
 
                     <View style={styles.profileItem}>
-                        <Fontisto name="date" size={28} color="#006666" />
+                        <Fontisto name="date" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>D.O.B</Text>
                             {route.params.data[0].DOB == '' || route.params.data[0].DOB == null ?
@@ -128,7 +128,7 @@ export default function PersonalInformationScreen({ route }) {
                     </View>
 
                     <View style={styles.profileItem}>
-                        <MaterialCommunityIcons name="gender-male-female" size={28} color="#006666" />
+                        <MaterialCommunityIcons name="gender-male-female" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Gender</Text>
                             {route.params.data[0].Gender == '' || route.params.data[0].Gender == null ?
@@ -142,7 +142,7 @@ export default function PersonalInformationScreen({ route }) {
                     </View>
 
                     <View style={styles.profileItem}>
-                        <MaterialCommunityIcons name="ring" size={28} color="#006666" />
+                        <MaterialCommunityIcons name="ring" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>MaritalStatus</Text>
                             {route.params.data[0].MaritalStatus == '' || route.params.data[0].MaritalStatus == null ?
@@ -158,7 +158,7 @@ export default function PersonalInformationScreen({ route }) {
                     <View style={styles.profileItem}>
                         {/* <MaterialCommunityIcons name="islam" size={28} color="#0066FF" /> */}
 
-                        <SimpleLineIcons name="user" size={28} color="#006666" />
+                        <SimpleLineIcons name="user" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Religion</Text>
                             {route.params.data[0].Religion == '' || route.params.data[0].Religion == null ?
@@ -174,7 +174,7 @@ export default function PersonalInformationScreen({ route }) {
 
 
                     <View style={styles.profileItem}>
-                        <Fontisto name="blood-drop" size={28} color="#006666" />
+                        <Fontisto name="blood-drop" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>BloodGroup</Text>
                             {route.params.data[0].BloodGroup == '' || route.params.data[0].BloodGroup == null ?
@@ -188,7 +188,7 @@ export default function PersonalInformationScreen({ route }) {
 
 
                     <View style={styles.profileItem}>
-                        <MaterialCommunityIcons name="office-building" size={28} color="#006666" />
+                        <MaterialCommunityIcons name="office-building" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Department</Text>
                             {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{data.length > 0 ? (data[0].DepartmentName == null || data[0].DepartmentName == '' ? 'N/A' : data[0].DepartmentName) : ''} </Text> */}
@@ -206,7 +206,7 @@ export default function PersonalInformationScreen({ route }) {
 
                     <View style={styles.profileItem}>
                         {/* <FontAwesome name="group" size={28} color="#0066FF" /> */}
-                        <Ionicons name="ios-people-outline" size={28} color="#006666" />
+                        <Ionicons name="ios-people-outline" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Designation</Text>
                             {route.params.data[0].Designation == '' || route.params.data[0].Designation == null ?
@@ -221,7 +221,7 @@ export default function PersonalInformationScreen({ route }) {
 
 
                     <View style={styles.profileItem}>
-                        <MaterialCommunityIcons name="shape-polygon-plus" size={28} color="#006666" />
+                        <MaterialCommunityIcons name="shape-polygon-plus" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Job Type</Text>
 
@@ -237,7 +237,7 @@ export default function PersonalInformationScreen({ route }) {
 
 
                     <View style={styles.profileItem}>
-                        <Fontisto name="date" size={28} color="#006666" />
+                        <Fontisto name="date" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Joining Date</Text>
                             {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ?

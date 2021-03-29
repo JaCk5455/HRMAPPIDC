@@ -103,7 +103,7 @@ export default function EducationalInformationScreen({ route }) {
                         <View style={styles.profileItem}>
                             {/* <Ionicons
                                 name="page-copy" size={30} color="#0066FF" /> */}
-                            <Ionicons name="newspaper-outline" size={28} color="#006666" />
+                            <Ionicons name="newspaper-outline" size={wp('7%')} color="#006666" />
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>Degree Title</Text>
 
@@ -119,7 +119,7 @@ export default function EducationalInformationScreen({ route }) {
 
 
                         <View style={styles.profileItem}>
-                            <AntDesign name="calendar" size={28} color="#006666" />
+                            <AntDesign name="calendar" size={wp('7%')} color="#006666" />
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>Completion Date</Text>
 
@@ -133,7 +133,7 @@ export default function EducationalInformationScreen({ route }) {
                         </View>
 
                         <View style={styles.profileItem}>
-                            <FontAwesome5 name="building" size={28} color="#006666" />
+                            <FontAwesome5 name="building" size={wp('7%')} color="#006666" />
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>University/College/Institute</Text>
 
@@ -148,7 +148,7 @@ export default function EducationalInformationScreen({ route }) {
                         </View>
 
                         <View style={styles.profileItem}>
-                            <SimpleLineIcons name="calculator" size={28} color="#006666" />
+                            <SimpleLineIcons name="calculator" size={wp('7%')} color="#006666" />
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>Grade/GPA/Percentage</Text>
                                 {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ? (apidata[0].ObtainedGPA == null || apidata[0].ObtainedGPA == '' ? 'N/A' : apidata[0].ObtainedGPA) : ''} </Text> */}

@@ -37,7 +37,7 @@ export default function ContactInformationScreen({ navigation, route }) {
                         {/* <Feather
                     name="user" size={30} color="#0041c4" /> */}
 
-                        <Entypo name="newsletter" size={28} color="#006666" />
+                        <Entypo name="newsletter" size={wp('7%')} color="#006666" />
                         <View style={styles.profileContactItemView}>
                             <View style={{ flex: 1 }}>
                                 <Text style={styles.profileContactSubItem}>Postal Address</Text>
@@ -57,7 +57,7 @@ export default function ContactInformationScreen({ navigation, route }) {
 
 
                     <View style={styles.profileContactItem}>
-                        <Ionicons name="md-home" size={28} color="#006666" />
+                        <Ionicons name="md-home" size={wp('7%')} color="#006666" />
                         {/* <AntDesign name="home" size={28} color="#0066FF" /> */}
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Permanent Address</Text>
@@ -74,7 +74,7 @@ export default function ContactInformationScreen({ navigation, route }) {
 
                     <View style={styles.profileContactItem}>
                         {/* <AntDesign name="idcard" size={28} color="#0066FF" /> */}
-                        <FontAwesome name="vcard-o" size={28} color="#006666" />
+                        <FontAwesome name="vcard-o" size={wp('7%')} color="#006666" />
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Cnic</Text>
                             {route.params.data[0].CNIC == '' || route.params.data[0].CNIC == null ?
@@ -86,7 +86,7 @@ export default function ContactInformationScreen({ navigation, route }) {
                     </View>
 
                     <View style={styles.profileContactItem}>
-                        <Icon name="email" color="#006666" size={28} />
+                        <Icon name="email" color="#006666" size={wp('7%')} />
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Employee Email</Text>
                             {route.params.data[0].EmployeeContactEmail == '' || route.params.data[0].EmployeeContactEmail == null ?
@@ -98,7 +98,7 @@ export default function ContactInformationScreen({ navigation, route }) {
                     </View>
 
                     <View style={styles.profileContactItem}>
-                        <Icon name="phone" color="#006666" size={28} />
+                        <Icon name="phone" color="#006666" size={wp('7%')} />
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Cell</Text>
                             {route.params.data[0].Cell == '' || route.params.data[0].Cell == null ?

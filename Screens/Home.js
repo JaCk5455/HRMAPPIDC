@@ -29,7 +29,7 @@ export default function HomeScreen() {
 
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>Islamabad Diagnostic Center Pvt. Ltd.</Text>
-                <Text style={{ fontSize: wp('5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center', marginTop: wp('1%') }}> Welcome!</Text>
+                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center', marginTop: wp('1%') }}> Welcome!</Text>
             </View>
             {/* <Avatar.Image source={require('../assets/logo.png')}
                 style={{ position: 'absolute', top: height * 0.16, alignSelf: 'center' }}
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 
     },
     headerText: {
-        fontSize: wp('6%'),
+        fontSize: wp('5%'),
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'left',
