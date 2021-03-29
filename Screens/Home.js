@@ -92,7 +92,9 @@ const styles = StyleSheet.create({
         // backgroundColor: '#0041c4',
         backgroundColor: '#008080',
         height: hp('18%'),
-        width: '100%'
+        width: wp('100%')
+        // width: Dimensions.get('window').width
+
     },
     headerText: {
         fontSize: wp('6%'),

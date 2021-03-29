@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions,  StatusBar , 
-ActivityIndicator } from 'react-native'
+import {
+    View, StyleSheet, TouchableOpacity, Dimensions, StatusBar,
+    ActivityIndicator
+} from 'react-native'
 import {
     Avatar,
     Title,
@@ -9,7 +11,7 @@ import {
     TouchableRipple,
 
 } from 'react-native-paper';
-import {  Spinner } from 'native-base';
+import { Spinner } from 'native-base';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Svg, { Path } from 'react-native-svg';
@@ -94,10 +96,10 @@ export default function MainProfileScreen({ navigation }) {
                 })
             });
             const responseObj = await response.json();
-          //  console.log(responseObj)
+            //  console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-               // console.log(payloadData)
+                // console.log(payloadData)
                 if (payloadData.Table.length > 0) {
                     SetPersonalApiData(payloadData.Table);
                     // console.log('aaa', payloadData.Table)
@@ -134,16 +136,16 @@ export default function MainProfileScreen({ navigation }) {
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
 
             {loading ?
-                <View style={{flex:1 , justifyContent:'center'}} >
-                    <ActivityIndicator size="small" color="#008080"  />
+                <View style={{ flex: 1, justifyContent: 'center' }} >
+                    <ActivityIndicator size="small" color="#008080" />
 
-                  {/* //  <Spinner color='#008080'  /> */}
+                    {/* //  <Spinner color='#008080'  /> */}
 
                     {/* <ActivityIndicator animating={true} color={Colors.red800} /> */}
                 </View>
                 :
                 <>
-                
+
                     <View style={styles.profileinfoBoxWrapper}>
 
 
@@ -160,9 +162,12 @@ export default function MainProfileScreen({ navigation }) {
                                     style={{ marginTop: wp('-18%') }}
                                 />
 
+
+
                                 <Title style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Title>
 
                                 <Caption style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Caption>
+
                             </View>
                         </View>
 
@@ -189,20 +194,20 @@ export default function MainProfileScreen({ navigation }) {
                         <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
                             <View style={{ flexDirection: 'row', marginTop: wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
 
-                                <Icon name="map-marker-radius" color="#006666" size={20} />
+                                <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].Location == null || personalapidata[0].Location == '' ? 'N/A' : personalapidata[0].Location) : ''}</Text>
                             </View>
 
 
                             <View style={{ flexDirection: 'row', marginTop: wp('4%'), paddingLeft: wp('2.5%') }}>
-                                <Icon name="phone" color="#006666" size={20} />
+                                <Icon name="phone" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].Cell == null || personalapidata[0].Cell == '' ? 'N/A' : personalapidata[0].Cell) : ''}</Text>
 
                             </View>
 
 
                             <View style={{ flexDirection: 'row', marginTop: wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
-                                <Icon name="email" color="#006666" size={20} />
+                                <Icon name="email" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].EmployeeContactEmail == null || personalapidata[0].EmployeeContactEmail == '' ? 'N/A' : personalapidata[0].EmployeeContactEmail) : ''}</Text>
 
                             </View>
@@ -221,13 +226,13 @@ export default function MainProfileScreen({ navigation }) {
 
                                     <View style={{ flex: 1.2, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%'), alignItems: 'center' }}>
 
-                                        <FontAwesome name="user" size={24} color="#006666" />
+                                        <FontAwesome name="user" size={wp('7%')} color="#006666" />
                                     </View>
 
                                     <View style={{ flex: 10, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%') }}>
                                         <Text style={styles.menuItemText}>Personal Information</Text>
                                         {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={24} color="#777" /> */}
-                                        <AntDesign name="rightcircleo" size={22} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 1 }} />
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 1 }} />
                                     </View>
 
                                 </View>
@@ -242,7 +247,7 @@ export default function MainProfileScreen({ navigation }) {
 
                                     <View style={{ flex: 1.2, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%'), alignItems: 'center' }}>
                                         {/* <MaterialIcons name="cast-for-education" size={24} color="#0066FF" /> */}
-                                        <FontAwesome name="graduation-cap" size={24} color="#006666" />
+                                        <FontAwesome name="graduation-cap" size={wp('7%')} color="#006666" />
                                     </View>
 
                                     <View style={{ flex: 10, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%') }}>
@@ -250,7 +255,7 @@ export default function MainProfileScreen({ navigation }) {
                                         <Text style={[styles.menuItemText]}>Educational Information</Text>
                                         {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={24} color="#777" /> */}
                                         {/* <AntDesign name="arrowright" size={20} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 10 }} /> */}
-                                        <AntDesign name="rightcircleo" size={22} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 1 }} />
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 1 }} />
                                     </View>
 
                                 </View>
@@ -265,14 +270,14 @@ export default function MainProfileScreen({ navigation }) {
                                 <View style={styles.menuItem}>
 
                                     <View style={{ flex: 1.2, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%'), alignItems: 'center' }}>
-                                        <MaterialIcons name="contact-phone" size={24} color="#006666" />
+                                        <MaterialIcons name="contact-phone" size={wp('7%')} color="#006666" />
                                     </View>
 
                                     <View style={{ flex: 10, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%') }}>
 
                                         <Text style={styles.menuItemText}>Contact Information</Text>
                                         {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={20} color="#777" /> */}
-                                        <AntDesign name="rightcircleo" size={22} color="#777" style={{ position: 'absolute', right: 1 }} />
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: 'absolute', right: 1 }} />
                                     </View>
 
                                 </View>
