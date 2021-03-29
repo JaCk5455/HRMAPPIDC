@@ -20,7 +20,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
     const [selectfiscalyearlabel, setSelectedFiscalYearLabel] = useState('');
 
 
-
+                            //bjhb
     useEffect(() => {
         // console.log('abbbbbbbb', route.params.FiscalYears)
         if (route.params.FiscalYears.length > 0) {
