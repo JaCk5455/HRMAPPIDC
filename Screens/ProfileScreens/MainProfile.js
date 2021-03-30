@@ -162,7 +162,11 @@ export default function MainProfileScreen({ navigation }) {
                                 style={{ height: "45%" }} />
                             <View style={{ alignItems: 'center', marginBottom: wp("1%") }} >
                                 <Avatar.Image
-                                    // source={{ uri: ((apidata[0].EmployeePic) ? `data:image/png;base64,${apidata[0].EmployeePic}` : (apidata[0].Gender == "M" || apidata[0].Gender == "Male" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
+
+
+// source={{
+//     uri: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+//   }}
                                     source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender == "M" || data[0].EmployeeGender == "Male" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     size={wp('27%')}
                                     style={{ marginTop: wp('-18%') }}
@@ -170,9 +174,13 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-                                <Text style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Text>
+{/* <Text style={styles.title}>John Doe</Text> */}
 
-                                <Text style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Text>
+
+
+                                     <Text style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Text>
+
+                                <Text style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Text> 
 
                             </View>
                         </View>
@@ -197,7 +205,36 @@ export default function MainProfileScreen({ navigation }) {
                             </View>
                         </View> */}
 
-                        <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
+
+
+{/* 
+<View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
+                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
+
+                                <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />
+                                <Text style={styles.profileinfotext}>Michigantown</Text>
+                            </View>
+
+
+                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%') }}>
+                                <Icon name="phone" color="#006666" size={wp('5%')} />
+                                <Text style={styles.profileinfotext}>219-9042161</Text>
+
+                            </View>
+
+
+                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
+                                <Icon name="email" color="#006666" size={wp('5%')} />
+                                <Text style={styles.profileinfotext}>John.Doe@gmail.com</Text>
+
+                            </View>
+                        </View> */}
+
+
+
+
+
+                           <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
                             <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
 
                                 <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />

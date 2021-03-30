@@ -21,7 +21,7 @@ export default function SignIn({ navigation }) {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-    // const [loading, Isloading] = React.useState(true)
+  //  const [loading, Isloading] = React.useState(true)
 
 
     const [data, setData] = React.useState({
@@ -112,7 +112,7 @@ export default function SignIn({ navigation }) {
                 let payload = JSON.parse(data.payload);
                 if (payload.length > 0) {
                     signIn(payload);
-                    // Isloading(false);
+               //  Isloading(false);
                 }
                 else {
                     Alert.alert('Error', 'Username or Password is incorrect')
@@ -161,6 +161,7 @@ export default function SignIn({ navigation }) {
                             placeholder="Username Provided by IDC"
                             style={styles.textInput}
                             autoCapitalize="none"
+                            autoCorrect={false}
                             onChangeText={(val) => setEmail(val)} />
 
                     </View>
@@ -180,6 +181,7 @@ export default function SignIn({ navigation }) {
                             secureTextEntry={data.secureTextEntry ? true : false}
                             style={styles.textInput}
                             autoCapitalize="none"
+                            autoCorrect={false}
                             onChangeText={(val) => setPassword(val)}
                             autoCorrect={false}
                         />

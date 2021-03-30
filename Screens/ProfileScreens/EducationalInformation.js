@@ -101,14 +101,18 @@ export default function EducationalInformationScreen({ route }) {
 
                     <View>
                         <View style={styles.profileItem}>
-                            {/* <Ionicons
-                                name="page-copy" size={30} color="#0066FF" /> */}
+                            
                             <Ionicons name="newspaper-outline" size={wp('7%')} color="#006666" />
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>Degree Title</Text>
 
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ? (apidata[0].Degree == null || apidata[0].Degree == '' || apidata[0].Specialization == '' || apidata[0].Specialization == null ? 'N/A' : apidata[0].Degree) + '(' + apidata[0].Specialization + ')' : ''} </Text> */}
-                                {route.params.Edudata[0].Degree == '' || route.params.Edudata[0].Degree == null || route.params.Edudata[0].Specialization == '' || route.params.Edudata[0].Specialization == null ?
+
+
+
+                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>BS(CS)</Text> */}
+
+
+                                 {route.params.Edudata[0].Degree == '' || route.params.Edudata[0].Degree == null || route.params.Edudata[0].Specialization == '' || route.params.Edudata[0].Specialization == null ?
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                     :
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].Degree + '(' + route.params.Edudata[0].Specialization + ')'}</Text>
@@ -123,7 +127,11 @@ export default function EducationalInformationScreen({ route }) {
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>Completion Date</Text>
 
-                                {route.params.Edudata[0].CompletionDate == '' || route.params.Edudata[0].CompletionDate == null ?
+
+                                
+                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>August 17,2015</Text> */}
+
+                                 {route.params.Edudata[0].CompletionDate == '' || route.params.Edudata[0].CompletionDate == null ?
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                     :
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{moment(route.params.Edudata[0].CompletionDate).format("MMMM D, YYYY")}</Text>
@@ -136,14 +144,20 @@ export default function EducationalInformationScreen({ route }) {
                             <FontAwesome5 name="building" size={wp('7%')} color="#006666" />
                             <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                                 <Text style={styles.profileSubItem}>University/College/Institute</Text>
+                                
+                                
+                                
+                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>University of Michigan</Text> */}
 
-                                {route.params.Edudata[0].Institution == '' || route.params.Edudata[0].Institution == null ?
+
+
+
+                                 {route.params.Edudata[0].Institution == '' || route.params.Edudata[0].Institution == null ?
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                     :
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].Institution}</Text>
                                 }
 
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ? (apidata[0].Institution == null || apidata[0].Institution == '' ? 'N/A' : apidata[0].Institution) : ''} </Text> */}
                             </View>
                         </View>
 
@@ -153,7 +167,10 @@ export default function EducationalInformationScreen({ route }) {
                                 <Text style={styles.profileSubItem}>Grade/GPA/Percentage</Text>
                                 {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ? (apidata[0].ObtainedGPA == null || apidata[0].ObtainedGPA == '' ? 'N/A' : apidata[0].ObtainedGPA) : ''} </Text> */}
 
-                                {route.params.Edudata[0].ObtainedGPA == '' || route.params.Edudata[0].ObtainedGPA == null ?
+
+                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>2.5</Text> */}
+
+                                 {route.params.Edudata[0].ObtainedGPA == '' || route.params.Edudata[0].ObtainedGPA == null ?
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                     :
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].ObtainedGPA}</Text>

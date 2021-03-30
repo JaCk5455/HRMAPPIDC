@@ -34,16 +34,17 @@ export default function ContactInformationScreen({ navigation, route }) {
 
                 <View>
                     <View style={styles.profileContactItem}>
-                        {/* <Feather
-                    name="user" size={30} color="#0041c4" /> */}
-
+                       
                         <Entypo name="newsletter" size={wp('7%')} color="#006666" />
                         <View style={styles.profileContactItemView}>
                             <View style={{ flex: 1 }}>
                                 <Text style={styles.profileContactSubItem}>Postal Address</Text>
                             </View>
 
-                            <View>
+
+
+                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>100 (From 100 To 199 ) 7TH ST , MICHIGANTOWN, IN</Text> */}
+                             <View>
                                 {route.params.data[0].PostalAddress == '' || route.params.data[0].PostalAddress == null ?
                                     <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                     :
@@ -58,10 +59,15 @@ export default function ContactInformationScreen({ navigation, route }) {
 
                     <View style={styles.profileContactItem}>
                         <Ionicons name="md-home" size={wp('7%')} color="#006666" />
-                        {/* <AntDesign name="home" size={28} color="#0066FF" /> */}
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Permanent Address</Text>
-                            {route.params.data[0].PermanentAddress == '' || route.params.data[0].PermanentAddress == null ?
+                          
+                          
+                          
+                          
+                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%'), }}>100 (From 100 To 199 ) 7TH ST , MICHIGANTOWN, IN</Text> */}
+
+                             {route.params.data[0].PermanentAddress == '' || route.params.data[0].PermanentAddress == null ?
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                 :
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%'), }}>{route.params.data[0].PermanentAddress}</Text>
@@ -77,7 +83,11 @@ export default function ContactInformationScreen({ navigation, route }) {
                         <FontAwesome name="vcard-o" size={wp('7%')} color="#006666" />
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Cnic</Text>
-                            {route.params.data[0].CNIC == '' || route.params.data[0].CNIC == null ?
+
+
+
+                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>11111-2222222-3</Text>  */}
+                             {route.params.data[0].CNIC == '' || route.params.data[0].CNIC == null ?
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                 :
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].CNIC}</Text>
@@ -89,7 +99,11 @@ export default function ContactInformationScreen({ navigation, route }) {
                         <Icon name="email" color="#006666" size={wp('7%')} />
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Employee Email</Text>
-                            {route.params.data[0].EmployeeContactEmail == '' || route.params.data[0].EmployeeContactEmail == null ?
+
+
+
+                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>John.Doe@gmail.com</Text> */}
+                             {route.params.data[0].EmployeeContactEmail == '' || route.params.data[0].EmployeeContactEmail == null ?
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                 :
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].EmployeeContactEmail}</Text>
@@ -101,7 +115,10 @@ export default function ContactInformationScreen({ navigation, route }) {
                         <Icon name="phone" color="#006666" size={wp('7%')} />
                         <View style={styles.profileContactItemView}>
                             <Text style={styles.profileContactSubItem}>Cell</Text>
-                            {route.params.data[0].Cell == '' || route.params.data[0].Cell == null ?
+
+
+                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>219-9042161</Text> */}
+                              {route.params.data[0].Cell == '' || route.params.data[0].Cell == null ?
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                 :
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].Cell}</Text>

@@ -355,9 +355,7 @@ export default function MainSalarySlip({ navigation }) {
                                 })
                             }}
                                 style={{ flexDirection: 'row' }}
-                            // style={{ borderWidth: 1, backgroundColor: '#0041c4', borderColor: '#0041c4' }}
                             >
-                                {/* <MaterialIcons name="navigate-next" size={22} color="#008080" /> */}
                                 <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center' , fontSize:wp('4%')}}>
                                     Previous Record
                                 </Text>
@@ -373,7 +371,7 @@ export default function MainSalarySlip({ navigation }) {
                         <View style={styles.ViewSection}>
 
                             <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
-                                <View style={{ flexDirection: 'row' }}>
+                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                         <Image
                                             style={{ width: wp('10%'), height: wp('10%'), marginBottom: wp('2%') }}
@@ -400,7 +398,7 @@ export default function MainSalarySlip({ navigation }) {
 
 
                                 <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#1f1f2e' }}>
-                                    Salary slip
+                                    Salary Slip
                                 </Text>
 
                                 <Text
@@ -437,7 +435,12 @@ export default function MainSalarySlip({ navigation }) {
                                     </View>
 
                                     <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
+                                       
+                                       
+                                       
+                                    {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
+
+                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
                                     </View>
 
                                 </View>
@@ -447,7 +450,11 @@ export default function MainSalarySlip({ navigation }) {
                                         <Text style={styles.salaryemptxt}>Employee Name :</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
+
+                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
+                                        <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
+                                    </View> */}
+                                     <View style={{ flex: 2, justifyContent: 'center' }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
                                     </View>
 
@@ -484,10 +491,14 @@ export default function MainSalarySlip({ navigation }) {
                                         <Text style={styles.salaryemptxt}>Bank Account #</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
 
+
+
+                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
+                                        <Text style={styles.salaryempsubtxt}>1111111111111</Text>
+                                    </View> */}
+                                     <View style={{ flex: 2, justifyContent: 'center' }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
-
                                     </View>
                                 </View>
 

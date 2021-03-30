@@ -28,13 +28,15 @@ export default function HomeScreen() {
 
 
             <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>Islamabad Diagnostic Center Pvt. Ltd.</Text>
+
+
+
+
+            {/* <Text style={styles.headerText}>West Bloomfire Arcade.</Text> */}
+                 <Text style={styles.headerText}>Islamabad Diagnostic Center Pvt. Ltd.</Text>
                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center', marginTop: wp('1%') }}> Welcome!</Text>
             </View>
-            {/* <Avatar.Image source={require('../assets/logo.png')}
-                style={{ position: 'absolute', top: height * 0.16, alignSelf: 'center' }}
-                size={wp('22%')}
-            /> */}
+            
 
             <View style={styles.behind}>
                 <FlatList

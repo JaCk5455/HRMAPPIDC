@@ -43,7 +43,46 @@ export default function PersonalInformationScreen({ route }) {
             {loading ?
                 <ActivityIndicator size="small" color="#008080" /> :
                 <View>
-                    <View style={styles.profileItem}>
+
+
+{/* 
+<View style={styles.profileItem}>
+                        <Feather
+                            name="user" size={wp('7%')} color="#006666" />
+                        <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+                            <Text style={styles.profileSubItem}>FirstName</Text>
+                           
+                                <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>John</Text>
+                            
+                        </View>
+
+                        <View style={{ flex: 1, marginBottom: wp('3%') }}>
+                            <Text style={styles.profileSubItem}>MiddleName</Text>
+                                <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}></Text>
+                            
+                        
+
+                        </View>
+
+                        <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+                            <Text style={styles.profileSubItem}>LastName</Text>
+                          
+                        <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>Doe</Text>
+                            
+
+                        </View>
+                        
+                    </View> */}
+
+
+
+
+
+
+
+
+
+                     <View style={styles.profileItem}>
                         <Feather
                             name="user" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
@@ -53,7 +92,6 @@ export default function PersonalInformationScreen({ route }) {
                                 :
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].FirstName}</Text>
                             }
-                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{data.length > 0 ? (data.FirstName == null || data.FirstName == '' ? 'N/A' : data.FirstName) : ''} </Text> */}
                         </View>
 
                         <View style={{ flex: 1, marginBottom: wp('3%') }}>
@@ -64,7 +102,6 @@ export default function PersonalInformationScreen({ route }) {
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].MiddleName}</Text>
                             }
 
-                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{data.length > 0 ? (data[0].MiddleName == null || data[0].MiddleName == '' ? '' : data[0].MiddleName) : ''} </Text> */}
                         </View>
 
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
@@ -75,13 +112,31 @@ export default function PersonalInformationScreen({ route }) {
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].LastName}</Text>
                             }
 
-                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{data.length > 0 ? (data[0].LastName == null || data[0].LastName == '' ? '' : data[0].LastName) : ''} </Text> */}
                         </View>
+                        
                     </View>
 
 
 
-                    <View style={styles.profileItem}>
+
+
+
+
+
+{/* <View style={styles.profileItem}>
+                        <Feather
+                            name="user" size={wp('7%')} color="#006666" />
+                        <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+                            <Text style={styles.profileSubItem}>FatherName</Text>
+                            
+                                <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>John Doe</Text>
+                            
+
+                            
+                        </View>
+                    </View> */}
+
+                      <View style={styles.profileItem}>
                         <Feather
                             name="user" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
@@ -92,9 +147,7 @@ export default function PersonalInformationScreen({ route }) {
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].FatherName}</Text>
                             }
 
-                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{data.length > 0 ? (data[0].FatherName == null || data[0].FatherName == '' ? 'N/A' : data[0].FatherName) : ''} */}
-
-                            {/* </Text> */}
+                            
                         </View>
                     </View>
 
@@ -103,13 +156,17 @@ export default function PersonalInformationScreen({ route }) {
                         <AntDesign name="idcard" size={wp('7%')} color="#006666" />
                         <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
                             <Text style={styles.profileSubItem}>Cnic</Text>
-                            {route.params.data[0].CNIC == '' || route.params.data[0].CNIC == null ?
+
+                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>11111-2222222-3</Text> */}
+
+                             {route.params.data[0].CNIC == '' || route.params.data[0].CNIC == null ?
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
                                 :
                                 <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.data[0].CNIC}</Text>
                             }
 
-                            {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{data.length > 0 ? (data[0].CNIC == null || data[0].CNIC == '' ? 'N/A' : data[0].CNIC) : ''} </Text> */}
+
+
                         </View>
                     </View>
 
