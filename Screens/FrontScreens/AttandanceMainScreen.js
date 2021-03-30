@@ -480,7 +480,7 @@ export default function MainAttendanceScreen({ navigation }) {
                     >
                         {/* <MaterialIcons name="navigate-next" size={22} color="#008080" /> */}
                         {/* <MaterialCommunityIcons name="skip-previous-circle-outline" size={22} color="#008080" /> */}
-                        <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center' }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: wp('3%') }}>
                             Previous Record
                                 </Text>
 

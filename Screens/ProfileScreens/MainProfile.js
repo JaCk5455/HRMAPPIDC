@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     View, StyleSheet, TouchableOpacity, Dimensions, StatusBar,
-    ActivityIndicator , Platform
+    ActivityIndicator, Platform
 } from 'react-native'
 import {
     Avatar,
@@ -205,14 +205,14 @@ export default function MainProfileScreen({ navigation }) {
                             </View>
 
 
-                            <View style={{ flexDirection: 'row', marginTop:Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%') }}>
+                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%') }}>
                                 <Icon name="phone" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].Cell == null || personalapidata[0].Cell == '' ? 'N/A' : personalapidata[0].Cell) : ''}</Text>
 
                             </View>
 
 
-                            <View style={{ flexDirection: 'row', marginTop:Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
+                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
                                 <Icon name="email" color="#006666" size={wp('5%')} />
                                 <Text style={styles.profileinfotext}>{personalapidata.length > 0 ? (personalapidata[0].EmployeeContactEmail == null || personalapidata[0].EmployeeContactEmail == '' ? 'N/A' : personalapidata[0].EmployeeContactEmail) : ''}</Text>
 
@@ -238,7 +238,7 @@ export default function MainProfileScreen({ navigation }) {
                                     <View style={{ flex: 10, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%') }}>
                                         <Text style={styles.menuItemText}>Personal Information</Text>
                                         {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={24} color="#777" /> */}
-                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 1 }} />
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: Platform.isPad ? 5 : 1 }} />
                                     </View>
 
                                 </View>
@@ -261,7 +261,7 @@ export default function MainProfileScreen({ navigation }) {
                                         <Text style={[styles.menuItemText]}>Educational Information</Text>
                                         {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={24} color="#777" /> */}
                                         {/* <AntDesign name="arrowright" size={20} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 10 }} /> */}
-                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: 1 }} />
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: Platform.isPad ? 5 : 1 }} />
                                     </View>
 
                                 </View>
@@ -283,7 +283,7 @@ export default function MainProfileScreen({ navigation }) {
 
                                         <Text style={styles.menuItemText}>Contact Information</Text>
                                         {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={20} color="#777" /> */}
-                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: 'absolute', right: 1 }} />
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: 'absolute', right: Platform.isPad ? 5 : 1 }} />
                                     </View>
 
                                 </View>
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
 
     title: {
         marginTop: wp('2%'),
-        fontSize:Platform.isPad ? wp('5%') :  wp('7%'),
+        fontSize: Platform.isPad ? wp('5%') : wp('7%'),
         fontWeight: 'bold',
     },
     caption: {
@@ -343,15 +343,15 @@ const styles = StyleSheet.create({
         paddingTop: wp('4%')
     },
 
-    profileinfo:{
+    profileinfo: {
 
-        
+
     },
 
     profileinfotext: {
         color: "#777777",
         marginLeft: wp('6%'),
-        fontSize:  wp('4%')
+        fontSize: wp('4%')
     },
 
 
@@ -361,18 +361,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: wp('2%'),
     },
-    menuItem : {
+    menuItem: {
         flexDirection: 'row',
         paddingVertical: 15,
         paddingHorizontal: 10,
-        paddingLeft:wp('4%'),
+        paddingLeft: wp('4%'),
         borderBottomWidth: 0.5,
         borderBottomColor: '#CBCBCB',
     },
 
     menuItemText: {
         color: '#777777',
-        paddingLeft: Platform.isPad  ? wp('5.5%') : wp('6%'),
+        paddingLeft: Platform.isPad ? wp('5.5%') : wp('6%'),
         fontWeight: 'bold',
         fontSize: wp('4.5%'),
         lineHeight: Platform.isPad ? wp('8%') : wp('6%'),
