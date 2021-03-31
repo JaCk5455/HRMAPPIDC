@@ -55,7 +55,7 @@ export default function LeaveFisicalScreen({ navigation }) {
 
                 //  console.log('aaa', payloadData)
                 if (payloadData.length > 0) {
-                    //  console.log('bbb', payloadData)
+                      console.log('fiscal year', payloadData)
                     setYearApiData(payloadData);
                     IsLoading(false);
                 }
@@ -94,7 +94,7 @@ export default function LeaveFisicalScreen({ navigation }) {
                 if (payloaddata.length > 0) {
                     setMonthApiData(payloaddata);
                     IsLoading(false);
-                    //console.log('month', payloaddata)
+                    console.log('month', payloaddata)
                 }
                 else {
                     Alert.alert('Error')

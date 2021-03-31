@@ -66,7 +66,7 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloaddata = JSON.parse(responseObj.payload);
-                // console.log('month', payloaddata)
+                 console.log('month', payloaddata)
                 if (payloaddata.length > 0) {
                     setMonthApiData(payloaddata);
                     IsLoading(false);

@@ -127,9 +127,10 @@ export default function SalarySlipScreen({ navigation, route }) {
                 })
             });
             const responseObj = await response.json();
+            
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-
+                console.log('salaray' ,payload )
                 if (payload.Table.length > 0) {
                     SetInfoData(payload.Table);
                     IsLoading(false);

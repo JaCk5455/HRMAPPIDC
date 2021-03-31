@@ -6,6 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from "../Components/Context";
 import { Ionicons, AntDesign, FontAwesome, Feather } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
+
+import MainLeaveScreen from '../Screens/FrontScreens/LeaveMain';
 import LeavesScreen from '../Screens/FrontScreens/Leaves';
 import EncashmentScreen from '../Screens/FrontScreens/Encashment';
 import ExtraTimeScreen from '../Screens/FrontScreens/ExtraTime';
@@ -103,6 +105,16 @@ export default function HomeStackScreen({ navigation }) {
             }} />
 
 
+
+
+<HomeStack.Screen name="MainLeaveScreen" component={MainLeaveScreen} options={{
+                title: "Leaves Status",
+                headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: "#008080"
+                },
+                headerShown: true,
+            }} />
 
             <HomeStack.Screen name="LeaveFisicalScreen" component={LeaveFisicalScreen} options={{
                 title: "Leaves Status",

@@ -10,7 +10,7 @@ const { height, width } = Dimensions.get('window');
 export default function HomeScreen() {
     const navigation = useNavigation();
     const gridItems = [
-        { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'LeaveFisicalScreen', style: { borderColor: 'blue' } },
+        { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen', style: { borderColor: 'blue' } },
         { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
         { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
         // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
