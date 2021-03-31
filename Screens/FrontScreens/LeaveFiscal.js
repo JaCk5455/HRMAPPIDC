@@ -9,7 +9,7 @@ import { ActivityIndicator } from 'react-native-paper';
 
 const { height, width } = Dimensions.get('window');
 
-export default function LeaveFisicalScreen({ navigation }) {
+export default function LeaveFisicalScreen({ navigation, route }) {
 
     const [yearapidata, setYearApiData] = useState([]);
     const [selectedyearvalue, setSelectedYearValue] = useState(null);
@@ -22,8 +22,18 @@ export default function LeaveFisicalScreen({ navigation }) {
     const [toMonthPickerData, setToMonthPickerData] = useState([]);
 
     useEffect(() => {
-        FicicalYearApiCall();
+        // console.log('abbbbbbbb', route.params.FiscalYears)
+        if (route.params.FiscalYears.length > 0) {
+            IsLoading(false)
+
+        }
     }, [])
+
+
+
+    // useEffect(() => {
+    //     FicicalYearApiCall();
+    // }, [])
 
     useEffect(() => {
         if (selectedyearvalue !== null) {
@@ -36,38 +46,38 @@ export default function LeaveFisicalScreen({ navigation }) {
 
 
 
-    // Year Api data
-    const FicicalYearApiCall = async () => {
-        try {
+    // // Year Api data
+    // const FicicalYearApiCall = async () => {
+    //     try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+    //         const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
 
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            });
-            const responseObj = await response.json();
-            //console.log(responseObj)
-            if (responseObj.statusCode == 200) {
-                let payloadData = JSON.parse(responseObj.payload);
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+    //         });
+    //         const responseObj = await response.json();
+    //         //console.log(responseObj)
+    //         if (responseObj.statusCode == 200) {
+    //             let payloadData = JSON.parse(responseObj.payload);
 
-                //  console.log('aaa', payloadData)
-                if (payloadData.length > 0) {
-                      console.log('fiscal year', payloadData)
-                    setYearApiData(payloadData);
-                    IsLoading(false);
-                }
-                else {
-                    Alert.alert('Error')
-                }
-            }
-        }
-        catch (e) {
-            console.log('Error', e);
-        }
-    }
+    //             //  console.log('aaa', payloadData)
+    //             if (payloadData.length > 0) {
+    //                   console.log('fiscal year', payloadData)
+    //                 setYearApiData(payloadData);
+    //                 IsLoading(false);
+    //             }
+    //             else {
+    //                 Alert.alert('Error')
+    //             }
+    //         }
+    //     }
+    //     catch (e) {
+    //         console.log('Error', e);
+    //     }
+    // }
 
 
 
@@ -94,7 +104,7 @@ export default function LeaveFisicalScreen({ navigation }) {
                 if (payloaddata.length > 0) {
                     setMonthApiData(payloaddata);
                     IsLoading(false);
-                    console.log('month', payloaddata)
+                    //   console.log('month', payloaddata)
                 }
                 else {
                     Alert.alert('Error')
@@ -125,14 +135,14 @@ export default function LeaveFisicalScreen({ navigation }) {
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
 
             {loading ?
- 
-            <View style={{flex:1 , justifyContent:'center'}}> 
-            
-                 <ActivityIndicator size="small" color="#008080" />
-                 </View>
-                  :
 
-             
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+
+                    <ActivityIndicator size="small" color="#008080" />
+                </View>
+                :
+
+
                 <>
 
                     <View style={{ marginTop: wp('5%'), marginHorizontal: wp('5%'), }}>
@@ -162,7 +172,7 @@ export default function LeaveFisicalScreen({ navigation }) {
                                     }}>
 
                                     <Picker.Item label="Select Year" value="" />
-                                    {yearapidata.length > 0 ? yearapidata.map((item, index) => {
+                                    {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
                                         return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                     }) : null}
@@ -186,7 +196,7 @@ export default function LeaveFisicalScreen({ navigation }) {
                                         }
 
                                     >
-                                        {yearapidata.length > 0 ? yearapidata.map((item, index) => {
+                                        {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
                                             return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                         }) : null}

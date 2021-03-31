@@ -65,9 +65,15 @@ export default function MainAttendanceScreen({ navigation }) {
         let Maxfiscalvalue = [];
         if (yearapidata.length > 0) {
 
-            yearapidata.map((item) => {
-                Maxfiscalvalue = Math.max(item.fiscalyearid)
-            })
+            Maxfiscalvalue = Math.max.apply(Math, yearapidata.map((item) => {
+                return item.fiscalyearid;
+            }))
+
+
+
+            // yearapidata.map((item) => {
+            //     Maxfiscalvalue = Math.max(item.fiscalyearid)
+            // })
             // console.log('map lop', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
@@ -87,17 +93,32 @@ export default function MainAttendanceScreen({ navigation }) {
 
     useEffect(() => {
         let abc = [];
-        let MaxPeriodValue = [];
+        let minPeriodValue;
         if (monthapidata.length > 0) {
-            monthapidata.map((value) => {
-                // abc = value.IsPayGenerated
-                if (value.IsPayGenerated == 1) {
-                    MaxPeriodValue = Math.max(value.PeriodId + 1)
-                }
-                // abc.push(MaxPeriodValue + 1)
+            // monthapidata.map((value) => {
+            //     // abc = value.IsPayGenerated
+            //     if (value.IsPayGenerated == 1) {
+            //         MaxPeriodValue = Math.max(value.PeriodId + 1)
+            //     }
+            //     // abc.push(MaxPeriodValue + 1)
 
-            })
-            setMaxPeriodId(MaxPeriodValue)
+            // })
+
+
+            minPeriodValue = Math.min.apply(Math, monthapidata.map((item) => {
+                if (item.IsPayGenerated == 0) {
+                    //    console.log('aaa', item.PeriodId)
+                    return item.PeriodId;
+                }
+                else {
+                    return Infinity;
+                }
+
+            }))
+
+
+
+            setMaxPeriodId(minPeriodValue)
             // setMaxPeriodId(abc)
 
             //  console.log('maxperidvalue', MaxPeriodValue)

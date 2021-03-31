@@ -67,7 +67,7 @@ export default function LeavesScreen({ navigation, route }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                   console.log('Leaves Data', payload)
+                // console.log('Leaves Data', payload)
                 if (payload.length > 0) {
                     setLeaveApiData(payload);
                     IsLoading(false);
@@ -97,7 +97,7 @@ export default function LeavesScreen({ navigation, route }) {
     //..... End : Leave Api Call ...... //
 
 
-// ....... Begin : FlatList_RenderItem_Function .... // 
+    // ....... Begin : FlatList_RenderItem_Function .... // 
     const _RenderItem = ({ item }) => {
         return <ItemView item={item} />
     }
@@ -117,82 +117,82 @@ export default function LeavesScreen({ navigation, route }) {
                     marginHorizontal: wp("2%"),
                     marginVertical: wp("1.7%"),
                     borderRadius: 10,
-                  
+
                 }}>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <View style={{ flex: 5 }}>
-{item.Description == "Annual leaves" ?
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flex: 5 }}>
+                            {item.Description == "Annual leaves" ?
 
-<Text style={{
-    fontSize: wp('4%'),
-    fontWeight: 'bold',
-    color: '#777777',
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#CBCBCB',
-    paddingTop: wp('1%')
-}}>
-    {item.Description}
-</Text> : <></>
-    }
-
-
+                                <Text style={{
+                                    fontSize: wp('4%'),
+                                    fontWeight: 'bold',
+                                    color: '#777777',
+                                    // borderBottomWidth: 1,
+                                    // borderBottomColor: '#CBCBCB',
+                                    paddingTop: wp('1%')
+                                }}>
+                                    {item.Description}
+                                </Text> : <></>
+                            }
 
 
- {item.Description == "Causal Leaves" ? 
-                            <Text style={{
-                                fontSize: wp('4%'),
-                                fontWeight: 'bold',
-                                color: '#ff8000',
-                                // borderBottomWidth: 1,
-                                // borderBottomColor: '#CBCBCB',
-                                paddingTop: wp('1%')
-                            }}>
-                                {item.Description}
-                            </Text>: <></> 
- }
-
-                         {item.Description == "Short Leave" ?                       
-                        <Text style={{
-                            fontSize: wp('4%'),
-                            fontWeight: 'bold',
-                            color: '#004CFF',
-                            // borderBottomWidth: 1,
-                            // borderBottomColor: '#CBCBCB',
-                            paddingTop: wp('1%')
-                        }}>
-                            {item.Description}
-                        </Text>
-                     : 
-                     <></> }
-                     {item.Description == "Sick Leave" ? 
-                            <Text style={{
-                                fontSize: wp('4%'),
-                                fontWeight: 'bold',
-                                color: '#A37546',
-                                // borderBottomWidth: 1,
-                                // borderBottomColor: '#CBCBCB',
-                                paddingTop: wp('1%')
-                            }}>
-                                {item.Description}
-                            </Text>
-                         : <></> }
-
-                         { item.Description == "Leave Without Pay" ? 
-                        
-                        <Text style={{
-                            fontSize: wp('4%'),
-                            fontWeight: 'bold',
-                            color: '#FF2E00',
-                            // borderBottomWidth: 1,
-                            // borderBottomColor: '#CBCBCB',
-                            paddingTop: wp('1%')
-                        }}>
-                            {item.Description}
-                        </Text>
-                    :  <></> }
 
 
-                         {/* <View style={{ flex: 5 }}>
+                            {item.Description == "Causal Leaves" ?
+                                <Text style={{
+                                    fontSize: wp('4%'),
+                                    fontWeight: 'bold',
+                                    color: '#ff8000',
+                                    // borderBottomWidth: 1,
+                                    // borderBottomColor: '#CBCBCB',
+                                    paddingTop: wp('1%')
+                                }}>
+                                    {item.Description}
+                                </Text> : <></>
+                            }
+
+                            {item.Description == "Short Leave" ?
+                                <Text style={{
+                                    fontSize: wp('4%'),
+                                    fontWeight: 'bold',
+                                    color: '#004CFF',
+                                    // borderBottomWidth: 1,
+                                    // borderBottomColor: '#CBCBCB',
+                                    paddingTop: wp('1%')
+                                }}>
+                                    {item.Description}
+                                </Text>
+                                :
+                                <></>}
+                            {item.Description == "Sick Leave" ?
+                                <Text style={{
+                                    fontSize: wp('4%'),
+                                    fontWeight: 'bold',
+                                    color: '#A37546',
+                                    // borderBottomWidth: 1,
+                                    // borderBottomColor: '#CBCBCB',
+                                    paddingTop: wp('1%')
+                                }}>
+                                    {item.Description}
+                                </Text>
+                                : <></>}
+
+                            {item.Description == "Leave Without Pay" ?
+
+                                <Text style={{
+                                    fontSize: wp('4%'),
+                                    fontWeight: 'bold',
+                                    color: '#FF2E00',
+                                    // borderBottomWidth: 1,
+                                    // borderBottomColor: '#CBCBCB',
+                                    paddingTop: wp('1%')
+                                }}>
+                                    {item.Description}
+                                </Text>
+                                : <></>}
+
+
+                            {/* <View style={{ flex: 5 }}>
                              <Text style={{
                                 fontSize: wp('4%'),
                                 fontWeight: 'bold',
@@ -204,86 +204,53 @@ export default function LeavesScreen({ navigation, route }) {
                                 {item.Description}
                             </Text>
                         </View> */}
-    
-    </View>
+
+                        </View>
 
 
-<View style={{ flex: 2.7}}>
-{
-    item.Status == 3 ?
-    <View style={{ backgroundColor: "#009900", borderWidth: 1, borderColor: '#009900', alignItems: 'center', padding: 2 , borderRadius:5}}>
-        <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
-    {item.Title}
-</Text>
-  </View>
-   
- : <></>
-}
-
-{
-    item.Status == 5 || item.Status == 4 ?
-
-     <View style={{ backgroundColor: "#FF2E00", borderWidth: 1, borderColor: '#FF2E00', alignItems: 'center', padding: 2 , borderRadius:5}}>
-        <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
-    {item.Title}
-</Text>
-  </View> : <></>
-}
-
-
-{
-    item.Status == 1 || item.Status == 2 ?
-    <View style={{ backgroundColor: "#546ba9", borderWidth: 1, borderColor: '#546ba9', alignItems: 'center', padding: 2 , borderRadius:5}}>
-        <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
-    {item.Title}
-</Text>
-  </View>
-   
- : <></>
-}
-
-
-
-</View>
-
-
-                        {/* {item.Title !== "Approved" ?
-                            (item.Title == "Rejected" && item.Title == "Cancelled" ?
-                                <View style={{ flex: 2.7, backgroundColor: "#D8D8D8", borderWidth: 1, borderColor: '#D8D8D8', borderRadius: 8, alignItems: 'center', padding: 2 }}>
-
-                                    <Text style={{ color: "#ff3030", fontSize: wp("4.5%") }}>
-                                        {item.Title}
-                                    </Text>
-
-                                </View>
-                                :
-                                (item.Title == "Apllied" && item.Title == "Recommended" ?
-
-                                    <View style={{
-                                        flex: 2.7, backgroundColor: "#D8D8D8", borderWidth: 1, borderColor: '#D8D8D8', borderRadius: 8, alignItems: 'center', padding: 2
-                                    }}>
-                                        <Text style={{ color: "#777", fontSize: wp("4.5%") }}>
+                        <View style={{ flex: 2.7 }}>
+                            {
+                                item.Status == 3 ?
+                                    <View style={{ backgroundColor: "#009900", borderWidth: 1, borderColor: '#009900', alignItems: 'center', padding: 2, borderRadius: 5 }}>
+                                        <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
                                             {item.Title}
                                         </Text>
                                     </View>
-                                    :
-                                    null))
 
-                            :
+                                    : <></>
+                            }
 
-                            <View style={{
-                                flex: 2.7, backgroundColor: "#D8D8D8", borderWidth: 1,
-                                borderColor: '#D8D8D8', borderRadius: 8, alignItems: 'center', padding: 2
+                            {
+                                item.Status == 5 || item.Status == 4 ?
 
-                            }}>
+                                    <View style={{ backgroundColor: "#FF2E00", borderWidth: 1, borderColor: '#FF2E00', alignItems: 'center', padding: 2, borderRadius: 5 }}>
+                                        <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
+                                            {item.Title}
+                                        </Text>
+                                    </View> : <></>
+                            }
 
-                                <Text style={{ color: "#155724", fontSize: wp("4.5%") }}>
-                                    {item.Title}
-                                </Text>
-                            </View>} */}
+
+                            {
+                                item.Status == 1 || item.Status == 2 ?
+                                    <View style={{ backgroundColor: "#546ba9", borderWidth: 1, borderColor: '#546ba9', alignItems: 'center', padding: 2, borderRadius: 5 }}>
+                                        <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
+                                            {item.Title}
+                                        </Text>
+                                    </View>
+
+                                    : <></>
+                            }
+
+
+
+                        </View>
+
                     </View>
 
-                    {item.TotalDays == 1 ?
+
+
+                    {item.TotalDays <= 1 ?
 
                         <Text style={{
                             fontSize: wp('4%'),
@@ -328,6 +295,54 @@ export default function LeavesScreen({ navigation, route }) {
                             {item.TotalDays + ' Day'}
                         </Text>
                     }
+
+
+                    {/* 
+                    {
+                        item.TotalDays < 1 ? <Text style={{
+                            fontSize: wp('3.8%'),
+                            fontWeight: 'bold',
+                            color: "#546ba9",
+                            // color: '#777',
+                            paddingTop: wp('2%')
+                        }}>
+
+                            Half Day
+                        </Text> : <></>
+                    }
+
+
+
+
+                    {
+                        item.TotalDays == 1 ? <Text style={{
+                            fontSize: wp('3.8%'),
+                            fontWeight: 'bold',
+                            color: "#546ba9",
+                            // color: '#777',
+                            paddingTop: wp('2%')
+                        }}>
+
+                            {item.TotalDays + ' Day'}
+                        </Text> : <></>
+                    }
+
+
+                    {
+                        item.TotalDays > 1 ? <Text style={{
+                            fontSize: wp('3.8%'),
+                            fontWeight: 'bold',
+                            color: "#546ba9",
+                            // color: '#777',
+                            paddingTop: wp('2%')
+                        }}>
+
+                            {item.TotalDays + ' Days'}
+                        </Text> : <></>
+                    } */}
+
+
+
                 </View>
             </View >
         )
@@ -335,17 +350,17 @@ export default function LeavesScreen({ navigation, route }) {
 
     // ....... End : FlatList_RenderItem_Function .... //
 
-  //  const keyExtractorVisit = React.useCallback((item, index) => item.ID.toString(), []);
+    //  const keyExtractorVisit = React.useCallback((item, index) => item.ID.toString(), []);
     const getItemLayout = (data, index) => (
         {
             length: 30, offset: 30 * index, index
         }
     );
 
-    const _Refresh =()=>{
-        <View style={{flex:1 , justifyContent:'center'}}> 
-            
-        <ActivityIndicator size="small" color="#008080" />
+    const _Refresh = () => {
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+
+            <ActivityIndicator size="small" color="#008080" />
         </View>
     }
 
@@ -359,23 +374,23 @@ export default function LeavesScreen({ navigation, route }) {
                     {route.params.LeaveFromMonths + ' - ' + route.params.LeaveToMonths}
                 </Text>
             </View>
-            <View  style={{marginBottom:('17%')}}>
+            <View style={{ marginBottom: ('17%') }}>
                 {isLoading ?
                     <ActivityIndicator
                         style={{ height: 60 }}
                         color="#008080"
                         size="small"
                     /> :
-                    
+
                     <FlatList
                         data={leaveapidata}
                         renderItem={_RenderItem}
                         // keyExtractor={keyExtractorVisit}
                         getItemLayout={getItemLayout}
                         keyExtractor={(item, index) => index.toString()}
-                        refreshing = {_Refresh}
+                        refreshing={_Refresh}
                     />
-                    }
+                }
             </View>
         </View >
     );

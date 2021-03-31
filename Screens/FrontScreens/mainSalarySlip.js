@@ -77,10 +77,15 @@ export default function MainSalarySlip({ navigation }) {
         let Maxfiscalvalue = [];
         if (fisicalapidata.length > 0) {
 
-            fisicalapidata.map((item) => {
-                Maxfiscalvalue = Math.max(item.fiscalyearid)
-            })
-            // console.log('map lop', Maxfiscalvalue);
+            // fisicalapidata.map((item) => {
+            //     Maxfiscalvalue = Math.max(item.fiscalyearid)
+            // })
+
+
+            Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
+                return item.fiscalyearid;
+            }))
+            //  console.log('map lop', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
         }
@@ -91,19 +96,36 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-    // ............. Begin: GetMaxPeriodID ...............//
+    // ............. Begin: GetMinPeriodID ...............//
     useEffect(() => {
         // let abc = [];
-        let MaxPeriodValue = [];
+        let maxPeriod;
         if (monthapidata.length > 0) {
-            monthapidata.map((value) => {
-                // abc = value.IsPayGenerated
-                if (value.IsPayGenerated == 1) {
-                    MaxPeriodValue = Math.max(value.PeriodId)
+
+            maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
+                // console.log('aaa', item.PeriodId)
+
+                if (item.IsPayGenerated == 1) {
+                    return item.PeriodId;
+
+
                 }
-            })
-            setMaxPeriodId(MaxPeriodValue)
-            // console.log('maxperidvalue', MaxPeriodValue)
+                else {
+                    return -Infinity;
+                }
+            }))
+
+            // maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
+            //     if (item.IsPayGenerated == 1) {
+            //         console.log('aaa', item.PeriodId)
+            //         return item.PeriodId;
+            //     }
+            //     else {
+            //         return Infinity;
+            //     }
+            // }))
+            setMaxPeriodId(maxPeriod)
+            //    console.log('maxperidvalue', maxPeriod)
 
         }
 
@@ -356,7 +378,7 @@ export default function MainSalarySlip({ navigation }) {
                             }}
                                 style={{ flexDirection: 'row' }}
                             >
-                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center' , fontSize:wp('4%')}}>
+                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
                                     Previous Record
                                 </Text>
                                 <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
@@ -371,7 +393,7 @@ export default function MainSalarySlip({ navigation }) {
                         <View style={styles.ViewSection}>
 
                             <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
-                                 <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flexDirection: 'row' }}>
                                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                         <Image
                                             style={{ width: wp('10%'), height: wp('10%'), marginBottom: wp('2%') }}
@@ -435,12 +457,12 @@ export default function MainSalarySlip({ navigation }) {
                                     </View>
 
                                     <View style={{ flex: 2, justifyContent: 'center' }}>
-                                       
-                                       
-                                       
-                                    {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
 
-                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
+
+
+                                        {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
+
+                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
                                     </View>
 
                                 </View>
@@ -454,7 +476,7 @@ export default function MainSalarySlip({ navigation }) {
                                     {/* <View style={{ flex: 2, justifyContent: 'center' }}>
                                         <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
                                     </View> */}
-                                     <View style={{ flex: 2, justifyContent: 'center' }}>
+                                    <View style={{ flex: 2, justifyContent: 'center' }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
                                     </View>
 
@@ -497,7 +519,7 @@ export default function MainSalarySlip({ navigation }) {
                                     {/* <View style={{ flex: 2, justifyContent: 'center' }}>
                                         <Text style={styles.salaryempsubtxt}>1111111111111</Text>
                                     </View> */}
-                                     <View style={{ flex: 2, justifyContent: 'center' }}>
+                                    <View style={{ flex: 2, justifyContent: 'center' }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
                                     </View>
                                 </View>
