@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert , ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AuthContext } from "../Components/Context";
 import * as Contants from '../constants/constants';
-import { ActivityIndicator } from 'react-native-paper';
+// import { ActivityIndicator } from 'react-native-paper';
 import { Item } from 'native-base';
 
 
@@ -22,7 +22,7 @@ export default function SignIn({ navigation }) {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-    // const [loading, Isloading] = React.useState(true)
+    const [loading, Isloading] = React.useState(false);
 
 
     const [data, setData] = React.useState({
@@ -49,6 +49,7 @@ export default function SignIn({ navigation }) {
     const validateFields = () => {
         // console.log('api called')
         resetValidation();
+
         if (email.trim() == '' || email == null
             || password.trim() == '' || password == null
         ) {
@@ -68,8 +69,8 @@ export default function SignIn({ navigation }) {
         else {
             const abortController = new AbortController();
             const signal = abortController.signal;
+            Isloading(true);
             signInCall(signal);
-
 
             return function cleanup() {
                 abortController.abort();
@@ -77,6 +78,12 @@ export default function SignIn({ navigation }) {
         }
 
     }
+
+
+
+
+
+
 
     const signInCall = async (signal) => {
         // console.log('api called')
@@ -126,11 +133,13 @@ export default function SignIn({ navigation }) {
                     })
                     console.log('newpayload', newPayload);
                     signIn(newPayload);
-                    // Isloading(false);
+                    
                 }
+                
                 else {
                     Alert.alert('Error', 'Username or Password is incorrect')
                 }
+                Isloading(false);
             }
         }
         catch (e) {
@@ -143,8 +152,11 @@ export default function SignIn({ navigation }) {
         <View style={styles.container}>
 
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
-            {/* {loading ? <ActivityIndicator size='small' color="#008080" /> :
-                <> */}
+            {/* {loading ?<View style={{flex:1 , justifyContent:'center' , alignItems:'center'}}> 
+            <ActivityIndicator size='small' color="#008080"> </ActivityIndicator>
+            </View>  :
+            <> */}
+
             <View style={styles.header}>
                 <Text style={styles.text_header}>Sign In</Text>
             </View>
@@ -250,7 +262,7 @@ export default function SignIn({ navigation }) {
 
                 </ScrollView>
             </Animatable.View>
-
+{/* </>} */}
 
         </View >
 

@@ -105,7 +105,7 @@ export default function MainProfileScreen({ navigation }) {
             //  console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-                // console.log(payloadData)
+                 console.log('prifile data',payloadData)
                 if (payloadData.Table.length > 0) {
                     SetPersonalApiData(payloadData.Table);
                     // console.log('aaa', payloadData.Table)
