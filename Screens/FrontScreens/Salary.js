@@ -81,7 +81,7 @@ export default function SalarySlipScreen({ navigation, route }) {
     }
 
 
-
+    //abc
 
     const getAllowanceSum = () => {
         if (allownsdata.length > 0) {
