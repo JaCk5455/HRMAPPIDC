@@ -110,6 +110,8 @@ export default function App() {
       dispatch({ type: 'RETRIEVE_TOKEN', isLoggedIn: isLoggedIn, userPayload: payLoad });
     }, 100);
   }, []);
+
+
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   if (loginState.checkingLoginState) {
     return (

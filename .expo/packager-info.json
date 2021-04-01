@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://sr-m5r.umerfarooq754.hrmappidc.exp.direct",
+  "packagerNgrokUrl": "https://packager.sr-m5r.umerfarooq754.hrmappidc.exp.direct",
+  "ngrokPid": 34985,
   "webpackServerPort": null
 }

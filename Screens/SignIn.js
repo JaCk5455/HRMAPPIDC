@@ -7,6 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { AuthContext } from "../Components/Context";
 import * as Contants from '../constants/constants';
 import { ActivityIndicator } from 'react-native-paper';
+import { Item } from 'native-base';
 
 
 export default function SignIn({ navigation }) {
@@ -21,7 +22,7 @@ export default function SignIn({ navigation }) {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-  //  const [loading, Isloading] = React.useState(true)
+    // const [loading, Isloading] = React.useState(true)
 
 
     const [data, setData] = React.useState({
@@ -69,6 +70,7 @@ export default function SignIn({ navigation }) {
             const signal = abortController.signal;
             signInCall(signal);
 
+
             return function cleanup() {
                 abortController.abort();
             }
@@ -106,13 +108,25 @@ export default function SignIn({ navigation }) {
 
 
             const data = await response.json();
-         //  console.log(data);
+            //  console.log(data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
+                //  console.log('login data', payload)
+                // if (payload.length > 0) {
+                //     signIn(payload);
+                //     // Isloading(false);
+                // }
+
+
                 if (payload.length > 0) {
-                    signIn(payload);
-               //  Isloading(false);
+                    let pic;
+                    let newPayload = payload.map((item, index) => {
+                        return { ...item, EmployeePic: null }
+                    })
+                    console.log('newpayload', newPayload);
+                    signIn(newPayload);
+                    // Isloading(false);
                 }
                 else {
                     Alert.alert('Error', 'Username or Password is incorrect')
