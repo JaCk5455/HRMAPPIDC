@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert , ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AuthContext } from "../Components/Context";
+import ProgressBar from '../Components/ProgressBar';
 import * as Contants from '../constants/constants';
 // import { ActivityIndicator } from 'react-native-paper';
 import { Item } from 'native-base';
@@ -22,7 +23,9 @@ export default function SignIn({ navigation }) {
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-    const [loading, Isloading] = React.useState(false);
+    const [showProgressBar, setShowProgressBar] = React.useState(false);
+
+    // const [loading, Isloading] = React.useState(false);
 
 
     const [data, setData] = React.useState({
@@ -69,7 +72,7 @@ export default function SignIn({ navigation }) {
         else {
             const abortController = new AbortController();
             const signal = abortController.signal;
-            Isloading(true);
+            setShowProgressBar(true);
             signInCall(signal);
 
             return function cleanup() {
@@ -78,9 +81,6 @@ export default function SignIn({ navigation }) {
         }
 
     }
-
-
-
 
 
 
@@ -133,17 +133,21 @@ export default function SignIn({ navigation }) {
                     })
                     console.log('newpayload', newPayload);
                     signIn(newPayload);
-                    
+
                 }
-                
+
                 else {
                     Alert.alert('Error', 'Username or Password is incorrect')
                 }
-                Isloading(false);
+
             }
+            setShowProgressBar(false);
+
         }
         catch (e) {
             console.log('Error', e);
+            setShowProgressBar(false);
+
         }
     }
 
@@ -152,10 +156,7 @@ export default function SignIn({ navigation }) {
         <View style={styles.container}>
 
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
-            {/* {loading ?<View style={{flex:1 , justifyContent:'center' , alignItems:'center'}}> 
-            <ActivityIndicator size='small' color="#008080"> </ActivityIndicator>
-            </View>  :
-            <> */}
+            <ProgressBar visible={showProgressBar} text="Please wait" />
 
             <View style={styles.header}>
                 <Text style={styles.text_header}>Sign In</Text>
@@ -262,7 +263,7 @@ export default function SignIn({ navigation }) {
 
                 </ScrollView>
             </Animatable.View>
-{/* </>} */}
+            {/* </>} */}
 
         </View >
 
