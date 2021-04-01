@@ -74,11 +74,11 @@ export default function AttendanceScreen({ navigation, route }) {
                         "Record Not Found, Please Contact HR Department",
                         [
                             {
-                                text: "Cancel",
-                                onPress: () => navigation.navigate("AttendanceFisicalScreen"),
+                                text: "Home",
+                                onPress: () => navigation.navigate("HomeScreen"),
                                 style: "cancel"
                             },
-                            { text: "OK", onPress: () => navigation.navigate("AttendanceFisicalScreen") }
+                            { text: "Ok", onPress: () => navigation.navigate("AttendanceFisicalScreen") }
                         ],
                         { cancelable: false }
                     )

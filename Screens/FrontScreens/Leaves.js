@@ -74,15 +74,15 @@ export default function LeavesScreen({ navigation, route }) {
                 }
                 else {
                     Alert.alert(
-                        "Alert",
+                        "",
                         "No Record Found",
                         [
                             {
-                                text: "Cancel",
-                                onPress: () => navigation.navigate("LeaveFisicalScreen"),
+                                text: "Home",
+                                onPress: () => navigation.navigate("HomeScreen"),
                                 style: "cancel"
                             },
-                            { text: "OK", onPress: () => navigation.navigate("LeaveFisicalScreen") }
+                            { text: "Back", onPress: () => navigation.navigate("LeaveFisicalScreen") }
                         ],
                         { cancelable: false }
                     )
@@ -211,7 +211,7 @@ export default function LeavesScreen({ navigation, route }) {
                         <View style={{ flex: 2.7 }}>
                             {
                                 item.Status == 3 ?
-                                    <View style={{ backgroundColor: "#009900", borderWidth: 1, borderColor: '#009900', alignItems: 'center', padding: 2, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: "#008080", borderWidth: 1, borderColor: '#008080', alignItems: 'center', padding: 2, borderRadius: 5 }}>
                                         <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
                                             {item.Title}
                                         </Text>

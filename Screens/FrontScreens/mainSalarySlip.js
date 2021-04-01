@@ -85,7 +85,7 @@ export default function MainSalarySlip({ navigation }) {
             Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
                 return item.fiscalyearid;
             }))
-            //  console.log('map lop', Maxfiscalvalue);
+          //    console.log('map lop', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
         }
@@ -103,7 +103,7 @@ export default function MainSalarySlip({ navigation }) {
         if (monthapidata.length > 0) {
 
             maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-                // console.log('aaa', item.PeriodId)
+               //  console.log('aaa', item.PeriodId)
 
                 if (item.IsPayGenerated == 1) {
                     return item.PeriodId;

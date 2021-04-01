@@ -65,7 +65,7 @@ export default function LeaveFisicalScreen({ navigation, route }) {
 
                 //  console.log('aaa', payloadData)
                 if (payloadData.length > 0) {
-                    console.log('fiscal year', payloadData)
+                   // console.log('fiscal year', payloadData)
                     setYearApiData(payloadData);
                     IsLoading(false);
                 }
@@ -363,6 +363,7 @@ export default function LeaveFisicalScreen({ navigation, route }) {
                                                     LeaveFromMonths: selectfrommonthlabel,
                                                     LeaveToMonths: slcttomonthlabel
                                                 }) :
+
                                                 <View>
                                                     <Text style={{ color: 'red' }}>
                                                         {

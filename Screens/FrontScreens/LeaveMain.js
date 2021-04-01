@@ -21,11 +21,11 @@ export default function MainLeaveScreen({ navigation }) {
     const [monthapidata, SetMonthApiData] = useState([]);
     const [maxfiscalid, setMaxFiscalId] = useState(null);
     const [maxperiodid, setMaxPeriodId] = useState(null);
+    const [leaverecord , setLeaveRecord] = useState(true)
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
     useEffect(() => {
-
         Helper.getLoggedInData().then((response) => {
             SetData(response);
 
@@ -54,7 +54,7 @@ export default function MainLeaveScreen({ navigation }) {
                 return item.fiscalyearid;
             }))
 
-            //  console.log('first cll', Maxfiscalvalue);
+             // console.log('maxfiscalid', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
         }
@@ -81,7 +81,7 @@ export default function MainLeaveScreen({ navigation }) {
 
             minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
                 if (item.IsPayGenerated == 0) {
-                    // console.log('aaa', item.PeriodId)
+                     //console.log('minperiod id', item.PeriodId)
                     return item.PeriodId;
                 }
                 else {
@@ -90,9 +90,6 @@ export default function MainLeaveScreen({ navigation }) {
 
 
             }))
-
-
-
             //  console.log('second call', minPeriod)
             setMaxPeriodId(minPeriod)
             // setMaxPeriodId(abc)
@@ -100,7 +97,6 @@ export default function MainLeaveScreen({ navigation }) {
             //  console.log('maxperidvalue', MaxPeriodValue)
 
         }
-
     }, [monthapidata])
 
     useEffect(() => {
@@ -135,7 +131,7 @@ export default function MainLeaveScreen({ navigation }) {
                 let payloadData = JSON.parse(responseObj.payload);
                 // console.log('FiscalYear', payloadData)
                 if (payloadData.length > 0) {
-                    //console.log('fescalyear', payloadData)
+                   // console.log('fescalyear', payloadData)
                     setYearApiData(payloadData);
                     // IsLoading(false);
                 }
@@ -173,7 +169,7 @@ export default function MainLeaveScreen({ navigation }) {
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloaddata = JSON.parse(responseObj.payload);
-                //  console.log('month', payloaddata)
+                  //console.log('month', payloaddata)
                 if (payloaddata.length > 0) {
                     SetMonthApiData(payloaddata);
                     // IsLoading(false);
@@ -206,10 +202,8 @@ export default function MainLeaveScreen({ navigation }) {
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
                     FiscalYearId: maxfiscalid,
-                    // fromPeriodId: 104,
-                    // ToPeriodId: maxperiodid
-
-
+                    // fromPeriodId: 105,
+                    // ToPeriodId: 105
                     // Empid: 75,
                     // FiscalYearId: 9,
                     fromPeriodId: maxperiodid,
@@ -222,25 +216,28 @@ export default function MainLeaveScreen({ navigation }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                // console.log('Leaves Data', payload)
+               //  console.log('Leaves Data', payload)
                 if (payload.length > 0) {
                     setLeaveApiData(payload);
                     IsLoading(false);
+                    setLeaveRecord(false)
+
                 }
                 else {
-                    Alert.alert(
-                        "Alert",
-                        "No Record Found",
-                        [
-                            {
-                                text: "Goto PreviousRecord",
-                                onPress: () => navigation.navigate("LeaveFisicalScreen"),
-                                style: "cancel"
-                            },
-                            { text: "Home", onPress: () => navigation.navigate("HomeScreen") }
-                        ],
-                        { cancelable: false }
-                    )
+                    // Alert.alert(
+                    //      "",
+                    //     "No record found for current year.",
+                    //     [
+                    //         {
+                    //             text: "Previous Record",
+                    //             onPress: () => navigation.navigate("LeaveFisicalScreen"),
+                    //             style: "cancel"
+                    //         },
+                    //         { text: "Home", onPress: () => navigation.navigate("HomeScreen") }
+                    //     ],
+                    //     { cancelable: false }
+                    // )
+                    setLeaveRecord(true);
                 }
             }
 
@@ -369,7 +366,7 @@ export default function MainLeaveScreen({ navigation }) {
                         <View style={{ flex: 2.7 }}>
                             {
                                 item.Status == 3 ?
-                                    <View style={{ backgroundColor: "#009900", borderWidth: 1, borderColor: '#009900', alignItems: 'center', padding: 2, borderRadius: 5 }}>
+                                    <View style={{ backgroundColor: "#008080", borderWidth: 1, borderColor: '#008080', alignItems: 'center', padding: 2, borderRadius: 5 }}>
                                         <Text style={{ color: "#fff", fontSize: wp("4.5%") }}>
                                             {item.Title}
                                         </Text>
@@ -531,7 +528,29 @@ export default function MainLeaveScreen({ navigation }) {
                 {maxperiodid }
             </Text>
         </View> */}
+{leaverecord? 
+ <View style={{flex:1, justifyContent:'center' , alignItems:'center'}}>
+    
 
+  <Text style={{fontSize:wp('4%') , color:'red' , alignItems:'center'}}>
+      No record found for the current month.
+  </Text>
+  
+  <View style={{  alignItems: 'center', marginTop: wp('3%'), }}>
+                                <TouchableOpacity
+                                    style={{ backgroundColor: '#008080', height: wp('10%'), width: wp('30%'), alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}
+                                    onPress={() => {navigation.navigate('LeaveFisicalScreen', {
+                                        // FiscalYears: yearapidata
+                                    })
+                                        
+                                    }}>
+                                    <Text style={{ color: '#fff', fontWeight: 'bold'  , fontSize:wp('3%') }}>Previous Record</Text>
+                                </TouchableOpacity>
+                            </View>
+
+
+
+  </View> : <>
 
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: wp('1%'), marginRight: wp('2%') }}>
                 <TouchableOpacity onPress={() => {
@@ -570,6 +589,7 @@ export default function MainLeaveScreen({ navigation }) {
                     />
                 }
             </View>
+            </> }
         </View >
     );
 }

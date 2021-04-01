@@ -22,6 +22,7 @@ import { MaterialIcons, MaterialCommunityIcons, Ionicons, AntDesign, FontAwesome
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 // import * as Device from 'expo-device';
 
 const { height, width } = Dimensions.get('window');
@@ -105,7 +106,7 @@ export default function MainProfileScreen({ navigation }) {
             //  console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-                 console.log('prifile data',payloadData)
+               //  console.log('prifile data',payloadData)
                 if (payloadData.Table.length > 0) {
                     SetPersonalApiData(payloadData.Table);
                     // console.log('aaa', payloadData.Table)
@@ -125,6 +126,29 @@ export default function MainProfileScreen({ navigation }) {
                     Alert.alert('Error')
                 }
 
+                
+
+            }
+            else {
+<View>
+                                                    <Text style={{ color: 'red' }}>
+                                                        {
+                                                            Alert.alert(
+                                                                "Alert",
+                                                                "No Record Found.",
+                                                                [
+                                                                    {
+                                                                        text: "Cancel",
+                                                                        onPress: () => {navigation.navigate('HomeScreen')},
+                                                                        style: "cancel"
+                                                                    },
+                                                                    { text: "OK", onPress: () => {navigation.navigate('HomeScreen')} }
+                                                                ],
+                                                                { cancelable: false }
+                                                            )
+                                                        }
+                                                    </Text>
+                                                </View>
             }
 
         }

@@ -23,9 +23,11 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
 
     useEffect(() => {
         // console.log('abbbbbbbb', route.params.FiscalYears)
-        if (route.params.FiscalYears.length > 0) {
-            IsLoading(false)
-        }
+        // if (route.params.FiscalYears.length > 0) {
+        //     IsLoading(false)
+        
+        
+        FicicalYearApiCall();
     }, [])
 
     useEffect(() => {
@@ -38,38 +40,38 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
 
 
 
-    // //............. Begin: Year Api Data ............... //
-    // const FicicalYearApiCall = async () => {
-    //     try {
+    //............. Begin: Year Api Data ............... //
+    const FicicalYearApiCall = async () => {
+        try {
 
-    //         const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
 
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json'
-    //             },
-    //         });
-    //         const responseObj = await response.json();
-    //         //console.log(responseObj)
-    //         if (responseObj.statusCode == 200) {
-    //             let payloadData = JSON.parse(responseObj.payload);
-    //             // console.log('aaa', payloadData)
-    //             if (payloadData.length > 0) {
-    //                 // console.log('bbb', payloadData)
-    //                 setYearApiData(payloadData);
-    //                 IsLoading(false);
-    //             }
-    //             else {
-    //                 Alert.alert('Error')
-    //             }
-    //         }
-    //     }
-    //     catch (e) {
-    //         console.log('Error', e);
-    //     }
-    // }
-    //     //............. End: Year Api Data ............... //
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            const responseObj = await response.json();
+            //console.log(responseObj)
+            if (responseObj.statusCode == 200) {
+                let payloadData = JSON.parse(responseObj.payload);
+                // console.log('aaa', payloadData)
+                if (payloadData.length > 0) {
+                    // console.log('bbb', payloadData)
+                    setYearApiData(payloadData);
+                    IsLoading(false);
+                }
+                else {
+                    Alert.alert('Error')
+                }
+            }
+        }
+        catch (e) {
+            console.log('Error', e);
+        }
+    }
+        //............. End: Year Api Data ............... //
 
 
 
@@ -147,7 +149,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
                                     selectedValue={selectedyearvalue}
                                     onValueChange={(itemValue, itemIndex) => {
                                         setSelectedYearValue(itemValue)
-                                        route.params.FiscalYears.map((item, index) => {
+                                        yearapidata.map((item, index) => {
                                             if (item.fiscalyearid == itemValue) {
                                                 setSelectedFiscalYearLabel(item.name)
                                             }
@@ -157,7 +159,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
 
                                 >
                                     <Picker.Item label="Select Year" value="" />
-                                    {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
+                                    {yearapidata.length > 0 ? yearapidata.map((item, index) => {
                                         return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                     }) : null}
@@ -177,13 +179,13 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
                                         selectedValue={selectedyearvalue}
                                         onValueChange={(itemValue, itemIndex) => {
                                             setSelectedYearValue(itemValue)
-                                            route.params.FiscalYears.map((item, index) => {
+                                            yearapidata.map((item, index) => {
                                                 if (item.fiscalyearid == itemValue) {
                                                     setSelectedFiscalYearLabel(item.name)
                                                 }
                                             })
                                         }}>
-                                        {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
+                                        {yearapidata.length > 0 ? yearapidata.map((item, index) => {
                                             return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                         }) : null}

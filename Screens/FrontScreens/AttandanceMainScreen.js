@@ -238,8 +238,8 @@ export default function MainAttendanceScreen({ navigation }) {
                         "Record Not Found, Please Contact HR Department",
                         [
                             {
-                                text: "Cancel",
-                                onPress: () => navigation.navigate("HomeScreen"),
+                                text: "Previous Record",
+                                onPress: () => navigation.navigate("AttendanceFisicalScreen"),
                                 style: "cancel"
                             },
                             { text: "OK", onPress: () => navigation.navigate("HomeScreen") }
@@ -494,7 +494,7 @@ export default function MainAttendanceScreen({ navigation }) {
                 <View style={{ flex: 1.5, marginTop: wp('2%'), borderRadius: 8, padding: wp('1%'), backgroundColor: '#0041c4', marginHorizontal: wp('1.5%'), justifyContent: 'center', }}>
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('AttendanceFisicalScreen', {
-                            FiscalYears: yearapidata
+                            // FiscalYears: yearapidata
                         })
                     }}
                     // style={{ borderWidth: 1, backgroundColor: '#0041c4', borderColor: '#0041c4' }}
