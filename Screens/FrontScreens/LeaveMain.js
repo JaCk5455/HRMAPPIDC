@@ -21,7 +21,7 @@ export default function MainLeaveScreen({ navigation }) {
     const [monthapidata, SetMonthApiData] = useState([]);
     const [maxfiscalid, setMaxFiscalId] = useState(null);
     const [maxperiodid, setMaxPeriodId] = useState(null);
-    const [leaverecord , setLeaveRecord] = useState(true)
+    const [leaverecord , setLeaveRecord] = useState(false)
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -80,13 +80,16 @@ export default function MainLeaveScreen({ navigation }) {
         if (monthapidata.length > 0) {
 
             minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
+
                 if (item.IsPayGenerated == 0) {
-                     //console.log('minperiod id', item.PeriodId)
+                    
                     return item.PeriodId;
+
                 }
                 else {
                     return Infinity;
                 }
+                // console.log('minperiod id', item.PeriodId)
 
 
             }))
@@ -169,7 +172,7 @@ export default function MainLeaveScreen({ navigation }) {
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloaddata = JSON.parse(responseObj.payload);
-                  //console.log('month', payloaddata)
+                 // console.log('month', payloaddata)
                 if (payloaddata.length > 0) {
                     SetMonthApiData(payloaddata);
                     // IsLoading(false);
@@ -188,7 +191,7 @@ export default function MainLeaveScreen({ navigation }) {
     //..... Begin : Leave Api Call ...... //
     const LeaveApiCall = async () => {
         try {
-            //  console.log('Leave URL', Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid);
+             // console.log('Leave URL', Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid);
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid, {
 
                 // const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + 75 + '&FiscalYearId=' + 9 + '&fromPeriodId=' + 97 + '&ToPeriodId=' + 108, {
@@ -216,9 +219,10 @@ export default function MainLeaveScreen({ navigation }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-               //  console.log('Leaves Data', payload)
+               // console.log('Leaves Data', payload) 
                 if (payload.length > 0) {
                     setLeaveApiData(payload);
+                   
                     IsLoading(false);
                     setLeaveRecord(false)
 

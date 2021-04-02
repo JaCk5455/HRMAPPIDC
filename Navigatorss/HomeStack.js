@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions , Alert } from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -63,13 +63,57 @@ export default function HomeStackScreen({ navigation }) {
                     </FontAwesome.Button>
                 ),
                 headerRight: () => (
-                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                    // <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>   
+                    //     <TouchableOpacity onPress={() => { signOut() }}>
 
-                        {/* <Avatar.Image source={require('../assets/logo.png')}
-                            style={{ position: 'relative' }}
-                            size={wp('10%')}
-                        /> */}
-                        <TouchableOpacity onPress={() => { signOut() }}>
+                    //         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+
+
+                    //             <Text style={{
+                    //                 fontWeight: 'bold',
+                    //                 // borderRadius: 1,
+                    //                 color: '#fff',
+                    //                 // borderRadius: 1,
+                    //                 paddingRight: wp('1%'),
+                    //                 // paddingLeft: wp('2%'),
+                    //                 justifyContent: 'center',
+                    //                 position: 'relative'
+                    //             }}>Sign Out</Text>
+                    //             <Text style={{
+                    //                 alignItems: 'center',
+                    //                 position: 'relative',
+                    //                 paddingRight: wp('2%')
+
+                    //             }}>
+                    //                 <Feather name="log-out" size={24} color="#fff" />
+                    //             </Text>
+
+                    //         </View>
+                    //     </TouchableOpacity>
+                    // </View>
+
+<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>   
+                        <TouchableOpacity onPress={() => { 
+                            <View>
+                            <Text style={{ color: 'red' }}>
+                                {
+                                    Alert.alert(
+                                        "Confirmation",
+                                        "Are you sure, you want to logout.",
+                                        [
+                                            {
+                                                text: "No",
+                                                onPress: () => {navigation.navigate('HomeScreen')},
+                                                style: "cancel"
+                                            },
+                                            { text: "Yes", onPress: () => {signOut()} }
+                                        ],
+                                        { cancelable: false }
+                                    )
+                                }
+                            </Text>
+                        </View>
+                         }}>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -91,15 +135,15 @@ export default function HomeStackScreen({ navigation }) {
 
                                 }}>
                                     <Feather name="log-out" size={24} color="#fff" />
-                                    {/* <Foundation name="power" size={24} color="#fff" /> */}
                                 </Text>
 
                             </View>
-
-                            {/* <FontAwesome.Button name="bars" backgroundColor="#0041c4" onPress={() => { navigation.openDrawer(); }}>
-                    </FontAwesome.Button> */}
                         </TouchableOpacity>
                     </View>
+
+
+
+
 
                 )
             }} />

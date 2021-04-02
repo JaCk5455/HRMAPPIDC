@@ -89,8 +89,11 @@ export default function SignIn({ navigation }) {
         // console.log('api called')
         try {
             // const response = await fetch(Contants.API_URL + 'Login/EmployeeLogin'
-            const response = await fetch('https://idcnow.co/orbitempservice/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password, {
-                signal: signal,
+            // const response = await fetch('https://idcnow.co/orbitempservice/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password, {
+
+                const response = await fetch(Contants.API_URL +'Login/EmployeeLogin?username=' + email + '&password=' + password, {
+
+            signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -146,6 +149,7 @@ export default function SignIn({ navigation }) {
         }
         catch (e) {
             console.log('Error', e);
+            Alert.alert('Error', 'Connection error,please try again!')
             setShowProgressBar(false);
 
         }

@@ -2,7 +2,7 @@
   "expo": {
     "name": "IDC HRM",
     "slug": "idc-hrm",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "orientation": "portrait",
     "icon": "./assets/EmployeeAppLogo.png",
     "splash": {
@@ -18,13 +18,13 @@
     ],
     "ios": {
       "bundleIdentifier" : "com.idc.hrm",
-      "buildNumber" : "1.0.10",
+      "buildNumber" : "1.0.11",
 
       "supportsTablet": true
     },
     "android": {
       "package": "com.idc.hrm",
-      "versionCode":10,
+      "versionCode":11,
       "adaptiveIcon": {
         "foregroundImage": "./assets/EmployeeAppLogo.png",
         "backgroundColor": "#FFFFFF"
