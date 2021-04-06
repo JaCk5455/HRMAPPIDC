@@ -103,10 +103,10 @@ export default function MainProfileScreen({ navigation }) {
                 })
             });
             const responseObj = await response.json();
-            //  console.log(responseObj)
+             // console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-                //  console.log('prifile data',payloadData)
+                 // console.log('prifile data',payloadData)
                 if (payloadData.Table.length > 0) {
                     SetPersonalApiData(payloadData.Table);
                     // console.log('aaa', payloadData.Table)

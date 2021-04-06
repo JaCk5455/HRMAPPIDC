@@ -134,7 +134,7 @@ export default function SignIn({ navigation }) {
                     let newPayload = payload.map((item, index) => {
                         return { ...item, EmployeePic: null }
                     })
-                   // console.log('newpayload', newPayload);
+                //    console.log('newpayload', newPayload);
                     signIn(newPayload);
 
                 }

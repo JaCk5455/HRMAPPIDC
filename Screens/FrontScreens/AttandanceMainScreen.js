@@ -227,7 +227,7 @@ export default function MainAttendanceScreen({ navigation }) {
             // console.log('responceapi', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                //console.log('Attandancedata', payload)
+               // console.log('Attandancedata', payload)
                 if (payload.length > 0) {
                     setApiData(payload);
                     IsLoading(false);
@@ -394,19 +394,61 @@ export default function MainAttendanceScreen({ navigation }) {
                     {item.AttStatus > 1 ?
                         <View style={styles.Attanempinfoview}>
                             <View style={{ flex: 1.7, justifyContent: 'center' }}>
-                                <Text style={styles.listtxt}>Extra :</Text>
+                                {
+                                item.Extra.charAt(0).toUpperCase()== 'E'?
+                                <Text style={styles.listtxt}>Extra Time :</Text> :
+                                <Text style={styles.listtxt}>Short Time :</Text>
+                                }
                             </View>
 
+                    
                             <View style={{ flex: 2, justifyContent: 'center' }}>
+
+
+                            {
+                                item.Extra.charAt(0).toUpperCase()== 'E'?
                                 <Text style={{
                                     padding: wp('1%'),
                                     fontSize: wp('3.6%'),
                                     color: 'green',
                                     fontWeight: "700"
-                                }}>{moment(item.Extra, 'hh:mm:ss').format("hh:mm:ss ")}</Text>
-                                {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
+                                }}>{moment(item.Extra, 'hh:mm:ss').format("hh:mm:ss ")}
+                                </Text> :
+                                <Text style={{
+                                    padding: wp('1%'),
+                                    fontSize: wp('3.6%'),
+                                    color: '#FF2E00',
+                                    fontWeight: "700"
+                                }}>{moment(item.Extra, 'hh:mm:ss').format("hh:mm:ss ")}
+                                </Text>
+
+                               
+                                }
+
+
+                                {/* <Text style={{
+                                    padding: wp('1%'),
+                                    fontSize: wp('3.6%'),
+                                    color: 'green',
+                                    fontWeight: "700"
+                                }}>{moment(item.Extra, 'hh:mm:ss').format("hh:mm:ss ")}
+                                </Text> */}
 
                             </View>
+
+
+{/* <View style={{ flex: 2, justifyContent: 'center' }}>
+                                <Text style={{
+                                    padding: wp('1%'),
+                                    fontSize: wp('3.6%'),
+                                    color: 'green',
+                                    fontWeight: "700"
+                                }}>{item.Extra.charAt(0)}</Text>
+
+                            </View> */}
+
+
+
 
                         </View> : null}
 

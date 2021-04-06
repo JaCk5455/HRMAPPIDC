@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, View, Text, Dimensions, ActivityIndicator, StatusBar } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Dimensions, ActivityIndicator, StatusBar, FlatList } from 'react-native';
 import { MaterialCommunityIcons, Fontisto, AntDesign, Feather, FontAwesome, Foundation, SimpleLineIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import moment from 'moment';
@@ -10,11 +10,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { height, width } = Dimensions.get('window');
 
-export default function EducationalInformationScreen({ route }) {
+export default function EducationalInformationScreen({ route  }) {
 
-    // const [data, SetData] = useState([]);
+    //   const [data, SetData] = useState([]);
     const [apidata, SetApiData] = useState([]);
     const [loading, IsLoading] = useState(false);
+
+
+    // const { Edudata } = route.params;
+
 
 
 
@@ -80,9 +84,8 @@ export default function EducationalInformationScreen({ route }) {
     //         console.log('Error', e);
     //     }
     // }
-
-
-
+  
+  
 
 
     return (
