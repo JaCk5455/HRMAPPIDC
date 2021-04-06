@@ -106,7 +106,7 @@ export default function MainProfileScreen({ navigation }) {
             //  console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-               //  console.log('prifile data',payloadData)
+                //  console.log('prifile data',payloadData)
                 if (payloadData.Table.length > 0) {
                     SetPersonalApiData(payloadData.Table);
                     // console.log('aaa', payloadData.Table)
@@ -126,29 +126,29 @@ export default function MainProfileScreen({ navigation }) {
                     Alert.alert('Error')
                 }
 
-                
+
 
             }
             else {
-<View>
-                                                    <Text style={{ color: 'red' }}>
-                                                        {
-                                                            Alert.alert(
-                                                                "Alert",
-                                                                "No Record Found.",
-                                                                [
-                                                                    {
-                                                                        text: "Cancel",
-                                                                        onPress: () => {navigation.navigate('HomeScreen')},
-                                                                        style: "cancel"
-                                                                    },
-                                                                    { text: "OK", onPress: () => {navigation.navigate('HomeScreen')} }
-                                                                ],
-                                                                { cancelable: false }
-                                                            )
-                                                        }
-                                                    </Text>
-                                                </View>
+                <View>
+                    <Text style={{ color: 'red' }}>
+                        {
+                            Alert.alert(
+                                "Alert",
+                                "No Record Found.",
+                                [
+                                    {
+                                        text: "Cancel",
+                                        onPress: () => { navigation.navigate('HomeScreen') },
+                                        style: "cancel"
+                                    },
+                                    { text: "OK", onPress: () => { navigation.navigate('HomeScreen') } }
+                                ],
+                                { cancelable: false }
+                            )
+                        }
+                    </Text>
+                </View>
             }
 
         }
@@ -188,9 +188,9 @@ export default function MainProfileScreen({ navigation }) {
                                 <Avatar.Image
 
 
-// source={{
-//     uri: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-//   }}
+                                    // source={{
+                                    //     uri: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+                                    // }}
                                     source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender == "M" || data[0].EmployeeGender == "Male" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     size={wp('27%')}
                                     style={{ marginTop: wp('-18%') }}
@@ -198,13 +198,13 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-{/* <Text style={styles.title}>John Doe</Text> */}
+                                {/* <Text style={styles.title}>John Doe</Text> */}
 
 
 
-                                     <Text style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Text>
+                                <Text style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Text>
 
-                                <Text style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Text> 
+                                <Text style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Text>
 
                             </View>
                         </View>
@@ -231,8 +231,8 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-{/* 
-<View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
+
+                        {/* <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
                             <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
 
                                 <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />
@@ -258,7 +258,7 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-                           <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
+                        <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
                             <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
 
                                 <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />

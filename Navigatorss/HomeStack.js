@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions , Alert } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, Alert } from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -92,28 +92,28 @@ export default function HomeStackScreen({ navigation }) {
                     //     </TouchableOpacity>
                     // </View>
 
-<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>   
-                        <TouchableOpacity onPress={() => { 
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => {
                             <View>
-                            <Text style={{ color: 'red' }}>
-                                {
-                                    Alert.alert(
-                                        "Confirmation",
-                                        "Are you sure, you want to logout.",
-                                        [
-                                            {
-                                                text: "No",
-                                                onPress: () => {navigation.navigate('HomeScreen')},
-                                                style: "cancel"
-                                            },
-                                            { text: "Yes", onPress: () => {signOut()} }
-                                        ],
-                                        { cancelable: false }
-                                    )
-                                }
-                            </Text>
-                        </View>
-                         }}>
+                                <Text style={{ color: 'red' }}>
+                                    {
+                                        Alert.alert(
+                                            "Confirmation",
+                                            "Are you sure, you want to logout.",
+                                            [
+                                                {
+                                                    text: "No",
+                                                    onPress: () => { navigation.navigate('HomeScreen') },
+                                                    style: "cancel"
+                                                },
+                                                { text: "Yes", onPress: () => { signOut() } }
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                    }
+                                </Text>
+                            </View>
+                        }}>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -151,7 +151,7 @@ export default function HomeStackScreen({ navigation }) {
 
 
 
-<HomeStack.Screen name="MainLeaveScreen" component={MainLeaveScreen} options={{
+            <HomeStack.Screen name="MainLeaveScreen" component={MainLeaveScreen} options={{
                 title: "Leaves Status",
                 headerTintColor: "#fff",
                 headerStyle: {

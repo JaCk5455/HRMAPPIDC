@@ -32,11 +32,11 @@ export default function HomeScreen() {
 
 
 
-            {/* <Text style={styles.headerText}>West Bloomfire Arcade.</Text> */}
-                 <Text style={styles.headerText}>Islamabad Diagnostic Center Pvt. Ltd.</Text>
+                {/* <Text style={styles.headerText}>West Bloomfire Arcade.</Text> */}
+                <Text style={styles.headerText}>Islamabad Diagnostic Center Pvt. Ltd.</Text>
                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center', marginTop: wp('1%') }}> Welcome!</Text>
             </View>
-            
+
 
             <View style={styles.behind}>
                 <FlatList

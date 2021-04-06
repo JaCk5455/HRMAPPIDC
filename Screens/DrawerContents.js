@@ -60,21 +60,21 @@ export default function DrawerContent(props, { navigation }) {
                                 source={{ uri: ((data.EmployeePic) ? `data:image/png;base64,${data.EmployeePic}` : (data.EmployeeGender == "M" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
 
 
-                  
 
-                               //  source={{ uri: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" }}
+
+                                //  source={{ uri: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" }}
                                 size={50}
 
                             />
                             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                              
-                            {/* <Title style={styles.title}>John Doe</Title> */}
-                                 <Title style={styles.title}>{data.UserFullName}</Title>
+
+                                {/* <Title style={styles.title}>John Doe</Title> */}
+                                <Title style={styles.title}>{data.UserFullName}</Title>
                                 <Caption style={styles.caption}>{data.Designation}</Caption>
                             </View>
                         </View>
 
-                       
+
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
