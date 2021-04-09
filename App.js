@@ -21,7 +21,7 @@ export default function App() {
   const initialLoginState = {
 
     isLoggedIn: 'false',
-    userPayload: null,
+    userPayload: null, // usertoken.
     checkingLoginState: true
 
 
@@ -29,7 +29,7 @@ export default function App() {
 
   const loginReducer = (prevState, action) => {
     switch (action.type) {
-      case 'RETRIEVE_TOKEN':
+      case 'RETRIEVE_TOKEN': // user first time open App to check login or not.
         return {
           ...prevState,
           isLoggedIn: action.isLoggedIn,
@@ -61,6 +61,9 @@ export default function App() {
 
     }
   }
+
+  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+
 
   const authContext = React.useMemo(() => ({
     signIn: async (payload) => {
@@ -112,7 +115,9 @@ export default function App() {
   }, []);
 
 
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+
+
+
   if (loginState.checkingLoginState) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -137,7 +142,6 @@ export default function App() {
             <Drawer.Screen name="SetttingStackScreen" component={SetttingStackScreen} />
             <Drawer.Screen name="SupportStackScreen" component={SupportStackScreen} />
           </Drawer.Navigator>
-
 
         }
       </NavigationContainer>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert, ActivityIndicator, Modal, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { FontAwesome, Feather } from '@expo/vector-icons';
@@ -25,6 +25,10 @@ export default function SignIn({ navigation }) {
 
     const [showProgressBar, setShowProgressBar] = React.useState(false);
 
+    const [otpcode, setOtpCode] = React.useState('');
+    const [showotpmodel, setShowOtpModel] = React.useState(false);
+
+    const [userdata, setUserData] = React.useState([]);
     // const [loading, Isloading] = React.useState(false);
 
 
@@ -84,16 +88,13 @@ export default function SignIn({ navigation }) {
 
 
 
-
     const signInCall = async (signal) => {
         // console.log('api called')
         try {
-            // const response = await fetch(Contants.API_URL + 'Login/EmployeeLogin'
-            // const response = await fetch('https://idcnow.co/orbitempservice/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password, {
 
-                const response = await fetch(Contants.API_URL +'Login/EmployeeLogin?username=' + email + '&password=' + password, {
+            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password + '&SourceLogin=' + 2 + '&MobileDeviceToken=' + 52005452, {
 
-            signal: signal,
+                signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -102,41 +103,32 @@ export default function SignIn({ navigation }) {
 
                 body: JSON.stringify({
 
-
                     username: email, // username string
                     password: password, // string
+                    SourceLogin: 1,
+                    MobileDeviceToken: 52005452,
+
 
                 })
             });
-            // console.log(JSON.stringify({
-
-
-            //     username: email, // username string
-            //     password: password, // string
-
-            // }))
-            //abc
 
             const data = await response.json();
             //  console.log(data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
-                //  console.log('login data', payload)
-                // if (payload.length > 0) {
-                //     signIn(payload);
-                //     // Isloading(false);
-                // }
 
+                if (payload[0].isregister == 1) {
+                    signIn(payload);
+                    setUserData(payload);
 
-                if (payload.length > 0) {
-                    let pic;
-                    let newPayload = payload.map((item, index) => {
-                        return { ...item, EmployeePic: null }
-                    })
-                //    console.log('newpayload', newPayload);
-                    signIn(newPayload);
-
+                }
+                else if (payload[0].isregister == 0) {
+                    setShowOtpModel(true);
+                }
+                else if (payload[0].isregister == 2) {
+                    console.log('issue')
+                    Alert.alert('Error', 'You are already Register on Another Device, if you want to login on this Device kindly Contact with Hr.')
                 }
 
                 else {
@@ -156,11 +148,186 @@ export default function SignIn({ navigation }) {
     }
 
 
+
+
+
+    const otpConfirm = () => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        setShowProgressBar(true);
+        signInCallWithOtp(signal);
+
+        return function cleanup() {
+            abortController.abort();
+        }
+    }
+
+
+    const signInCallWithOtp = async (signal) => {
+        console.log('otpapi called')
+
+        try {
+            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + 850998 + '&EmpId=' + 277 + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 1, {
+                signal: signal,
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+
+                    OTP: otpcode,
+                    EmpId: 277,
+
+                    MobileDeviceToken: 52005452,
+                    IsloggedIn: 1,
+                    AppType: 1,
+
+
+                    //  OTP=850998,
+                    //  EmpId=userdata[0].EmpId,
+
+
+                })
+
+            });
+            const data = await response.json();
+            console.log('otp', data);
+            if (data.statusCode == 200) {
+                const payLoad = JSON.parse(data.payLoad);
+                if (payLoad.length > 0) {
+                    SignIn(payLoad);
+
+                }
+                else {
+                    Alert.alert('Error', 'Username or Password is incorrect')
+                }
+
+            }
+            setShowProgressBar(false);
+
+
+        }
+        catch (e) {
+            console.log('Error', e);
+            Alert.alert('Error', 'Connection error,please try again!')
+            setShowProgressBar(false);
+
+        }
+    }
+
+
+
+
+    // const signInCall = async (signal) => {
+    //     // console.log('api called')
+    //     try {
+    //         // const response = await fetch(Contants.API_URL + 'Login/EmployeeLogin'
+    //         // const response = await fetch('https://idcnow.co/orbitempservice/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password, {
+
+    //         const response = await fetch(Contants.API_URL + 'Login/EmployeeLogin?username=' + email + '&password=' + password, {
+
+    //             signal: signal,
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json'
+    //             },
+
+    //             body: JSON.stringify({
+
+
+    //                 username: email, // username string
+    //                 password: password, // string
+
+    //             })
+    //         });
+    //         // console.log(JSON.stringify({
+
+
+    //         //     username: email, // username string
+    //         //     password: password, // string
+
+    //         // }))
+    //         //abc
+
+    //         const data = await response.json();
+    //         //  console.log(data);
+
+    //         if (data.statusCode == 200) {
+    //             let payload = JSON.parse(data.payload);
+    //             //  console.log('login data', payload)
+    //             // if (payload.length > 0) {
+    //             //     signIn(payload);
+    //             //     // Isloading(false);
+    //             // }
+
+
+    //             if (payload.length > 0) {
+    //                 let pic;
+    //                 let newPayload = payload.map((item, index) => {
+    //                     return { ...item, EmployeePic: null }
+    //                 })
+    //                 //    console.log('newpayload', newPayload);
+    //                 signIn(newPayload);
+
+    //             }
+
+    //             else {
+    //                 Alert.alert('Error', 'Username or Password is incorrect')
+    //             }
+
+    //         }
+    //         setShowProgressBar(false);
+
+    //     }
+    //     catch (e) {
+    //         console.log('Error', e);
+    //         Alert.alert('Error', 'Connection error,please try again!')
+    //         setShowProgressBar(false);
+
+    //     }
+    // }
+
+
+
+
+
+
+
     return (
         <View style={styles.container}>
 
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
             <ProgressBar visible={showProgressBar} text="Please wait" />
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showotpmodel}
+            >
+                <View style={styles.centeredView}>
+
+                    <View style={styles.modalView}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>OTP</Text>
+                        <View style={styles.action}>
+                            <TextInput
+                                placeholder="Enter OTP"
+                                style={styles.textInput}
+                                onChangeText={(value) => setOtpCode(value)}
+                            />
+                        </View>
+                        <View style={{ marginVertical: 20 }}>
+                            <Button
+                                title=" Submit "
+                                onPress={otpConfirm}
+                            />
+                        </View>
+                        <Text>Otp has been sent to your phone number.</Text>
+
+                    </View>
+                </View>
+            </Modal>
 
             <View style={styles.header}>
                 <Text style={styles.text_header}>Sign In</Text>
@@ -351,4 +518,35 @@ const styles = StyleSheet.create({
         color: '#FF0000',
         fontSize: 14,
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: wp('3%'),
+        backgroundColor: 'rgba(52, 52, 52, 0.4)'
+
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 30,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modalText: {
+
+        fontSize: 16
+    },
+
 });
