@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert, ActivityIndicator, Modal, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import { FontAwesome, Feather } from '@expo/vector-icons';
+import { FontAwesome, Feather , Ionicons} from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AuthContext } from "../Components/Context";
 import ProgressBar from '../Components/ProgressBar';
 import * as Contants from '../constants/constants';
 // import { ActivityIndicator } from 'react-native-paper';
-import { Item } from 'native-base';
+
 
 
 export default function SignIn({ navigation }) {
@@ -105,7 +105,7 @@ export default function SignIn({ navigation }) {
 
                     username: email, // username string
                     password: password, // string
-                    SourceLogin: 1,
+                    SourceLogin: 2 ,
                     MobileDeviceToken: 52005452,
 
 
@@ -113,7 +113,7 @@ export default function SignIn({ navigation }) {
             });
 
             const data = await response.json();
-            //  console.log(data);
+              console.log( 'signinapi' , data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
@@ -131,17 +131,18 @@ export default function SignIn({ navigation }) {
                     Alert.alert('Error', 'You are already Register on Another Device, if you want to login on this Device kindly Contact with Hr.')
                 }
 
-                else {
-                    Alert.alert('Error', 'Username or Password is incorrect')
-                }
 
+            }
+            
+            else {
+                Alert.alert('Error', 'Username or Password is incorrect')
             }
             setShowProgressBar(false);
 
         }
         catch (e) {
             console.log('Error', e);
-            Alert.alert('Error', 'Connection error,please try again!')
+            Alert.alert('Error', 'Connection error, please try again!')
             setShowProgressBar(false);
 
         }
@@ -167,7 +168,7 @@ export default function SignIn({ navigation }) {
         console.log('otpapi called')
 
         try {
-            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + 850998 + '&EmpId=' + 277 + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 1, {
+            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + 277 + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
                 signal: signal,
                 method: 'POST',
                 headers: {
@@ -181,7 +182,7 @@ export default function SignIn({ navigation }) {
 
                     MobileDeviceToken: 52005452,
                     IsloggedIn: 1,
-                    AppType: 1,
+                    AppType: 2,
 
 
                     //  OTP=850998,
@@ -196,7 +197,7 @@ export default function SignIn({ navigation }) {
             if (data.statusCode == 200) {
                 const payLoad = JSON.parse(data.payLoad);
                 if (payLoad.length > 0) {
-                    SignIn(payLoad);
+                    SignIn(userdata);
 
                 }
                 else {
@@ -307,9 +308,17 @@ export default function SignIn({ navigation }) {
                 visible={showotpmodel}
             >
                 <View style={styles.centeredView}>
-
                     <View style={styles.modalView}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>OTP</Text>
+                        
+                    <TouchableOpacity style={{flexDirection:'row' , alignItems:'center'}} 
+                    onPress={() => navigation.goBack() }>
+                        
+                        <Ionicons name="arrow-back" size={24} color="black" />
+                        <Text>Back</Text>
+                    </TouchableOpacity>
+
+                        
+                        <Text style={{ fontWeight: 'bold', fontSize: 20 , textAlign:'center' }}>OTP</Text>
                         <View style={styles.action}>
                             <TextInput
                                 placeholder="Enter OTP"
@@ -317,13 +326,14 @@ export default function SignIn({ navigation }) {
                                 onChangeText={(value) => setOtpCode(value)}
                             />
                         </View>
-                        <View style={{ marginVertical: 20 }}>
+                        <View style={{ marginVertical: 20 , alignItems:'center'}}>
                             <Button
                                 title=" Submit "
                                 onPress={otpConfirm}
                             />
+                        
                         </View>
-                        <Text>Otp has been sent to your phone number.</Text>
+                        <Text style={{textAlign:'center'}}>Otp has been sent to your phone number.</Text>
 
                     </View>
                 </View>
@@ -521,7 +531,7 @@ const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+       // alignItems: 'center',
         marginTop: wp('3%'),
         backgroundColor: 'rgba(52, 52, 52, 0.4)'
 
@@ -531,7 +541,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 30,
-        alignItems: 'center',
+      
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -541,7 +551,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         flexDirection: 'column',
-        alignItems: 'center',
+       // alignItems: 'center',
         justifyContent: 'center'
     },
     modalText: {
