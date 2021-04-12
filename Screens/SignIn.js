@@ -7,6 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { AuthContext } from "../Components/Context";
 import ProgressBar from '../Components/ProgressBar';
 import * as Contants from '../constants/constants';
+import { BackHandler } from 'react-native';
 // import { ActivityIndicator } from 'react-native-paper';
 
 
@@ -106,22 +107,21 @@ export default function SignIn({ navigation }) {
                     username: email, // username string
                     password: password, // string
                     SourceLogin: 2 ,
-                    MobileDeviceToken: 52005452,
+                    MobileDeviceToken: 52005453,
 
 
                 })
             });
 
             const data = await response.json();
-              console.log( 'signinapi' , data);
+             console.log( 'signinapi' , data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
-
+                setUserData(payload);
                 if (payload[0].isregister == 1) {
                     signIn(payload);
-                    setUserData(payload);
-
+                    
                 }
                 else if (payload[0].isregister == 0) {
                     setShowOtpModel(true);
@@ -168,7 +168,7 @@ export default function SignIn({ navigation }) {
         console.log('otpapi called')
 
         try {
-            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + 277 + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
+            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + userdata[0].EmpId + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
                 signal: signal,
                 method: 'POST',
                 headers: {
@@ -178,15 +178,16 @@ export default function SignIn({ navigation }) {
                 body: JSON.stringify({
 
                     OTP: otpcode,
-                    EmpId: 277,
+                    // EmpId: 277,
+                    // EmpId:1194,
 
-                    MobileDeviceToken: 52005452,
+                    MobileDeviceToken: 52005453,
                     IsloggedIn: 1,
                     AppType: 2,
 
 
                     //  OTP=850998,
-                    //  EmpId=userdata[0].EmpId,
+                     EmpId:userdata[0].EmpId,
 
 
                 })
@@ -195,15 +196,18 @@ export default function SignIn({ navigation }) {
             const data = await response.json();
             console.log('otp', data);
             if (data.statusCode == 200) {
-                const payLoad = JSON.parse(data.payLoad);
+                const payLoad = JSON.parse(data.payload);
                 if (payLoad.length > 0) {
                     SignIn(userdata);
 
                 }
                 else {
-                    Alert.alert('Error', 'Username or Password is incorrect')
+                    Alert.alert('Error', 'you are enter wrong otp code')
                 }
 
+            }
+            else {
+                Alert.alert('Error', 'Incorrect OTP')
             }
             setShowProgressBar(false);
 
@@ -291,7 +295,11 @@ export default function SignIn({ navigation }) {
     // }
 
 
-
+const _Back = ()=>{
+    return(
+        setShowOtpModel(false)
+    )
+}
 
 
 
@@ -311,7 +319,7 @@ export default function SignIn({ navigation }) {
                     <View style={styles.modalView}>
                         
                     <TouchableOpacity style={{flexDirection:'row' , alignItems:'center'}} 
-                    onPress={() => navigation.goBack() }>
+                    onPress={_Back}>
                         
                         <Ionicons name="arrow-back" size={24} color="black" />
                         <Text>Back</Text>
@@ -391,7 +399,7 @@ export default function SignIn({ navigation }) {
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={(val) => setPassword(val)}
-                            autoCorrect={false}
+                           
                         />
                         <TouchableOpacity
                             onPress={updateSecureTextEntry}>

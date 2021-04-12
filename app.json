@@ -24,10 +24,12 @@
     "android": {
       "package": "com.idc.hrm",
       "versionCode":12,
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/EmployeeAppLogo.png",
         "backgroundColor": "#FFFFFF"
       }
+      
     },
     "web": {
       "favicon": "./assets/favicon.png"

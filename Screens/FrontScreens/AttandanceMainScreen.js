@@ -227,7 +227,7 @@ export default function MainAttendanceScreen({ navigation }) {
             // console.log('responceapi', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-               // console.log('Attandancedata', payload)
+                console.log('Attandancedata', payload)
                 if (payload.length > 0) {
                     setApiData(payload);
                     IsLoading(false);
@@ -405,25 +405,26 @@ export default function MainAttendanceScreen({ navigation }) {
                             <View style={{ flex: 2, justifyContent: 'center' }}>
 
 
-                            {
+                              {
                                 item.Extra.charAt(0).toUpperCase()== 'E'?
                                 <Text style={{
                                     padding: wp('1%'),
                                     fontSize: wp('3.6%'),
                                     color: 'green',
                                     fontWeight: "700"
-                                }}>{moment(item.Extra, 'hh:mm:ss').format("hh:mm:ss ")}
+                                }}>
+                                    {moment(item.Extra, 'hh:mm:ss').format("HH:mm:ss")}
+                                    {/* {item.Extra} */}
                                 </Text> :
                                 <Text style={{
                                     padding: wp('1%'),
                                     fontSize: wp('3.6%'),
                                     color: '#FF2E00',
                                     fontWeight: "700"
-                                }}>{moment(item.Extra, 'hh:mm:ss').format("hh:mm:ss ")}
+                                }}>{moment(item.Extra, 'hh:mm:ss').format("HH:mm:ss ")}
                                 </Text>
 
-                               
-                                }
+                               }
 
 
                                 {/* <Text style={{
