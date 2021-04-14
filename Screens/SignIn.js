@@ -93,7 +93,8 @@ export default function SignIn({ navigation }) {
         // console.log('api called')
         try {
 
-            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password + '&SourceLogin=' + 2 + '&MobileDeviceToken=' + 52005452, {
+            // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password + '&SourceLogin=' + 2 + '&MobileDeviceToken=' + 52005452, {
+                const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin' , {
 
                 signal: signal,
                 method: 'POST',
@@ -106,8 +107,8 @@ export default function SignIn({ navigation }) {
 
                     username: email, // username string
                     password: password, // string
-                    SourceLogin: 2 ,
-                    MobileDeviceToken: 52005453,
+                    SourceLogin: Platform.OS== 'ios' ? 1 : 2,
+                    MobileDeviceToken: 52005452,
 
 
                 })
@@ -129,6 +130,9 @@ export default function SignIn({ navigation }) {
                 else if (payload[0].isregister == 2) {
                     console.log('issue')
                     Alert.alert('Error', 'You are already Register on Another Device, if you want to login on this Device kindly Contact with Hr.')
+                }
+                else if (payload[0].isregister == 3){
+                    Alert.alert('Error', 'This device is already Registered against other Employee')
                 }
 
 
@@ -168,8 +172,10 @@ export default function SignIn({ navigation }) {
         console.log('otpapi called')
 
         try {
-            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + userdata[0].EmpId + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
-                signal: signal,
+            // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + userdata[0].EmpId + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
+                const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP', {
+
+            signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -181,9 +187,9 @@ export default function SignIn({ navigation }) {
                     // EmpId: 277,
                     // EmpId:1194,
 
-                    MobileDeviceToken: 52005453,
+                    MobileDeviceToken: 52005452,
                     IsloggedIn: 1,
-                    AppType: 2,
+                    AppType: Platform.OS== 'ios' ? 1 : 2,
 
 
                     //  OTP=850998,
