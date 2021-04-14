@@ -155,8 +155,8 @@ export default function SignIn({ navigation }) {
                     setShowOtpModel(true);
                 }
                 else if (payload[0].isregister == 2) {
-                    console.log('issue')
-                    Alert.alert('Error', 'You are already Register on Another Device, if you want to login on this Device kindly Contact with Hr.')
+                   // console.log('issue')
+                    Alert.alert('Error', ' This username is already Login on Another Device, if you want to login on this Device kindly Contact with Hr.')
                 }
                 else if (payload[0].isregister == 3) {
                     Alert.alert('Error', 'This device is already Registered against other Employee')
@@ -226,8 +226,8 @@ export default function SignIn({ navigation }) {
             const data = await response.json();
             console.log('otp', data);
             if (data.statusCode == 200) {
-                const payLoad = JSON.parse(data.payload);
-                if (payLoad.length > 0) {
+                // const payLoad = JSON.parse(data.payload);
+                if (payload !=="" ){
                     SignIn(userdata);
 
                 }
