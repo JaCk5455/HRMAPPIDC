@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Platform, StatusBar, ScrollView, Alert, ActivityIndicator, Modal, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
-import { FontAwesome, Feather , Ionicons} from '@expo/vector-icons';
+import { FontAwesome, Feather, Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AuthContext } from "../Components/Context";
 import ProgressBar from '../Components/ProgressBar';
+import { Helper } from '../Components/Helpers';
+
 import * as Contants from '../constants/constants';
 import { BackHandler } from 'react-native';
 // import { ActivityIndicator } from 'react-native-paper';
@@ -32,10 +34,28 @@ export default function SignIn({ navigation }) {
     const [userdata, setUserData] = React.useState([]);
     // const [loading, Isloading] = React.useState(false);
 
+    const [token, setToken] = React.useState('');
 
     const [data, setData] = React.useState({
         secureTextEntry: true,
     });
+
+
+
+
+    React.useEffect(() => {
+
+        Helper.storeTokenInLocalStorage().then((Token) => {
+            setToken(Token)
+            console.log('gettoken', Token)
+
+        }).catch((e) => {
+            console.log('eee', e);
+        });
+
+
+    }, [])
+
 
 
     const updateSecureTextEntry = () => {
@@ -89,12 +109,17 @@ export default function SignIn({ navigation }) {
 
 
 
+
+
+
+
+
     const signInCall = async (signal) => {
         // console.log('api called')
         try {
 
             // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password + '&SourceLogin=' + 2 + '&MobileDeviceToken=' + 52005452, {
-                const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin' , {
+            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin', {
 
                 signal: signal,
                 method: 'POST',
@@ -107,22 +132,24 @@ export default function SignIn({ navigation }) {
 
                     username: email, // username string
                     password: password, // string
-                    SourceLogin: Platform.OS== 'ios' ? 1 : 2,
-                    MobileDeviceToken: 52005452,
+                    SourceLogin: Platform.OS == 'ios' ? 1 : 2,
+                    MobileDeviceToken: token
+
+                    // MobileDeviceToken: 52005452,
 
 
                 })
             });
 
             const data = await response.json();
-             console.log( 'signinapi' , data);
+            console.log('signinapi', data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
                 setUserData(payload);
                 if (payload[0].isregister == 1) {
                     signIn(payload);
-                    
+
                 }
                 else if (payload[0].isregister == 0) {
                     setShowOtpModel(true);
@@ -131,13 +158,11 @@ export default function SignIn({ navigation }) {
                     console.log('issue')
                     Alert.alert('Error', 'You are already Register on Another Device, if you want to login on this Device kindly Contact with Hr.')
                 }
-                else if (payload[0].isregister == 3){
+                else if (payload[0].isregister == 3) {
                     Alert.alert('Error', 'This device is already Registered against other Employee')
                 }
-
-
             }
-            
+
             else {
                 Alert.alert('Error', 'Username or Password is incorrect')
             }
@@ -151,7 +176,6 @@ export default function SignIn({ navigation }) {
 
         }
     }
-
 
 
 
@@ -173,9 +197,9 @@ export default function SignIn({ navigation }) {
 
         try {
             // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + userdata[0].EmpId + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
-                const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP', {
+            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP', {
 
-            signal: signal,
+                signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -183,17 +207,17 @@ export default function SignIn({ navigation }) {
                 },
                 body: JSON.stringify({
 
-                    OTP: otpcode,
                     // EmpId: 277,
                     // EmpId:1194,
-
-                    MobileDeviceToken: 52005452,
-                    IsloggedIn: 1,
-                    AppType: Platform.OS== 'ios' ? 1 : 2,
-
-
                     //  OTP=850998,
-                     EmpId:userdata[0].EmpId,
+                    // MobileDeviceToken: 52005452,
+
+
+                    OTP: otpcode,
+                    MobileDeviceToken: token,
+                    IsloggedIn: 1,
+                    AppType: Platform.OS == 'ios' ? 1 : 2,
+                    EmpId: userdata[0].EmpId,
 
 
                 })
@@ -220,7 +244,7 @@ export default function SignIn({ navigation }) {
 
         }
         catch (e) {
-            console.log('Error', e);
+            //console.log('Error', e);
             Alert.alert('Error', 'Connection error,please try again!')
             setShowProgressBar(false);
 
@@ -301,11 +325,11 @@ export default function SignIn({ navigation }) {
     // }
 
 
-const _Back = ()=>{
-    return(
-        setShowOtpModel(false)
-    )
-}
+    const _Back = () => {
+        return (
+            setShowOtpModel(false)
+        )
+    }
 
 
 
@@ -323,16 +347,16 @@ const _Back = ()=>{
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        
-                    <TouchableOpacity style={{flexDirection:'row' , alignItems:'center'}} 
-                    onPress={_Back}>
-                        
-                        <Ionicons name="arrow-back" size={24} color="black" />
-                        <Text>Back</Text>
-                    </TouchableOpacity>
 
-                        
-                        <Text style={{ fontWeight: 'bold', fontSize: 20 , textAlign:'center' }}>OTP</Text>
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
+                            onPress={_Back}>
+
+                            <Ionicons name="arrow-back" size={24} color="black" />
+                            <Text>Back</Text>
+                        </TouchableOpacity>
+
+
+                        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>OTP</Text>
                         <View style={styles.action}>
                             <TextInput
                                 placeholder="Enter OTP"
@@ -340,14 +364,14 @@ const _Back = ()=>{
                                 onChangeText={(value) => setOtpCode(value)}
                             />
                         </View>
-                        <View style={{ marginVertical: 20 , alignItems:'center'}}>
+                        <View style={{ marginVertical: 20, alignItems: 'center' }}>
                             <Button
                                 title=" Submit "
                                 onPress={otpConfirm}
                             />
-                        
+
                         </View>
-                        <Text style={{textAlign:'center'}}>Otp has been sent to your phone number.</Text>
+                        <Text style={{ textAlign: 'center' }}>Otp has been sent to your phone number.</Text>
 
                     </View>
                 </View>
@@ -405,7 +429,7 @@ const _Back = ()=>{
                             autoCapitalize="none"
                             autoCorrect={false}
                             onChangeText={(val) => setPassword(val)}
-                           
+
                         />
                         <TouchableOpacity
                             onPress={updateSecureTextEntry}>
@@ -545,7 +569,7 @@ const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         justifyContent: 'center',
-       // alignItems: 'center',
+        // alignItems: 'center',
         marginTop: wp('3%'),
         backgroundColor: 'rgba(52, 52, 52, 0.4)'
 
@@ -555,7 +579,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 30,
-      
+
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -565,7 +589,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         flexDirection: 'column',
-       // alignItems: 'center',
+        // alignItems: 'center',
         justifyContent: 'center'
     },
     modalText: {

@@ -11,8 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SupportStackScreen from './Navigatorss/SupportStack';
 import SetttingStackScreen from './Navigatorss/SettingStack';
 
-import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
 const Drawer = createDrawerNavigator();
@@ -20,20 +20,24 @@ LogBox.ignoreAllLogs();
 export default function App() {
 
 
-  const notificationListener = useRef();
-  const responseListener = useRef();
+  const notificationListener = React.useRef();
+  const responseListener = React.useRef();
 
-  useEffect(() => {
+  React.useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      console.log('tokenvalue', token)
+      console.log('Token', token);
+      storeTokenInLocalStorage(token);
+
+    }).catch((e) => {
+      console.log('Notification Error', e);
     });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log ('noti' , notification);
+      console.log('sada', notification);
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log( 'responce',response);
+      console.log('sadaaaaaa', response);
     });
 
     return () => {
@@ -42,14 +46,23 @@ export default function App() {
     };
   }, []);
 
+  storeTokenInLocalStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem('@Token', token)
+    }
+    catch {
+      console.log('Token not save in storage')
+    }
+  }
 
-  async function registerForPushNotificationsAsync() {
+  registerForPushNotificationsAsync = async () => {
+
     let token;
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
@@ -57,11 +70,12 @@ export default function App() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
+
     } else {
       alert('Must use physical device for Push Notifications');
+
     }
-  
+
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
         name: 'default',
@@ -70,9 +84,8 @@ export default function App() {
         lightColor: '#FF231F7C',
       });
     }
-  
     return token;
-  }
+  };
 
 
 

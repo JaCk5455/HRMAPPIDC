@@ -23,4 +23,13 @@ export const Helper = {
     //     return ProfilepayloadData;
 
     // }/
+
+
+    storeTokenInLocalStorage: async function () {
+        const Token = await AsyncStorage.getItem('@Token')
+        return Token;
+    }
+
+
+
 }
