@@ -186,7 +186,7 @@ export default function SignIn({ navigation }) {
         }
         catch (e) {
             console.log('Error', e);
-            Alert.alert('Error', 'Connection error, please try again!')
+            Alert.alert('Error', 'Connection Error, please try again!')
             setShowProgressBar(false);
 
         }
@@ -243,7 +243,7 @@ export default function SignIn({ navigation }) {
             if (data.statusCode == 200) {
                 // const payLoad = JSON.parse(data.payload);
                 if (data.payload == "Device Registered Successfully" && data.message == "OK - Successful" ){
-                    SignIn(userdata);
+                    signIn(userdata);
                     
                     setShowProgressBar(true);
                     console.log('payrasndbyotpapi', userdata)
@@ -262,7 +262,7 @@ export default function SignIn({ navigation }) {
 
         }
         catch (e) {
-            //console.log('Error', e);
+            console.log('Error otp catch', e);
             Alert.alert('Error', 'Connection error,please try again!')
             setShowProgressBar(false);
 
