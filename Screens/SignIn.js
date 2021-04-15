@@ -31,6 +31,8 @@ export default function SignIn({ navigation }) {
     const [otpcode, setOtpCode] = React.useState('');
     const [showotpmodel, setShowOtpModel] = React.useState(false);
 
+    const [resendotp , setResendOtp] = React.useState(false);
+
     const [userdata, setUserData] = React.useState([]);
     // const [loading, Isloading] = React.useState(false);
 
@@ -54,6 +56,19 @@ export default function SignIn({ navigation }) {
         });
 
 
+    }, [])
+
+    React.useEffect(()=>{
+
+ 
+    setTimeout(function(){
+ 
+      setResendOtp(true);
+ 
+    }, 30000);
+ 
+ 
+ 
     }, [])
 
 
@@ -156,10 +171,10 @@ export default function SignIn({ navigation }) {
                 }
                 else if (payload[0].isregister == 2) {
                    // console.log('issue')
-                    Alert.alert('Error', ' This username is already Login on Another Device, if you want to login on this Device kindly Contact with Hr.')
+                    Alert.alert('Error', ' This username is already Login on other Device, if you want to login on this Device kindly Contact with Hr.')
                 }
                 else if (payload[0].isregister == 3) {
-                    Alert.alert('Error', 'This device is already Registered against other Employee')
+                     Alert.alert('Error', 'This device is already Registered against other Employee')
                 }
             }
 
@@ -227,13 +242,16 @@ export default function SignIn({ navigation }) {
             console.log('otp', data);
             if (data.statusCode == 200) {
                 // const payLoad = JSON.parse(data.payload);
-                if (payload !=="" ){
+                if (data.payload == "Device Registered Successfully" && data.message == "OK - Successful" ){
                     SignIn(userdata);
-
+                    
+                    setShowProgressBar(true);
+                    console.log('payrasndbyotpapi', userdata)
                 }
-                else {
-                    Alert.alert('Error', 'you are enter wrong otp code')
-                }
+                console.log('payloadsndbyotpapi', userdata)
+                // else {
+                //     Alert.alert('Error', 'you are enter wrong otp code')
+                // }
 
             }
             else {
@@ -364,6 +382,17 @@ export default function SignIn({ navigation }) {
                                 onChangeText={(value) => setOtpCode(value)}
                             />
                         </View>
+                        {resendotp?
+                        <View>
+                            <TouchableOpacity
+                            style={{alignItems:'flex-end', padding:wp('1%')}}
+                            onPress={validateFields}>
+                             <Text style={{color:'blue'}}>
+                                 Resend OTP
+                             </Text>
+                            </TouchableOpacity>
+                        </View>: null
+                        }
                         <View style={{ marginVertical: 20, alignItems: 'center' }}>
                             <Button
                                 title=" Submit "
@@ -371,7 +400,7 @@ export default function SignIn({ navigation }) {
                             />
 
                         </View>
-                        <Text style={{ textAlign: 'center' }}>Otp has been sent to your phone number.</Text>
+                        <Text style={{ textAlign: 'center' }}>Otp has been sent to your phone Number/Email Registered by HR.</Text>
 
                     </View>
                 </View>
