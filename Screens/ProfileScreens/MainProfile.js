@@ -8,7 +8,7 @@ import {
     Title,
     Caption,
     Text,
-    TouchableRipple,
+   
 
 } from 'react-native-paper';
 import { Spinner } from 'native-base';
@@ -40,7 +40,7 @@ export default function MainProfileScreen({ navigation }) {
         Helper.getLoggedInData().then((response) => {
             // SetData(response);
             SetData(response)
-            // console.log('abc', response)
+           //  console.log('abc', response)
 
         }).catch((e) => {
             console.log('eee', e);
@@ -88,8 +88,11 @@ export default function MainProfileScreen({ navigation }) {
     const ProfileApiData = async (signal) => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'Employeeinfo/EmployeePerosnalDetails?Empid=' + data[0].EmpId, {
-                signal: signal,
+           // ... Live const response = await fetch(Contants.API_URL + 'Employeeinfo/EmployeePerosnalDetails?Empid=' + data[0].EmpId, {
+           //... testing 
+           const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails' , {
+  
+           signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -106,7 +109,7 @@ export default function MainProfileScreen({ navigation }) {
              // console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-                 // console.log('prifile data',payloadData)
+                //  console.log('prifile data',payloadData)
                 if (payloadData.Table.length > 0) {
                     SetPersonalApiData(payloadData.Table);
                     // console.log('aaa', payloadData.Table)
@@ -191,7 +194,7 @@ export default function MainProfileScreen({ navigation }) {
                                     // source={{
                                     //     uri: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
                                     // }}
-                                    source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender == "M" || data[0].EmployeeGender == "Male" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
+                                    source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender.toUpperCase() == "M" || data[0].EmployeeGender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     size={wp('27%')}
                                     style={{ marginTop: wp('-18%') }}
                                 />

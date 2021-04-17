@@ -14,7 +14,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const { height, width } = Dimensions.get('window');
 
 
-export default function MainAttendanceScreen({ navigation }) {
+export default function MainAttendanceScreen({ navigation , route}) {
 
     const [data, SetData] = useState([]);
     const [apidata, setApiData] = useState([]);
@@ -208,8 +208,7 @@ export default function MainAttendanceScreen({ navigation }) {
     // ........... Begin: AttandanceApiCall ....... //
     const AttandanceApiCall = async () => {
         try {
-            // console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + route.params.AttendancePeriodId)
-            //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
+           //  console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid)
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
                 method: 'POST',
                 headers: {
@@ -227,7 +226,7 @@ export default function MainAttendanceScreen({ navigation }) {
             // console.log('responceapi', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                console.log('Attandancedata', payload)
+               // console.log('Attandancedata', payload)
                 if (payload.length > 0) {
                     setApiData(payload);
                     IsLoading(false);
@@ -488,42 +487,19 @@ export default function MainAttendanceScreen({ navigation }) {
 
     // .........End: FlatList Function(_RenderItem) ........... //
 
-    const _Refresh = () => {
+    const _Refresh = () => { return(
         <View style={{ flex: 1, justifyContent: 'center' }}>
 
             <ActivityIndicator size="small" color="#008080" />
         </View>
+    )
     }
 
     // ......... End: FlatList Function(_Refresh & getItemLayout ) ........... //
 
-
-
-
-    return (
-        <View style={styles.AttanMainContainer}>
-            <StatusBar backgroundColor='#008080' barStyle="light-content" />
-
-
-            {/* <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
-
-                    {route.params.AttendanceFiscalName == '' || route.params.AttendanceFiscalName == null ?
-                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
-                        :
-                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendanceFiscalName}</Text>
-                    }
-
-
-                    {route.params.AttendancePeriodName == '' || route.params.AttendancePeriodName == null ?
-                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
-                        :
-                        <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendancePeriodName}</Text>
-                    }
-
-                </View> */}
-
-
-            <View style={{ flexDirection: 'row' }}>
+    const _ListHeader =()=>{
+return(
+    <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 3, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Total Working Hours</Text>
 
@@ -540,10 +516,48 @@ export default function MainAttendanceScreen({ navigation }) {
                             // FiscalYears: yearapidata
                         })
                     }}
-                    // style={{ borderWidth: 1, backgroundColor: '#0041c4', borderColor: '#0041c4' }}
                     >
-                        {/* <MaterialIcons name="navigate-next" size={22} color="#008080" /> */}
-                        {/* <MaterialCommunityIcons name="skip-previous-circle-outline" size={22} color="#008080" /> */}
+                       
+                        <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: wp('3%') }}>
+                            Previous Record
+                                </Text>
+
+
+                    </TouchableOpacity>
+                </View>
+                </View>
+)
+    }
+
+
+
+    return (
+        <View style={styles.AttanMainContainer}>
+            <StatusBar backgroundColor='#008080' barStyle="light-content" />
+
+
+            
+
+
+            {/* <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 3, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
+                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Total Working Hours</Text>
+
+
+                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
+                        {apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}
+                    </Text>
+                </View>
+
+
+                <View style={{ flex: 1.5, marginTop: wp('2%'), borderRadius: 8, padding: wp('1%'), backgroundColor: '#0041c4', marginHorizontal: wp('1.5%'), justifyContent: 'center', }}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('AttendanceFisicalScreen', {
+                            // FiscalYears: yearapidata
+                        })
+                    }}
+                    >
+                       
                         <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: wp('3%') }}>
                             Previous Record
                                 </Text>
@@ -552,11 +566,11 @@ export default function MainAttendanceScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-            </View>
+            </View> */}
 
-            <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
+            {/* <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
 
-                {/* <View style={styles.Attanempinfoview}>
+                 <View style={styles.Attanempinfoview}>
                         <View style={{ flex: 1.9, justifyContent: 'center' }}>
                             <Text style={styles.Attanemptxt}>Employee Name :</Text>
 
@@ -567,10 +581,10 @@ export default function MainAttendanceScreen({ navigation }) {
 
                         </View>
 
-                    </View> */}
+                    </View> 
 
 
-                {/* <View style={styles.Attanempinfoview}>
+                 <View style={styles.Attanempinfoview}>
                         <View style={{ flex: 1.9, justifyContent: 'center' }}>
                             <Text style={styles.Attanemptxt}>Total Working Hours :</Text>
                         </View>
@@ -582,9 +596,9 @@ export default function MainAttendanceScreen({ navigation }) {
 
                         </View>
 
-                    </View> */}
+                    </View>
 
-            </View>
+            </View> */}
 
             {loading ?
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -594,7 +608,7 @@ export default function MainAttendanceScreen({ navigation }) {
 
                 :
                 <>
-                    <View style={{ marginBottom: wp('20%') }}>
+                    <View >
                         <FlatList
                             data={apidata}
                             renderItem={_RenderItem}
@@ -602,6 +616,7 @@ export default function MainAttendanceScreen({ navigation }) {
                             refreshing={_Refresh}
                             // getItemLayout={getItemLayout}
                             keyExtractor={(item, index) => index.toString()}
+                            ListHeaderComponent = {_ListHeader}
                         />
                     </View>
                 </>

@@ -53,14 +53,7 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-        FicicalYearApiCall(signal);
-        return function cleanup() {
-            abortController.abort();
-        }
-    }, [])
+ 
 
 
     useEffect(() => {
@@ -69,6 +62,10 @@ export default function MainSalarySlip({ navigation }) {
             MonthApiCall();
         }
     }, [maxfiscalid])
+
+
+
+
 
 
     // ............. Begin: GetFiscalID ...............//
@@ -85,7 +82,7 @@ export default function MainSalarySlip({ navigation }) {
             Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
                 return item.fiscalyearid;
             }))
-            //    console.log('map lop', Maxfiscalvalue);
+                console.log('maxfiscalidlop', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
         }
@@ -103,7 +100,7 @@ export default function MainSalarySlip({ navigation }) {
         if (monthapidata.length > 0) {
 
             maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-                //  console.log('aaa', item.PeriodId)
+                  console.log('maxperiod id', item.PeriodId)
 
                 if (item.IsPayGenerated == 1) {
                     return item.PeriodId;
@@ -125,22 +122,29 @@ export default function MainSalarySlip({ navigation }) {
             //     }
             // }))
             setMaxPeriodId(maxPeriod)
-            //    console.log('maxperidvalue', maxPeriod)
+                console.log('maxperidvalue', maxPeriod)
 
         }
 
     }, [monthapidata])
     // ............. End: GetMaxPeriodID ...............//
 
-
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        FicicalYearApiCall(signal);
+        return function cleanup() {
+            abortController.abort();
+        }
+    }, [])
 
 
     // ........... Begin: Fiscal Year ApiCall ............... //
     const FicicalYearApiCall = async (signal) => {
         try {
-
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
-                signal: signal,
+   // console.log('fiscalyearApidata' , Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList')
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
+            signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -163,7 +167,7 @@ export default function MainSalarySlip({ navigation }) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('FiscalError', e);
         }
     }
     // ........... End: Fiscal Year ApiCall ............... //
@@ -174,7 +178,9 @@ export default function MainSalarySlip({ navigation }) {
     const MonthApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+        // Live...   const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+
+        const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/FiscalYearPeriodList', {
 
                 method: 'POST',
                 headers: {
@@ -189,11 +195,10 @@ export default function MainSalarySlip({ navigation }) {
             });
             const responseObj = await response.json();
             // console.log(responseObj)
-            // abc
-            //bbbcbcbc
+            
             if (responseObj.statusCode == 200) {
                 let monthpayload = JSON.parse(responseObj.payload);
-                //  console.log('month', monthpayload)
+                 // console.log('month', monthpayload)
                 if (monthpayload.length > 0) {
                     SetMonthApiData(monthpayload);
                     // IsLoading(false);
@@ -204,7 +209,7 @@ export default function MainSalarySlip({ navigation }) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('MonthError', e);
         }
     }
     // ........... End: Month ApiCall ............... //
@@ -216,8 +221,11 @@ export default function MainSalarySlip({ navigation }) {
     const SalaryApiData = async () => {
         try {
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
-                method: 'POST',
+            // Live..... const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
+            // TEsting 
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/EmployeeSalarySlip', {
+
+            method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -225,14 +233,15 @@ export default function MainSalarySlip({ navigation }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                    periodId: maxperiodid
+// periodId : 100                    
+periodId: maxperiodid
 
                 })
             });
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                //  console.log('salary', payload)
+                  console.log('salary', payload)
                 if (payload.Table.length > 0) {
                     SetInfoData(payload.Table);
                     IsLoading(false);
@@ -284,7 +293,8 @@ export default function MainSalarySlip({ navigation }) {
 
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('SalaryApiError', e);
+            Alert.alert("Error" , "No Internet Connection")
         }
     }
     //..................End: SalaryApiData ...................//

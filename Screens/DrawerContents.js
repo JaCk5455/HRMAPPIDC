@@ -23,6 +23,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../Components/Context';
 import { Helper } from '../Components/Helpers';
 import * as Contants from '../constants/constants';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 // import { useNavigation } from '@react-navigation/native';
 
@@ -55,18 +57,15 @@ export default function DrawerContent(props, { navigation }) {
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                        <View style={{ flexDirection: 'row', marginTop: wp('2.5%') }}>
                             <Avatar.Image
                                 source={{ uri: ((data.EmployeePic) ? `data:image/png;base64,${data.EmployeePic}` : (data.EmployeeGender == "M" || data.EmployeeGender == "MALE" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
 
-
-
-
                                 //  source={{ uri: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" }}
-                                size={50}
+                                size={wp('15%')}
 
                             />
-                            <View style={{ marginLeft: 15, flexDirection: 'column' }}>
+                            <View style={{ marginLeft: wp('2%'), flexDirection: 'column' }}>
 
                                 {/* <Title style={styles.title}>John Doe</Title> */}
                                 <Title style={styles.title}>{data.UserFullName}</Title>
@@ -130,16 +129,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     userInfoSection: {
-        paddingLeft: 20,
+        paddingLeft: wp('3%'),
     },
     title: {
-        fontSize: 16,
-        marginTop: 3,
+        fontSize: wp('4%'),
+        marginTop: wp('1%'),
         fontWeight: 'bold',
     },
     caption: {
-        fontSize: 14,
-        lineHeight: 14,
+        fontSize: wp('3.5%'),
+        
     },
     row: {
         marginTop: 20,
@@ -156,10 +155,10 @@ const styles = StyleSheet.create({
         marginRight: 3,
     },
     drawerSection: {
-        marginTop: 15,
+        marginTop: wp('2.5%'),
     },
     bottomDrawerSection: {
-        marginBottom: 15,
+        marginBottom: wp('2.5%'),
         borderTopColor: '#f4f4f4',
         borderTopWidth: 1
     },

@@ -362,7 +362,70 @@ export default function AttendanceScreen({ navigation, route }) {
 
     // ......... End: FlatList Function(_Refresh & getItemLayout ) ........... //
 
+const _ListHeader = () =>{
+    return(
+        <View style={[styles.ViewSection, { marginBottom: wp('1%') }]}>
 
+         <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
+
+
+
+
+            {route.params.AttendancePeriodName == '' || route.params.AttendancePeriodName == null ?
+                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
+                :
+                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendancePeriodName}</Text>
+            }
+
+
+            {route.params.AttendanceFiscalName == '' || route.params.AttendanceFiscalName == null ?
+                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
+                :
+                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendanceFiscalName}</Text>
+            }
+
+         </View>
+
+
+
+
+         <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
+
+            <View style={styles.Attanempinfoview}>
+                <View style={{ flex: 1.9, justifyContent: 'center' }}>
+                    <Text style={styles.Attanemptxt}>Employee Name :</Text>
+
+                </View>
+
+                <View style={{ flex: 2, justifyContent: 'center' }}>
+                    <Text style={styles.Attanempsubtxt}>{apidata.length > 0 ? (apidata[0].FullName == null || apidata[0].FullName == '' ? 'N/A' : apidata[0].FullName) : 'N/A'}</Text>
+
+                    {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text> */}
+                </View>
+
+            </View>
+
+
+            <View style={styles.Attanempinfoview}>
+                <View style={{ flex: 1.9, justifyContent: 'center' }}>
+                    <Text style={styles.Attanemptxt}>Total Working Hours :</Text>
+                </View>
+
+                <View style={{ flex: 2, justifyContent: 'center' }}>
+
+                    <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text>
+
+                    {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
+
+                </View>
+
+            </View>
+         </View>
+
+    </View>
+
+    )
+}
     return (
 
         <View style={styles.AttanMainContainer}>
@@ -377,7 +440,7 @@ export default function AttendanceScreen({ navigation, route }) {
                 :
                 <>
 
-                    <View style={[styles.ViewSection, { marginBottom: wp('1%') }]}>
+                    {/* <View style={[styles.ViewSection, { marginBottom: wp('1%') }]}>
 
                         <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
 
@@ -413,7 +476,6 @@ export default function AttendanceScreen({ navigation, route }) {
                                 <View style={{ flex: 2, justifyContent: 'center' }}>
                                     <Text style={styles.Attanempsubtxt}>{apidata.length > 0 ? (apidata[0].FullName == null || apidata[0].FullName == '' ? 'N/A' : apidata[0].FullName) : 'N/A'}</Text>
 
-                                    {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text> */}
                                 </View>
 
                             </View>
@@ -428,16 +490,15 @@ export default function AttendanceScreen({ navigation, route }) {
 
                                     <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text>
 
-                                    {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
 
                                 </View>
 
                             </View>
                         </View>
 
-                    </View>
+                    </View> */}
 
-                    <View style={{ marginBottom: wp('45%') }}>
+                    <View >
                         <FlatList
                             data={apidata}
                             renderItem={_RenderItem}
@@ -445,6 +506,7 @@ export default function AttendanceScreen({ navigation, route }) {
                             refreshing={_Refresh}
                             // getItemLayout={getItemLayout}
                             keyExtractor={(item, index) => index.toString()}
+                            ListHeaderComponent = {_ListHeader}
                         />
                     </View>
                 </>

@@ -25,9 +25,11 @@
       "package": "com.idc.hrm",
       "versionCode":12,
       "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json" ,
       "adaptiveIcon": {
         "foregroundImage": "./assets/EmployeeAppLogo.png",
         "backgroundColor": "#FFFFFF"
+             
       }
       
     },

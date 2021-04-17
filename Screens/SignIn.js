@@ -7,8 +7,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { AuthContext } from "../Components/Context";
 import ProgressBar from '../Components/ProgressBar';
 import { Helper } from '../Components/Helpers';
-
 import * as Contants from '../constants/constants';
+
+
 import { BackHandler } from 'react-native';
 // import { ActivityIndicator } from 'react-native-paper';
 
@@ -43,34 +44,31 @@ export default function SignIn({ navigation }) {
     });
 
 
-
-
+// .........Begin: Token get from helper class .........//
     React.useEffect(() => {
 
         Helper.storeTokenInLocalStorage().then((Token) => {
             setToken(Token)
-            console.log('gettoken', Token)
+            console.log('Get_token_SignIn_from_Helper_Class', Token)
 
         }).catch((e) => {
-            console.log('eee', e);
+            console.log('no token get from helperclass for signin Api param', e);
         });
 
 
     }, [])
+// .........End ............................//
 
+
+    //..........Begin: Resend OTP Button Timer ....../
     React.useEffect(()=>{
-
- 
     setTimeout(function(){
  
       setResendOtp(true);
  
     }, 30000);
- 
- 
- 
     }, [])
-
+//..........End: Resend OTP Button Timer ....../
 
 
     const updateSecureTextEntry = () => {
@@ -123,19 +121,13 @@ export default function SignIn({ navigation }) {
     }
 
 
-
-
-
-
-
-
+//..............Begin: SignIN ApI ....................//
     const signInCall = async (signal) => {
         // console.log('api called')
         try {
 
             // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password + '&SourceLogin=' + 2 + '&MobileDeviceToken=' + 52005452, {
-            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin', {
-
+                const response = await fetch(Contants.API_URL + 'Login/V1/EmployeeLogin', {
                 signal: signal,
                 method: 'POST',
                 headers: {
@@ -164,17 +156,15 @@ export default function SignIn({ navigation }) {
                 setUserData(payload);
                 if (payload[0].isregister == 1) {
                     signIn(payload);
-
                 }
                 else if (payload[0].isregister == 0) {
                     setShowOtpModel(true);
                 }
                 else if (payload[0].isregister == 2) {
-                   // console.log('issue')
-                    Alert.alert('Error', ' This username is already Login on other Device, if you want to login on this Device kindly Contact with Hr.')
+                    Alert.alert('Error', 'This Employee is already Registered against other Device. If you want to LogIn on this device, kindly Contact HR.')
                 }
                 else if (payload[0].isregister == 3) {
-                     Alert.alert('Error', 'This device is already Registered against other Employee')
+                     Alert.alert('Error', 'This device is already registered against other mmployee')
                 }
             }
 
@@ -191,6 +181,7 @@ export default function SignIn({ navigation }) {
 
         }
     }
+//..............END: SignIN ApI ....................//
 
 
 
@@ -206,13 +197,13 @@ export default function SignIn({ navigation }) {
         }
     }
 
-
+//..............Begin: OTP ApI ....................//
     const signInCallWithOtp = async (signal) => {
         console.log('otpapi called')
 
         try {
             // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP?OTP=' + otpcode + '&EmpId=' + userdata[0].EmpId + '&MobileDeviceToken=' + 52005452 + '&IsloggedIn=' + 1 + '&AppType=' + 2, {
-            const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/VerifyOTP', {
+            const response = await fetch(Contants.API_URL +'Login/V1/VerifyOTP', {
 
                 signal: signal,
                 method: 'POST',
@@ -239,27 +230,18 @@ export default function SignIn({ navigation }) {
 
             });
             const data = await response.json();
-            console.log('otp', data);
+            console.log('otpApiData', data);
             if (data.statusCode == 200) {
                 // const payLoad = JSON.parse(data.payload);
                 if (data.payload == "Device Registered Successfully" && data.message == "OK - Successful" ){
-                    signIn(userdata);
-                    
+                    signIn(userdata);                   
                     setShowProgressBar(true);
-                    console.log('payrasndbyotpapi', userdata)
-                }
-                console.log('payloadsndbyotpapi', userdata)
-                // else {
-                //     Alert.alert('Error', 'you are enter wrong otp code')
-                // }
-
+                }             
             }
             else {
                 Alert.alert('Error', 'Incorrect OTP')
             }
             setShowProgressBar(false);
-
-
         }
         catch (e) {
             console.log('Error otp catch', e);
@@ -268,7 +250,17 @@ export default function SignIn({ navigation }) {
 
         }
     }
+    //..............END: OTP ApI ....................//
 
+    
+
+//...................Begin: BackButon Function In OtP model ..................//
+    const _Back = () => {
+        return (
+            setShowOtpModel(false)
+        )
+    }
+//................End: BackButon Function In OtP model ..................//
 
 
 
@@ -343,11 +335,7 @@ export default function SignIn({ navigation }) {
     // }
 
 
-    const _Back = () => {
-        return (
-            setShowOtpModel(false)
-        )
-    }
+ 
 
 
 
