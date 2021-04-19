@@ -7,22 +7,25 @@ import { AuthContext } from "../Components/Context";
 import { Ionicons, AntDesign, FontAwesome, Feather } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
 
-import MainLeaveScreen from '../Screens/FrontScreens/LeaveMain';
-import LeavesScreen from '../Screens/FrontScreens/Leaves';
+
 import EncashmentScreen from '../Screens/FrontScreens/Encashment';
 import ExtraTimeScreen from '../Screens/FrontScreens/ExtraTime';
 import CompensatoryOffScreen from '../Screens/FrontScreens/CompOff';
 import LoanApplicationScreen from '../Screens/FrontScreens/LoanApplication';
 import FAQScreen from '../Screens/FrontScreens/FAQ';
+
 import NewLeaveRequestScreen from '../Screens/FrontScreens/NewLeaveRequest';
-import SalarySlipScreen from '../Screens/FrontScreens/Salary';
-import AttendanceScreen from '../Screens/FrontScreens/Attendance';
-import SalaryFisicalScreen from '../Screens/FrontScreens/SalaryFisicalScreen';
+import MainLeaveScreen from '../Screens/FrontScreens/LeaveMain';
+import LeaveFisicalScreen from '../Screens/FrontScreens/LeaveFiscal';
+import LeavesScreen from '../Screens/FrontScreens/Leaves';
+
 import AttendanceFisicalScreen from '../Screens/FrontScreens/AttandanceFisical';
 import MainAttendanceScreen from '../Screens/FrontScreens/AttandanceMainScreen';
-import LeaveFisicalScreen from '../Screens/FrontScreens/LeaveFiscal';
+import AttendanceScreen from '../Screens/FrontScreens/Attendance';
+
 import MainSalarySlip from '../Screens/FrontScreens/mainSalarySlip';
 import SalaryFisicalYearScreen from '../Screens/FrontScreens/SalaryFiscalYear';
+import SalarySlipScreen from '../Screens/FrontScreens/Salary';
 
 const HomeStack = createStackNavigator();
 const { height, width } = Dimensions.get('window');
