@@ -161,10 +161,10 @@ export default function SignIn({ navigation }) {
                     setShowOtpModel(true);
                 }
                 else if (payload[0].isregister == 2) {
-                    Alert.alert('Error', 'This Employee is already Registered against other Device. If you want to LogIn on this device, kindly Contact HR.')
+                    Alert.alert('Error', 'This Employee is already Registered against other Device. If you want to SignIn on this device, kindly Contact HR.')
                 }
                 else if (payload[0].isregister == 3) {
-                    Alert.alert('Error', 'This device is already registered against other employee')
+                    Alert.alert('Error', 'This device is already Registered against other employee. If you want to register on this device, kindly Contact HR.')
                 }
             }
 

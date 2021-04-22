@@ -87,7 +87,7 @@ export default function MainProfileScreen({ navigation }) {
 
     const ProfileApiData = async (signal) => {
         try {
-
+console.log(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails')
            // ... Live const response = await fetch(Contants.API_URL + 'Employeeinfo/EmployeePerosnalDetails?Empid=' + data[0].EmpId, {
            //... testing 
            const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails' , {  

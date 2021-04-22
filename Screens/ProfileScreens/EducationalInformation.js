@@ -13,7 +13,7 @@ const { height, width } = Dimensions.get('window');
 export default function EducationalInformationScreen({ route  }) {
 
     //   const [data, SetData] = useState([]);
-    const [apidata, SetApiData] = useState([]);
+    const [educationldata, setEducationalDataData] = useState([]);
     const [loading, IsLoading] = useState(false);
 
 
@@ -84,111 +84,205 @@ export default function EducationalInformationScreen({ route  }) {
     //         console.log('Error', e);
     //     }
     // }
-  
-  
 
+    useEffect(()=>{
+       if( route.params.Edudata.length > 0 )
+       { 
+//           console.log('data from main screen' , route.params.Edudata);
+setEducationalDataData(route.params.Edudata);
+
+}
+console.log('edudata' , route.params.Edudata)
+    }, [])
+
+
+    const _RenderItem = ({ item }) => {
+        return <ItemView item={item} />
+    }
+
+    function ItemView({ item }) {return(  
+        <View style={{flex:1}}>
+
+            <View style={{flexDirection: 'row' , marginHorizontal:wp('2%') , marginTop:wp('3%')}}>
+
+
+                <Text style={{fontSize:wp('4%') , fontWeight:"bold" , borderBottomWidth:0.5 , color:'black'}} >Degree Title :</Text>
+
+                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+                    {educationldata.Degree !== "" ? item.Degree : 'N/A'}                 
+                </Text>
+            </View>
+           
+
+
+
+           <View style={{borderWidth:0.5 , backgroundColor:'#fff' , marginHorizontal:wp('2%'), marginVertical: wp('2%')}}>
+
+        
+            <View style={{flexDirection: 'row' , marginHorizontal:wp('2%') , marginTop:wp('2%') , alignItems:'center'}}>
+
+                <Ionicons name="newspaper-outline" size={wp('5%')} color="#006666" />
+                <Text style={{fontSize:wp('4%') , fontWeight:"bold" , borderBottomWidth:0.5 , color:'grey' , paddingLeft:wp('2%')}} >Specialization :</Text>
+
+                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+                    {educationldata.Specialization !== "" ? item.Specialization : 'N/A'}                 
+                </Text>
+
+            </View>
+
+            <View style={{flexDirection: 'row' , marginHorizontal:wp('2%') , marginTop:wp('2%') , alignItems:'center'}}>
+
+<AntDesign name="calendar" size={wp('5%')} color="#006666" />
+<Text style={{fontSize:wp('4%') , fontWeight:"bold" , borderBottomWidth:0.5 , color:'grey' , paddingLeft:wp('2%')}} >Completion Date :</Text>
+
+<Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+    {educationldata.CompletionDate !== "" ? moment(item.CompletionDate).format("MMMM D, YYYY") : 'N/A'}                 
+</Text>
+
+</View>
+
+                
+            </View>
+        </View>
+
+
+     
+    )}
+
+  
+  
+    const _Refresh = () => {
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+
+            <ActivityIndicator size="small" color="#008080" />
+        </View>
+    }
 
     return (
 
-        <ScrollView style={styles.profileDetailContainer}>
-            <StatusBar backgroundColor='#008080' barStyle="light-content" />
 
-            {loading ?
-                <View style={{flex:1 , justifyContent:'center'}}> 
-            
-                <ActivityIndicator size="small" color="#008080" />
+
+
+               <View style={{flex:1}}>
+                    <FlatList
+                        data={educationldata}
+                        renderItem={_RenderItem}
+                        // keyExtractor={keyExtractorVisit}
+                        keyExtractor={(item, index) => index.toString()}
+                        refreshing={_Refresh}
+                    />
+
                 </View>
-                 :
-                <>
 
 
-                    <View>
-                        <View style={styles.profileItem}>
+
+
+
+
+
+
+
+
+
+        // <ScrollView style={styles.profileDetailContainer}>
+        //     <StatusBar backgroundColor='#008080' barStyle="light-content" />
+
+        //     {loading ?
+        //         <View style={{flex:1 , justifyContent:'center'}}> 
+            
+        //         <ActivityIndicator size="small" color="#008080" />
+        //         </View>
+        //          :
+        //         <>
+
+
+        //             <View>
+        //                 <View style={styles.profileItem}>
                             
-                            <Ionicons name="newspaper-outline" size={wp('7%')} color="#006666" />
-                            <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
-                                <Text style={styles.profileSubItem}>Degree Title</Text>
+        //                     <Ionicons name="newspaper-outline" size={wp('7%')} color="#006666" />
+        //                     <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+        //                         <Text style={styles.profileSubItem}>Degree Title</Text>
 
 
 
 
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>BS(CS)</Text> */}
+        //                         {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>BS(CS)</Text> */}
 
 
-                                 {route.params.Edudata[0].Degree == '' || route.params.Edudata[0].Degree == null || route.params.Edudata[0].Specialization == '' || route.params.Edudata[0].Specialization == null ?
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
-                                    :
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].Degree + '(' + route.params.Edudata[0].Specialization + ')'}</Text>
-                                }
+        //                          {route.params.Edudata[0].Degree == '' || route.params.Edudata[0].Degree == null || route.params.Edudata[0].Specialization == '' || route.params.Edudata[0].Specialization == null ?
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
+        //                             :
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].Degree + '(' + route.params.Edudata[0].Specialization + ')'}</Text>
+        //                         }
 
-                            </View>
-                        </View>
+        //                     </View>
+        //                 </View>
 
 
-                        <View style={styles.profileItem}>
-                            <AntDesign name="calendar" size={wp('7%')} color="#006666" />
-                            <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
-                                <Text style={styles.profileSubItem}>Completion Date</Text>
+        //                 <View style={styles.profileItem}>
+        //                     <AntDesign name="calendar" size={wp('7%')} color="#006666" />
+        //                     <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+        //                         <Text style={styles.profileSubItem}>Completion Date</Text>
 
 
                                 
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>August 17,2015</Text> */}
+        //                         {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>August 17,2015</Text> */}
 
-                                 {route.params.Edudata[0].CompletionDate == '' || route.params.Edudata[0].CompletionDate == null ?
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
-                                    :
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{moment(route.params.Edudata[0].CompletionDate).format("MMMM D, YYYY")}</Text>
-                                }
+        //                          {route.params.Edudata[0].CompletionDate == '' || route.params.Edudata[0].CompletionDate == null ?
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
+        //                             :
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{moment(route.params.Edudata[0].CompletionDate).format("MMMM D, YYYY")}</Text>
+        //                         }
 
-                            </View>
-                        </View>
+        //                     </View>
+        //                 </View>
 
-                        <View style={styles.profileItem}>
-                            <FontAwesome5 name="building" size={wp('7%')} color="#006666" />
-                            <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
-                                <Text style={styles.profileSubItem}>University/College/Institute</Text>
+        //                 <View style={styles.profileItem}>
+        //                     <FontAwesome5 name="building" size={wp('7%')} color="#006666" />
+        //                     <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+        //                         <Text style={styles.profileSubItem}>University/College/Institute</Text>
                                 
                                 
                                 
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>University of Michigan</Text> */}
+        //                         {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>University of Michigan</Text> */}
 
 
 
 
-                                 {route.params.Edudata[0].Institution == '' || route.params.Edudata[0].Institution == null ?
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
-                                    :
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].Institution}</Text>
-                                }
+        //                          {route.params.Edudata[0].Institution == '' || route.params.Edudata[0].Institution == null ?
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
+        //                             :
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].Institution}</Text>
+        //                         }
 
-                            </View>
-                        </View>
+        //                     </View>
+        //                 </View>
 
-                        <View style={styles.profileItem}>
-                            <SimpleLineIcons name="calculator" size={wp('7%')} color="#006666" />
-                            <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
-                                <Text style={styles.profileSubItem}>Grade/GPA/Percentage</Text>
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ? (apidata[0].ObtainedGPA == null || apidata[0].ObtainedGPA == '' ? 'N/A' : apidata[0].ObtainedGPA) : ''} </Text> */}
-
-
-                                {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>2.5</Text> */}
-
-                                 {route.params.Edudata[0].ObtainedGPA == '' || route.params.Edudata[0].ObtainedGPA == null ?
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
-                                    :
-                                    <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].ObtainedGPA}</Text>
-                                }
-                            </View>
-                        </View>
+        //                 <View style={styles.profileItem}>
+        //                     <SimpleLineIcons name="calculator" size={wp('7%')} color="#006666" />
+        //                     <View style={{ flex: 1, marginBottom: wp('3%'), paddingLeft: wp('4%') }}>
+        //                         <Text style={styles.profileSubItem}>Grade/GPA/Percentage</Text>
+        //                         {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{apidata.length > 0 ? (apidata[0].ObtainedGPA == null || apidata[0].ObtainedGPA == '' ? 'N/A' : apidata[0].ObtainedGPA) : ''} </Text> */}
 
 
+        //                         {/* <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>2.5</Text> */}
 
-                    </View>
+        //                          {route.params.Edudata[0].ObtainedGPA == '' || route.params.Edudata[0].ObtainedGPA == null ?
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>N/A</Text>
+        //                             :
+        //                             <Text style={{ fontSize: wp('4%'), paddingTop: wp('1%') }}>{route.params.Edudata[0].ObtainedGPA}</Text>
+        //                         }
+        //                     </View>
+        //                 </View>
 
-                </>
-            }
 
-        </ScrollView>
+
+        //             </View>
+
+        //         </>
+        //     }
+
+        // </ScrollView>
 
     );
 
