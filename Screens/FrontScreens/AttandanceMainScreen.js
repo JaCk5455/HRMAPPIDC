@@ -135,7 +135,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
     const FicicalYearApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
 
                 method: 'POST',
                 headers: {
@@ -159,7 +159,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('YearApiError', e);
         }
     }
     //............. End: Year Api Data ............... //
@@ -170,7 +170,8 @@ export default function MainAttendanceScreen({ navigation , route}) {
     const MonthApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+            // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+                const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
 
                 method: 'POST',
                 headers: {
@@ -178,8 +179,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalyearId: maxfiscalid
-
+                    fiscalYearId: maxfiscalid
 
                 })
             });
@@ -198,7 +198,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('MonthApiError', e);
         }
     }
     //............. End: Month Api Data ............... //
@@ -209,7 +209,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
     const AttandanceApiCall = async () => {
         try {
            //  console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid)
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail' , {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -251,7 +251,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
 
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('AttandanceApiError', e);
         }
     }
     // ........... End: AttandanceApiCall ....... //

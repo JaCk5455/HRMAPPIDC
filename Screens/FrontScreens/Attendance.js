@@ -46,7 +46,7 @@ export default function AttendanceScreen({ navigation, route }) {
         try {
             // console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + route.params.AttendancePeriodId)
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + route.params.AttendancePeriodId, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail' , {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

@@ -183,7 +183,17 @@ export default function SalarySlipScreen({ navigation, route }) {
 
         }
         catch (e) {
-            console.log('Error', e);
+            Alert.alert(
+                "Alert",
+                "No Record Found",
+                [
+                    
+                    { text: "OK", onPress: () => navigation.navigate("SalaryFisicalYearScreen") }
+                ],
+                { cancelable: false }
+            )
+            console.log('SalaryScreenError', e);
+
         }
     }
     //..................End: SalaryApiData ...................//

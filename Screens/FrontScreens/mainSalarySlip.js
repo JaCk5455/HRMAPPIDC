@@ -41,6 +41,18 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
+//   // ............. Begin: salaryapi useEffect ...............//
+//   useEffect(() => {
+//     if (data.length > 0 ) {
+//         // console.log(route.params.SalPeriodId[0].PeriodId);
+//         SalaryApiData();
+//         // IsLoading(false);
+//     }
+// }, [data])
+// // ............. End: salaryapi useEffect ...............//
+
+
+
     // ............. Begin: salaryapi useEffect ...............//
     useEffect(() => {
         if (data.length > 0 && maxperiodid !== null) {
@@ -174,13 +186,13 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-    // ........... Begin: Month ApiCall ............... //
+   // ........... Begin: Month ApiCall ............... //
     const MonthApiCall = async () => {
         try {
 
         // Live...   const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
 
-        const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/FiscalYearPeriodList', {
+        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
 
                 method: 'POST',
                 headers: {
@@ -188,7 +200,7 @@ export default function MainSalarySlip({ navigation }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalyearId: maxfiscalid
+                    fiscalYearId: maxfiscalid
                 })
             });
             const responseObj = await response.json();
@@ -210,7 +222,7 @@ export default function MainSalarySlip({ navigation }) {
             console.log('MonthError', e);
         }
     }
-    // ........... End: Month ApiCall ............... //
+    //........... End: Month ApiCall ............... //
 
 
 
@@ -230,14 +242,11 @@ export default function MainSalarySlip({ navigation }) {
                 },
 
                 body: JSON.stringify({
-                    Empid: data[0].EmpId,
-                    periodId: maxperiodid
+                    // Empid: data[0].EmpId,
+                    // periodId: maxperiodid
 
-                        // Empid: 1,
-                        
-                        
-                        
-                        // periodId : 98 
+                        Empid: 277,                        
+                        periodId : 98 
 
                 })
             });

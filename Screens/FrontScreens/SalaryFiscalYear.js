@@ -49,15 +49,15 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
     const MonthApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + selectedyearvalue, {
-
+         //   const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + selectedyearvalue, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalyearId: selectedyearvalue
+                    fiscalYearId: selectedyearvalue
 
 
                 })

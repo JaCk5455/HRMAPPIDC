@@ -38,7 +38,7 @@ export default function LeavesScreen({ navigation, route }) {
     //..... Begin : Leave Api Call ...... //
     const LeaveApiCall = async () => {
         try {
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + route.params.LeaveFiscalYear + '&fromPeriodId=' + route.params.LeaveFromPeriodId + '&ToPeriodId=' + route.params.LeaveToPeriodID, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail' , {
 
                 // const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + 75 + '&FiscalYearId=' + 9 + '&fromPeriodId=' + 97 + '&ToPeriodId=' + 108, {
 

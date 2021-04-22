@@ -83,15 +83,14 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-
+//..................Begin: ProfileApi .....................//
 
     const ProfileApiData = async (signal) => {
         try {
 
            // ... Live const response = await fetch(Contants.API_URL + 'Employeeinfo/EmployeePerosnalDetails?Empid=' + data[0].EmpId, {
            //... testing 
-           const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails' , {
-  
+           const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails' , {  
            signal: signal,
                 method: 'POST',
                 headers: {
@@ -101,8 +100,6 @@ export default function MainProfileScreen({ navigation }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId
-
-
                 })
             });
             const responseObj = await response.json();
@@ -159,11 +156,11 @@ export default function MainProfileScreen({ navigation }) {
             console.log('Error', e);
         }
     }
+//..................End: ProfileApi .....................//
 
 
 
     return (
-
 
         <View style={styles.MainProfilecontainer}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
@@ -359,11 +356,6 @@ export default function MainProfileScreen({ navigation }) {
             }
 
         </View >
-
-
-
-
-
 
     );
 }

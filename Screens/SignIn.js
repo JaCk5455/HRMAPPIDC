@@ -164,7 +164,7 @@ export default function SignIn({ navigation }) {
                     Alert.alert('Error', 'This Employee is already Registered against other Device. If you want to LogIn on this device, kindly Contact HR.')
                 }
                 else if (payload[0].isregister == 3) {
-                     Alert.alert('Error', 'This device is already registered against other mmployee')
+                    Alert.alert('Error', 'This device is already registered against other employee')
                 }
             }
 
@@ -388,7 +388,7 @@ export default function SignIn({ navigation }) {
                             />
 
                         </View>
-                        <Text style={{ textAlign: 'center' }}>Otp has been sent to your phone Number/Email Registered by HR.</Text>
+                        <Text style={{ textAlign: 'center' }}>Otp has been sent to your phone Number and Email Registered by HR.</Text>
 
                     </View>
                 </View>

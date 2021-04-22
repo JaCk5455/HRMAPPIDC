@@ -44,7 +44,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
     const FicicalYearApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
 
                 method: 'POST',
                 headers: {
@@ -68,7 +68,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('AttandanceFiscalError', e);
         }
     }
         //............. End: Year Api Data ............... //
@@ -79,7 +79,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
     const MonthApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + selectedyearvalue, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
 
                 method: 'POST',
                 headers: {
@@ -87,7 +87,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalyearId: selectedyearvalue
+                    fiscalYearId: selectedyearvalue
 
 
                 })
@@ -107,7 +107,7 @@ export default function AttendanceFisicalScreen({ navigation, route }) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('AttandanceMonthApiError', e);
         }
     }
     //............. End: Month Api Data ............... //

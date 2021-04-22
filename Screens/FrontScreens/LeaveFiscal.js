@@ -49,8 +49,7 @@ export default function LeaveFisicalScreen({ navigation, route }) {
     // Year Api data
     const FicicalYearApiCall = async () => {
         try {
-
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
 
                 method: 'POST',
                 headers: {
@@ -84,14 +83,16 @@ export default function LeaveFisicalScreen({ navigation, route }) {
     // month Api Data
     const MonthApiCall = async () => {
         try {
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + selectedyearvalue, {
-                method: 'POST',
+            // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + selectedyearvalue, {
+                const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
+
+            method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalyearId: selectedyearvalue
+                    fiscalYearId: selectedyearvalue
 
 
                 })

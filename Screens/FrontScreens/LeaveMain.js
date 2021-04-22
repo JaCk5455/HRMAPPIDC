@@ -120,7 +120,7 @@ export default function MainLeaveScreen({ navigation }) {
     const FicicalYearApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalyearList', {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
 
                 method: 'POST',
                 headers: {
@@ -144,7 +144,7 @@ export default function MainLeaveScreen({ navigation }) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('YearApiError', e);
         }
     }
     //............. End: Year Api Data ............... //
@@ -155,15 +155,15 @@ export default function MainLeaveScreen({ navigation }) {
     const MonthApiCall = async () => {
         try {
 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
-
+           // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalyearId: maxfiscalid
+                    fiscalYearId: maxfiscalid
 
 
                 })
@@ -183,7 +183,7 @@ export default function MainLeaveScreen({ navigation }) {
             }
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('MonthApiError', e);
         }
     }
     //............. End: Month Api Data ............... //
@@ -192,9 +192,8 @@ export default function MainLeaveScreen({ navigation }) {
     const LeaveApiCall = async () => {
         try {
              // console.log('Leave URL', Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid);
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid, {
-
-                // const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + 75 + '&FiscalYearId=' + 9 + '&fromPeriodId=' + 97 + '&ToPeriodId=' + 108, {
+            // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid, {
+                const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail' , {
 
                 method: 'POST',
                 headers: {
@@ -247,7 +246,7 @@ export default function MainLeaveScreen({ navigation }) {
 
         }
         catch (e) {
-            console.log('Error', e);
+            console.log('LeaveApiError', e);
         }
     }
     //..... End : Leave Api Call ...... //
