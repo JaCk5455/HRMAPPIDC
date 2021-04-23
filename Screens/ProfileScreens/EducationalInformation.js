@@ -100,53 +100,95 @@ console.log('edudata' , route.params.Edudata)
         return <ItemView item={item} />
     }
 
-    function ItemView({ item }) {return(  
-        <View style={{flex:1}}>
+    function ItemView({ item }) {
+        return(  
+        <View style={styles.profileDetailContainer}>
 
-            <View style={{flexDirection: 'row' , marginHorizontal:wp('2%') , marginTop:wp('3%')}}>
+            <View style={styles.Title}>
 
 
-                <Text style={{fontSize:wp('4%') , fontWeight:"bold" , borderBottomWidth:0.5 , color:'black'}} >Degree Title :</Text>
-
-                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-                    {educationldata.Degree !== "" ? item.Degree : 'N/A'}                 
-                </Text>
+                <Text style={{fontSize:wp('4%') , fontWeight:"bold" ,  color:'black'}} >Degree Title :</Text>
+            {educationldata.length.Degree > 0 || 
+            
+            educationldata.Degree == null ?
+                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>N/A</Text> 
+                :
+                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>{item.Degree}</Text>
+                
+               
+            }
             </View>
            
 
 
 
-           <View style={{borderWidth:0.5 , backgroundColor:'#fff' , marginHorizontal:wp('2%'), marginVertical: wp('2%')}}>
+           
+           <View style={styles.Boxes}>
 
-        
-            <View style={{flexDirection: 'row' , marginHorizontal:wp('2%') , marginTop:wp('2%') , alignItems:'center'}}>
+                <View style={styles.Box_Content}>
+                    <View style={{flex:1.5 , flexDirection: 'row'}}>
+                        <Ionicons name="newspaper-outline" size={wp('5%')} color="#006666" />
+                        <Text style={styles.Txt}>Specialization :</Text>
+                    </View>
 
-                <Ionicons name="newspaper-outline" size={wp('5%')} color="#006666" />
-                <Text style={{fontSize:wp('4%') , fontWeight:"bold" , borderBottomWidth:0.5 , color:'grey' , paddingLeft:wp('2%')}} >Specialization :</Text>
+                    <View style={{flex:2 , paddingLeft:wp('1%')}}>
+                        <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+                         {educationldata.Specialization == "" || educationldata.Specialization == null ? item.Specialization : N/A}                 
+                        </Text>
+                    </View>
+                </View>
 
-                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-                    {educationldata.Specialization !== "" ? item.Specialization : 'N/A'}                 
-                </Text>
+
+                <View style={styles.Box_Content}>             
+                    <View style={{flex:1.5 , flexDirection: 'row'}}>
+                        <AntDesign name="calendar" size={wp('5%')} color="#006666" />
+                        <Text style={styles.Txt}>Completion Date :</Text>
+                    </View>
+
+                    <View style={{flex:2, paddingLeft:wp('1%')}}>
+                        <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+                         {educationldata.CompletionDate == "" || educationldata.CompletionDate == null ? moment(item.CompletionDate).format("D MMMM, YYYY") : 'N/A'}                 
+                        </Text>
+                    </View>
+
+                </View>
+
+
+                <View style={styles.Box_Content}>                 
+                   <View style={{flex:1.5 , flexDirection: 'row' }}>
+                        <FontAwesome5 name="building" size={wp('5%')} color="#006666" />    
+                        <Text style={styles.Txt}>Institute :</Text>
+                    </View>
+
+                    <View style={{flex:2 , paddingLeft:wp('1%')}}>
+                        <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+                         {educationldata.Institution !== "" || educationldata.Institution == null ? item.Institution : 'N/A'}                 
+                        </Text>
+                    </View>
+
+                </View>
+
+
+                <View style={styles.Box_Content}> 
+                    <View style={{flex:1.5 , flexDirection: 'row' }}>
+                        <SimpleLineIcons name="calculator" size={wp('5%')} color="#006666" />    
+                        <Text style={styles.Txt}>Grade/GPA :</Text>
+                    </View>
+
+                    <View style={{flex:2 , paddingLeft:wp('1%')}}>
+                        <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
+                         {educationldata.ObtainedGPA !== "" || educationldata.ObtainedGPA == null ?  item.ObtainedGPA : 'N/A'}                 
+                        </Text>
+                    </View>
+
+                </View>
+
+
+
 
             </View>
-
-            <View style={{flexDirection: 'row' , marginHorizontal:wp('2%') , marginTop:wp('2%') , alignItems:'center'}}>
-
-<AntDesign name="calendar" size={wp('5%')} color="#006666" />
-<Text style={{fontSize:wp('4%') , fontWeight:"bold" , borderBottomWidth:0.5 , color:'grey' , paddingLeft:wp('2%')}} >Completion Date :</Text>
-
-<Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-    {educationldata.CompletionDate !== "" ? moment(item.CompletionDate).format("MMMM D, YYYY") : 'N/A'}                 
-</Text>
-
-</View>
-
-                
-            </View>
+       
         </View>
-
-
-     
     )}
 
   
@@ -163,7 +205,8 @@ console.log('edudata' , route.params.Edudata)
 
 
 
-               <View style={{flex:1}}>
+               <View style={styles.profileDetailContainer}>
+                   <StatusBar backgroundColor='#008080' barStyle="light-content" />
                     <FlatList
                         data={educationldata}
                         renderItem={_RenderItem}
@@ -175,11 +218,51 @@ console.log('edudata' , route.params.Edudata)
                 </View>
 
 
+    );
+}
+const styles = StyleSheet.create({
+    profileDetailContainer: {
+        flex: 1,
+        backgroundColor: "#fff"
+    },
+    Title: {
+        //borderWidth: 1, borderColor: '#E8E8E8',
+        flexDirection: 'row' ,
+        marginHorizontal:wp('2%') ,
+        marginTop:wp('3%')
+
+    },
+    Boxes: {
+         borderWidth:0.5 ,
+         borderColor:'#E8E8E8',
+        borderRadius:5,
+        backgroundColor:'#fff' , 
+         marginHorizontal:wp('2%'), 
+        marginVertical: wp('2%'),
+        // backgroundColor:'#F8F8F8'
+        
+    },
+    Box_Content:{
+        flexDirection: 'row' ,
+        marginHorizontal:wp('2%') ,
+        marginTop:wp('2%') ,
+        alignItems:'center',
+        // borderBottomWidth:0.5 
+    },
+    Txt:{
+    fontSize:wp('4%') ,
+    fontWeight:"bold" ,
+    color:'grey' ,
+    paddingLeft:wp('2%'),
+    paddingBottom:wp('1%')
+}
+});
 
 
 
 
 
+//................................ 1st Design for EducationDetail ..........................................// 
 
 
 
@@ -284,32 +367,35 @@ console.log('edudata' , route.params.Edudata)
 
         // </ScrollView>
 
-    );
+//     );
 
-}
+// }
 
 
-const styles = StyleSheet.create({
-    profileDetailContainer: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    profileItem: {
-        borderWidth: 1, borderColor: '#E8E8E8',
-        flexDirection: 'row',
-        paddingHorizontal: wp('3%'),
-        paddingTop: wp('3%'),
-        borderRadius: 8,
-        marginTop: wp('2%'),
-        marginBottom: wp('2%'),
-        marginLeft: wp('2%'),
-        marginRight: wp('2%'),
-        justifyContent: 'center'
+// const styles = StyleSheet.create({
+//     profileDetailContainer: {
+//         flex: 1,
+//         backgroundColor: '#fff'
+//     },
+//     profileItem: {
+//         borderWidth: 1, borderColor: '#E8E8E8',
+//         flexDirection: 'row',
+//         paddingHorizontal: wp('3%'),
+//         paddingTop: wp('3%'),
+//         borderRadius: 8,
+//         marginTop: wp('2%'),
+//         marginBottom: wp('2%'),
+//         marginLeft: wp('2%'),
+//         marginRight: wp('2%'),
+//         justifyContent: 'center'
 
-    },
-    profileSubItem: {
-        color: 'gray',
-        fontSize: wp('4%'),
+//     },
+//     profileSubItem: {
+//         color: 'gray',
+//         fontSize: wp('4%'),
 
-    }
-});
+//     }
+// });
+
+
+//................................ 1st Design for EducationDetail ..........................................//
