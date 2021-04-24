@@ -103,7 +103,7 @@ export default function MainProfileScreen({ navigation }) {
                 })
             });
             const responseObj = await response.json();
-             // console.log(responseObj)
+              //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
                 //  console.log('prifile data',payloadData)
@@ -114,7 +114,7 @@ export default function MainProfileScreen({ navigation }) {
                     IsLoading(false);
                 }
                 else {
-                    Alert.alert('Error')
+                    Alert.alert('Error' , 'No Record Found')
                 }
                 if (payloadData.Table2.length > 0) {
                     SetEduApiData(payloadData.Table2);
@@ -123,7 +123,7 @@ export default function MainProfileScreen({ navigation }) {
                     IsLoading(false);
                 }
                 else {
-                    Alert.alert('Error')
+                    Alert.alert('Error' , 'No Record Found')
                 }
 
 
@@ -191,7 +191,8 @@ export default function MainProfileScreen({ navigation }) {
                                     // source={{
                                     //     uri: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
                                     // }}
-                                    source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender.toUpperCase() == "M" || data[0].EmployeeGender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
+                                     source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender.toUpperCase() == "M" || data[0].EmployeeGender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
+                                   // source={{ uri: (personalapidata.length > 0 ? (personalapidata[0].EmployeePic ? `data:image/png;base64,${personalapidata[0].EmployeePic}` : (personalapidata[0].Gender.toUpperCase() == "M" || personalapidata[0].Gender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     size={wp('27%')}
                                     style={{ marginTop: wp('-18%') }}
                                 />

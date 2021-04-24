@@ -7,6 +7,7 @@ import * as Contants from '../../constants/constants';
 
 import { Helper } from '../../Components/Helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
 
@@ -85,17 +86,24 @@ export default function EducationalInformationScreen({ route  }) {
     //     }
     // }
 
+    //.........................Begin:Get Data from main screen....................//
     useEffect(()=>{
        if( route.params.Edudata.length > 0 )
-       { 
-//           console.log('data from main screen' , route.params.Edudata);
-setEducationalDataData(route.params.Edudata);
+        { 
+            setEducationalDataData(route.params.Edudata);
+        }
+        else{
+            Alert.alert('Error' , "Server error, please try again later")
+        }
+       // console.log('edudata from main screen ' , route.params.Edudata);
+        
 
-}
-console.log('edudata' , route.params.Edudata)
-    }, [])
+    },[])
+      //.........................End:Get Data from main screen....................//
 
 
+
+//..................Begin:Functions of FlatList........................//
     const _RenderItem = ({ item }) => {
         return <ItemView item={item} />
     }
@@ -108,15 +116,12 @@ console.log('edudata' , route.params.Edudata)
 
 
                 <Text style={{fontSize:wp('4%') , fontWeight:"bold" ,  color:'black'}} >Degree Title :</Text>
-            {educationldata.length.Degree > 0 || 
-            
-            educationldata.Degree == null ?
-                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>N/A</Text> 
-                :
-                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>{item.Degree}</Text>
                 
-               
-            }
+                {/* <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>{educationldata.Degree == "" || educationldata.Degree == null ? item.Degree : N/A}  </Text> */}
+                
+                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>{educationldata.Degree == '' || item.Degree == null ?  "N/A" : item.Degree}</Text>
+
+            
             </View>
            
 
@@ -133,7 +138,7 @@ console.log('edudata' , route.params.Edudata)
 
                     <View style={{flex:2 , paddingLeft:wp('1%')}}>
                         <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-                         {educationldata.Specialization == "" || educationldata.Specialization == null ? item.Specialization : N/A}                 
+                         {educationldata.Specialization == "" || item.Specialization == null ?  "N/A" :item.Specialization }                 
                         </Text>
                     </View>
                 </View>
@@ -147,7 +152,7 @@ console.log('edudata' , route.params.Edudata)
 
                     <View style={{flex:2, paddingLeft:wp('1%')}}>
                         <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-                         {educationldata.CompletionDate == "" || educationldata.CompletionDate == null ? moment(item.CompletionDate).format("D MMMM, YYYY") : 'N/A'}                 
+                         {educationldata.CompletionDate == "" || item.CompletionDate == null ? 'N/A' : moment(item.CompletionDate).format("D MMMM, YYYY") }                 
                         </Text>
                     </View>
 
@@ -162,7 +167,7 @@ console.log('edudata' , route.params.Edudata)
 
                     <View style={{flex:2 , paddingLeft:wp('1%')}}>
                         <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-                         {educationldata.Institution !== "" || educationldata.Institution == null ? item.Institution : 'N/A'}                 
+                         {item.Institution == null ? 'N/A' : item.Institution }                 
                         </Text>
                     </View>
 
@@ -177,7 +182,7 @@ console.log('edudata' , route.params.Edudata)
 
                     <View style={{flex:2 , paddingLeft:wp('1%')}}>
                         <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') }}>
-                         {educationldata.ObtainedGPA !== "" || educationldata.ObtainedGPA == null ?  item.ObtainedGPA : 'N/A'}                 
+                         {educationldata.ObtainedGPA == "" || item.ObtainedGPA == null ? 'N/A' : item.ObtainedGPA }                 
                         </Text>
                     </View>
 
@@ -190,15 +195,14 @@ console.log('edudata' , route.params.Edudata)
        
         </View>
     )}
-
-  
-  
+    
     const _Refresh = () => {
         <View style={{ flex: 1, justifyContent: 'center' }}>
 
             <ActivityIndicator size="small" color="#008080" />
         </View>
     }
+    //..................Begin:Function of FlatList........................//
 
     return (
 
@@ -233,7 +237,7 @@ const styles = StyleSheet.create({
 
     },
     Boxes: {
-         borderWidth:0.5 ,
+         borderWidth:1 ,
          borderColor:'#E8E8E8',
         borderRadius:5,
         backgroundColor:'#fff' , 
