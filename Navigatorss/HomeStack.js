@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, Alert , Image} from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from "../Components/Context";
 import { Ionicons, AntDesign, FontAwesome, Feather } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
-
+import { WebView } from 'react-native-webview';
 
 import EncashmentScreen from '../Screens/FrontScreens/Encashment';
 import ExtraTimeScreen from '../Screens/FrontScreens/ExtraTime';
@@ -193,6 +193,15 @@ export default function HomeStackScreen({ navigation }) {
                 // )
             }} />
 
+            <HomeStack.Screen name="NewLeaveRequestScreen" component={NewLeaveRequestScreen} options={{
+                title: "New Leave",
+                headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: "#008080"
+                },
+                headerShown: true
+            }} />
+
             {/* <HomeStack.Screen name="ExtraTimeScreen" component={ExtraTimeScreen} options={{
                 title: "Extra Time",
                 headerTintColor: "#fff",
@@ -215,6 +224,21 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
+                headerRight : () => (
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => {
+                        <View>
+                             <WebView source={{ uri: 'https://www.google.com/' }}/>;
+                        </View>
+                    }}>
+                        <Avatar.Image source={require('../assets/file.png')}
+                        size={wp('10%')}
+                        style={{alignItems:'flex-end'}}
+                    
+                    />
+                </TouchableOpacity>
+                </View>
+                )
             }} />
 
             <HomeStack.Screen name="SalaryFisicalYearScreen" component={SalaryFisicalYearScreen} options={{
@@ -323,14 +347,7 @@ export default function HomeStackScreen({ navigation }) {
                 //     <Ionicons.Button name="arrow-back" size={24} color="#fff" ç></Ionicons.Button>
                 // ),
             }} />
-            <HomeStack.Screen name="NewLeaveRequestScreen" component={NewLeaveRequestScreen} options={{
-                title: "New Leave",
-                headerTintColor: "#fff",
-                headerStyle: {
-                    backgroundColor: "#008080"
-                },
-                headerShown: true
-            }} />
+            
 
         </HomeStack.Navigator>
     );

@@ -306,7 +306,7 @@ export default function MainSalarySlip({ navigation }) {
         }
         catch (e) {
             console.log('SalaryApiError', e);
-            Alert.alert("Error" , "No Internet Connection")
+            Alert.alert("Error" , "No Record Found, please try again later")
         }
     }
     //..................End: SalaryApiData ...................//
