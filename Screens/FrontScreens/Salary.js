@@ -113,7 +113,9 @@ export default function SalarySlipScreen({ navigation, route }) {
     const SalaryApiData = async () => {
         try {
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId, {
+ //           const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/EmployeeSalarySlip', {
+
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -122,7 +124,8 @@ export default function SalarySlipScreen({ navigation, route }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                    periodId: route.params.SalPeriodId
+                   periodId: route.params.SalPeriodId
+                   // periodId: 100
 
                 })
             });

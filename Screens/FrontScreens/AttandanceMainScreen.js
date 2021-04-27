@@ -77,6 +77,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
             // console.log('map lop', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
+          //  console.log('maxfiscalvalue' , maxfiscalid)
         }
     }, [yearapidata])
 
@@ -117,7 +118,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
             }))
 
 
-
+//console.log('minPeriodValue' , minPeriodValue)
             setMaxPeriodId(minPeriodValue)
             // setMaxPeriodId(abc)
 
@@ -147,7 +148,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-                // console.log('aaa', payloadData)
+            //     console.log('aaa', payloadData)
                 if (payloadData.length > 0) {
                     //console.log('fescalyear', payloadData)
                     setYearApiData(payloadData);
@@ -209,7 +210,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
     const AttandanceApiCall = async () => {
         try {
            //  console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid)
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail' , {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualAttendanceDetail' , {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -219,6 +220,9 @@ export default function MainAttendanceScreen({ navigation , route}) {
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
                     periodId: maxperiodid
+                    // periodId: 104,
+                    //  Empid: 277
+                    
 
                 })
             });

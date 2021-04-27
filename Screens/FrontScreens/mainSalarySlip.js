@@ -80,7 +80,7 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-    // ............. Begin: GetFiscalID ...............//
+    // ............. Begin: GetMaxFiscalID ...............//
 
     useEffect(() => {
         let Maxfiscalvalue = [];
@@ -94,25 +94,25 @@ export default function MainSalarySlip({ navigation }) {
             Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
                 return item.fiscalyearid;
             }))
-                console.log('maxfiscalidget', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
+           // console.log('maxfiscalvalue', maxfiscalid)
         }
     }, [fisicalapidata])
-    // ............. End: GetFiscalID ...............//
+    // ............. End: GetMaxFiscalID ...............//
 
 
 
 
 
-    // ............. Begin: GetMinPeriodID ...............//
+    // ............. Begin: GetMaxPeriodID ...............//
     useEffect(() => {
         // let abc = [];
         let maxPeriod;
         if (monthapidata.length > 0) {
 
             maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-                  console.log('maxperiod id', item.PeriodId)
+               //   console.log('maxperiod id', item.PeriodId)
 
                 if (item.IsPayGenerated == 1) {
                     return item.PeriodId;
@@ -134,7 +134,7 @@ export default function MainSalarySlip({ navigation }) {
             //     }
             // }))
             setMaxPeriodId(maxPeriod)
-                console.log('maxperidvalue', maxPeriod)
+             //   console.log('maxperidvalue', maxPeriod)
 
         }
 
@@ -208,7 +208,7 @@ export default function MainSalarySlip({ navigation }) {
             
             if (responseObj.statusCode == 200) {
                 let monthpayload = JSON.parse(responseObj.payload);
-                 // console.log('month', monthpayload)
+                  console.log('month', monthpayload)
                 if (monthpayload.length > 0) {
                     SetMonthApiData(monthpayload);
                     // IsLoading(false);
@@ -242,18 +242,18 @@ export default function MainSalarySlip({ navigation }) {
                 },
 
                 body: JSON.stringify({
-                    // Empid: data[0].EmpId,
-                    // periodId: maxperiodid
+                    Empid: data[0].EmpId,
+                    periodId: maxperiodid
 
-                        Empid: 277,                        
-                        periodId : 98 
+                        // Empid: 277,                        
+                        // periodId : 98 
 
                 })
             });
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                  console.log('salary', payload)
+                //  console.log('salary', payload)
                 if (payload.Table.length > 0) {
                     SetInfoData(payload.Table);
                     IsLoading(false);

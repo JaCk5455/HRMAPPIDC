@@ -224,21 +224,21 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-                headerRight : () => (
-                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => {
-                        <View>
-                             <WebView source={{ uri: 'https://www.google.com/' }}/>;
-                        </View>
-                    }}>
-                        <Avatar.Image source={require('../assets/file.png')}
-                        size={wp('10%')}
-                        style={{alignItems:'flex-end'}}
+                // headerRight : () => (
+                //     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                //     <TouchableOpacity onPress={async () => {
+                //         <View>
+                //              < await WebView source={{ uri: 'http://www.google.com/' }}/>;
+                //         </View>
+                //     }}>
+                //         <Avatar.Image source={require('../assets/file.png')}
+                //         size={wp('10%')}
+                //         style={{alignItems:'flex-end'}}
                     
-                    />
-                </TouchableOpacity>
-                </View>
-                )
+                //     />
+                // </TouchableOpacity>
+                // </View>
+                // )
             }} />
 
             <HomeStack.Screen name="SalaryFisicalYearScreen" component={SalaryFisicalYearScreen} options={{
