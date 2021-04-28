@@ -115,11 +115,11 @@ export default function EducationalInformationScreen({ route  }) {
             <View style={styles.Title}>
 
 
-                <Text style={{fontSize:wp('4%') , fontWeight:"bold" ,  color:'black'}} >Degree Title :</Text>
+                <Text style={{fontSize:wp('4%') , fontWeight:"bold" ,  color:'#006666'}} >Degree Title :</Text>
                 
                 {/* <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>{educationldata.Degree == "" || educationldata.Degree == null ? item.Degree : N/A}  </Text> */}
                 
-                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'#777777'}}>{educationldata.Degree == '' || item.Degree == null ?  "N/A" : item.Degree}</Text>
+                <Text style={{paddingHorizontal:wp('2%') , fontSize:wp('4%') ,  color:'block'}}>{educationldata.Degree == '' || item.Degree == null ?  "N/A" : item.Degree}</Text>
 
             
             </View>
