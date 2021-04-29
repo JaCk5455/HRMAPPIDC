@@ -364,17 +364,21 @@ export default function LeavesScreen({ navigation, route }) {
         </View>
     }
 
+    const _ListHeader = () =>{
+        return(
+            <View style={{ paddingTop: wp('2%'), paddingBottom: wp('2%'), alignItems: 'center' }}>
+            <Text style={{ color: "#000", fontWeight: '800', fontSize: wp("7%"), paddingTop: wp("3%") }}>
+                {route.params.LeaveFromMonths + ' - ' + route.params.LeaveToMonths}
+            </Text>
+        </View>
+    )}
 
     return (
 
 
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
-            <View style={{ paddingTop: wp('2%'), paddingBottom: wp('2%'), alignItems: 'center' }}>
-                <Text style={{ color: "#000", fontWeight: '800', fontSize: wp("7%"), paddingTop: wp("3%") }}>
-                    {route.params.LeaveFromMonths + ' - ' + route.params.LeaveToMonths}
-                </Text>
-            </View>
-            <View style={{ marginBottom: ('17%') }}>
+           
+          
                 {isLoading ?
                     <ActivityIndicator
                         style={{ height: 60 }}
@@ -389,9 +393,10 @@ export default function LeavesScreen({ navigation, route }) {
                         getItemLayout={getItemLayout}
                         keyExtractor={(item, index) => index.toString()}
                         refreshing={_Refresh}
+                        ListHeaderComponent = {_ListHeader}
                     />
                 }
-            </View>
+            
         </View >
     );
 }

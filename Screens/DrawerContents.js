@@ -59,7 +59,7 @@ export default function DrawerContent(props, { navigation }) {
                     <View style={styles.userInfoSection}>
                         <View style={{ flexDirection: 'row', marginTop: wp('2.5%') }}>
                             <Avatar.Image
-                                source={{ uri: ((data.EmployeePic) ? `data:image/png;base64,${data.EmployeePic}` : (data.EmployeeGender == "M" || data.EmployeeGender == "MALE" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
+                                source={{ uri: ((data.EmployeePic) ? `data:image/png;base64,${data.EmployeePic}` : (data.EmployeeGender == "M" || data.EmployeeGender == "Male" || data.EmployeeGender == "male" || data.EmployeeGender == "MALE"  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
 
                                 //  source={{ uri: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" }}
                                 size={wp('15%')}

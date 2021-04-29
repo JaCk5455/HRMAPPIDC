@@ -208,7 +208,7 @@ export default function MainSalarySlip({ navigation }) {
             
             if (responseObj.statusCode == 200) {
                 let monthpayload = JSON.parse(responseObj.payload);
-                  console.log('month', monthpayload)
+                //  console.log('month', monthpayload)
                 if (monthpayload.length > 0) {
                     SetMonthApiData(monthpayload);
                     // IsLoading(false);
