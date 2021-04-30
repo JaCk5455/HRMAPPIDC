@@ -145,6 +145,10 @@ export default function App() {
       try {
         await AsyncStorage.setItem('@loggedIn', 'true');
         await AsyncStorage.setItem('@loggedInPayload', JSON.stringify(payload));
+
+        await AsyncStorage.setItem('@value' , '123')
+
+
       } catch (e) {
         console.log('Sign In error reducer', e);
       }
@@ -176,10 +180,16 @@ export default function App() {
       let payLoad;
       isLoggedIn = null;
       payLoad = null;
+
       try {
         isLoggedIn = await AsyncStorage.getItem('@loggedIn');
         payLoad = await AsyncStorage.getItem('@loggedInPayload');
-
+let Value = await AsyncStorage.getItem('@value')
+if(Value !== "123")
+{
+        await AsyncStorage.removeItem('@loggedIn');
+        await AsyncStorage.removeItem('@loggedInPayload');
+}
         // console.log(payLoad);
       } catch (e) {
         console.log(e);

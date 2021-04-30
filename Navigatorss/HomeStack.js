@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions, Alert , Image} from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, Alert , Image } from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from "../Components/Context";
 import { Ionicons, AntDesign, FontAwesome, Feather } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
-import { WebView } from 'react-native-webview';
 
 import EncashmentScreen from '../Screens/FrontScreens/Encashment';
 import ExtraTimeScreen from '../Screens/FrontScreens/ExtraTime';
@@ -33,8 +32,10 @@ import { Foundation } from '@expo/vector-icons';
 
 
 export default function HomeStackScreen({ navigation }) {
+    // const url = 'https://www.facebook.com/';
     const { signOut } = React.useContext(AuthContext);
     return (
+
 
 
         <HomeStack.Navigator>
@@ -224,21 +225,26 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-                // headerRight : () => (
-                //     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                //     <TouchableOpacity onPress={async () => {
-                //         <View>
-                //              < await WebView source={{ uri: 'http://www.google.com/' }}/>;
-                //         </View>
-                //     }}>
-                //         <Avatar.Image source={require('../assets/file.png')}
-                //         size={wp('10%')}
-                //         style={{alignItems:'flex-end'}}
+        //         headerRight : () => (
+        //             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                        
+        //             <TouchableOpacity onPress={() => {
+        //                 <View>
+                        
+        //                 <WebView
+        // source={{
+        //   uri: url,
+        // }} />
+        //                 </View>
+        //             }}>
+        //                 <Avatar.Image source={require('../assets/file.png')}
+        //                 size={wp('10%')}
+        //                 style={{alignItems:'flex-end'}}
                     
-                //     />
-                // </TouchableOpacity>
-                // </View>
-                // )
+        //             />
+        //         </TouchableOpacity>
+        //         </View>
+        //         )
             }} />
 
             <HomeStack.Screen name="SalaryFisicalYearScreen" component={SalaryFisicalYearScreen} options={{
