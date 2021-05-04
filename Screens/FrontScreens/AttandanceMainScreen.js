@@ -238,7 +238,7 @@ export default function MainAttendanceScreen({ navigation , route}) {
                 else {
                     Alert.alert(
                         "Alert",
-                        "Record Not Found, Please Contact HR Department",
+                        " No record found for the current month.",
                         [
                             {
                                 text: "Previous Record",
@@ -256,6 +256,19 @@ export default function MainAttendanceScreen({ navigation , route}) {
         }
         catch (e) {
             console.log('AttandanceApiError', e);
+            Alert.alert(
+                "Alert",
+                "Record Not Found, Please Contact HR Department",
+                [
+                    {
+                        text: "Previous Record",
+                        onPress: () => navigation.navigate("AttendanceFisicalScreen"),
+                        style: "cancel"
+                    },
+                    { text: "OK", onPress: () => navigation.navigate("HomeScreen") }
+                ],
+                { cancelable: false }
+            )
         }
     }
     // ........... End: AttandanceApiCall ....... //

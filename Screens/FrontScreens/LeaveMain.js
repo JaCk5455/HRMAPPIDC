@@ -260,6 +260,39 @@ export default function MainLeaveScreen({ navigation }) {
         return <ItemView item={item} />
     }
 
+    const LeaveColor = (item)=>{
+        let color = '#008080'
+ 
+       if(item == 'Annual leaves'){
+         color='#777777'
+       }
+        else if(item == 'Causal Leaves'){
+            color='#ff8000';
+        }
+
+        else if(item == 'Short Leave'){
+            color='#004CFF';
+        }
+
+        else if(item == 'Sick Leave'){
+            color='#A37546';
+        }
+
+        else if(item == 'Leave Without Pay'){
+            color='#FF2E00';
+        }
+
+        else if(item == 'Compensatory leave'){
+            color='#008080';
+        }
+
+        else{
+            color = '#008080';
+        }
+
+        return color;
+    }
+
     function ItemView({ item }) {
         return (
 
@@ -279,7 +312,21 @@ export default function MainLeaveScreen({ navigation }) {
                 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <View style={{ flex: 5 }}>
-                            {item.Description == "Annual leaves" ?
+
+
+                        <Text style={{
+    fontSize: wp('4%'),
+    fontWeight: 'bold',
+    color :LeaveColor(item.Description),
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#CBCBCB',
+    paddingTop: wp('1%')
+}}>
+    {item.Description}
+</Text>
+
+
+                            {/* {item.Description == "Annual leaves" ?
 
                                 <Text style={{
                                     fontSize: wp('4%'),
@@ -347,7 +394,7 @@ export default function MainLeaveScreen({ navigation }) {
                                 }}>
                                     {item.Description}
                                 </Text>
-                                : <></>}
+                                : <></>} */}
 
 
                             {/* <View style={{ flex: 5 }}>
