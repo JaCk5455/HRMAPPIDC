@@ -5,9 +5,9 @@ import React from 'react';
 // Login api
 // export const API_URL = 'https://idcnow.co/orbitempservice/api/V1/'
 
-export const API_URL = 'https://reports.idc.net.pk/orbitempservice/api/'  // ....Live......
+//export const API_URL = 'https://reports.idc.net.pk/orbitempservice/api/'  // ....Live......
 
-//export const API_URL = 'https://reports.idc.net.pk/orbitempservicestg/api/'  //stg_Testing.
+export const API_URL = 'https://reports.idc.net.pk/orbitempservicestg/api/'  //stg_Testing.
 
 export const USER_IMAGE = {
     // MALE: 'data:image/png;base64,https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png',

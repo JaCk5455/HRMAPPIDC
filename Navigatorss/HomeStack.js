@@ -225,26 +225,20 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-        //         headerRight : () => (
-        //             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                // headerRight : () => (
+                //     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                         
-        //             <TouchableOpacity onPress={() => {
-        //                 <View>
-                        
-        //                 <WebView
-        // source={{
-        //   uri: url,
-        // }} />
-        //                 </View>
-        //             }}>
-        //                 <Avatar.Image source={require('../assets/file.png')}
-        //                 size={wp('10%')}
-        //                 style={{alignItems:'flex-end'}}
+                //     <TouchableOpacity onPress={() => {{
+                //         <WebView source={{ uri: 'https://reactnative.dev/' }} />
+                //     }}}>
+                //         <Avatar.Image source={require('../assets/file.png')}
+                //         size={wp('10%')}
+                //         style={{alignItems:'flex-end'}}
                     
-        //             />
-        //         </TouchableOpacity>
-        //         </View>
-        //         )
+                //     />
+                // </TouchableOpacity>
+                // </View>
+                // )
             }} />
 
             <HomeStack.Screen name="SalaryFisicalYearScreen" component={SalaryFisicalYearScreen} options={{
