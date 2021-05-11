@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions, Alert , Image } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, Alert , Image , Button } from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -29,10 +29,17 @@ import SalarySlipScreen from '../Screens/FrontScreens/Salary';
 const HomeStack = createStackNavigator();
 const { height, width } = Dimensions.get('window');
 import { Foundation } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
 
 
 export default function HomeStackScreen({ navigation }) {
     // const url = 'https://www.facebook.com/';
+
+
+    // const _handlePressButtonAsync = async () => {
+    //     let result = await WebBrowser.openBrowserAsync('https://expo.io');
+    //     setResult(result);
+    //   };
     const { signOut } = React.useContext(AuthContext);
     return (
 
@@ -182,16 +189,16 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-                // headerRight: () => (
-                //     <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
-                //         <TouchableOpacity style={{ backgroundColor: "#008080", padding: 2 }}>
-                //             <AntDesign name="pluscircle" color="#941313" size={28}
-                //                 // style={{ backgroundColor: "#0041c4", }}
-                //                 onPress={() => { navigation.navigate("NewLeaveRequestScreen"); }}> </AntDesign>
-                //         </TouchableOpacity>
-                //     </View>
+                headerRight: () => (
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
+                        <TouchableOpacity style={{ backgroundColor: "#008080", padding: 2 }}>
+                            <AntDesign name="pluscircle" color="#941313" size={28}
+                                // style={{ backgroundColor: "#0041c4", }}
+                                onPress={() => { navigation.navigate("NewLeaveRequestScreen"); }}> </AntDesign>
+                        </TouchableOpacity>
+                    </View>
 
-                // )
+                )
             }} />
 
             <HomeStack.Screen name="NewLeaveRequestScreen" component={NewLeaveRequestScreen} options={{
@@ -225,20 +232,11 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-                // headerRight : () => (
-                //     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                        
-                //     <TouchableOpacity onPress={() => {{
-                //         <WebView source={{ uri: 'https://reactnative.dev/' }} />
-                //     }}}>
-                //         <Avatar.Image source={require('../assets/file.png')}
-                //         size={wp('10%')}
-                //         style={{alignItems:'flex-end'}}
-                    
-                //     />
-                // </TouchableOpacity>
-                // </View>
-                // )
+//                 headerRight : () => (
+//                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+//  <Button title="Open WebBrowser" onPress={_handlePressButtonAsync} />                 
+//                 </View>
+//                 )
             }} />
 
             <HomeStack.Screen name="SalaryFisicalYearScreen" component={SalaryFisicalYearScreen} options={{

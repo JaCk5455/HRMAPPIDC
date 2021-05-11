@@ -5,11 +5,11 @@ import * as Contants from '../../constants/constants';
 import { Helper } from '../../Components/Helpers';
 const { height, width } = Dimensions.get('window');
 import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons , FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import * as WebBrowser from 'expo-web-browser';
 
 
 export default function MainSalarySlip({ navigation }) {
@@ -379,7 +379,10 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-
+    const _handlePressButtonAsync = async () => {
+        let result = await WebBrowser.openBrowserAsync('https://expo.io');
+        setResult(result);
+      };
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -392,22 +395,44 @@ export default function MainSalarySlip({ navigation }) {
                 <>
                     <View style={styles.salarytmaincontainer}>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: wp('1%'), marginRight: wp('2%') }}>
-                            <TouchableOpacity onPress={() => {
-                                navigation.navigate('SalaryFisicalYearScreen', {
+                    <View style={{ flexDirection: 'row', marginTop: wp('1%') , justifyContent: 'flex-end' , marginRight:wp('2%')  }}>
+
+                    {/* <View style={{flex:2 , alignItems:'flex-end' , paddingRight:wp('2%')}}>
+                         <TouchableOpacity onPress= {()=>{
+                         _handlePressButtonAsync
+                        }}>
+                        <FontAwesome name="file-pdf-o" size={wp('6%')} color="red" />  
+                        </TouchableOpacity>
+
+                    </View> */}
+
+
+                    {/*.... attach <TouchableOpacity onPress= {()=>{
+                        _handlePressButtonAsync
+                    }}
+ style={{paddingRight:wp('1%')}}>
+
+<FontAwesome name="file-pdf-o" size={wp('6%')} color="red" />  
+ </TouchableOpacity> */}
+
+
+                            {/* <View style={{ flex:1 , justifyContent: 'flex-end' , marginRight:wp('2%')  }}> */}
+                                
+                                <TouchableOpacity onPress={() => {
+                                 navigation.navigate('SalaryFisicalYearScreen', {
                                     FiscalYears: fisicalapidata
-                                })
-                            }}
-                                style={{ flexDirection: 'row' }}
-                            >
-                                <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
-                                    Previous Record
-                                </Text>
-                                <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
+                                 })
+                                 }}
+                                    style={{ flexDirection: 'row' }}>
+                                 <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
+                                        Previous Record
+                                    </Text>
+                                    <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
 
+                                </TouchableOpacity>
 
-
-                            </TouchableOpacity>
+                            {/* </View> */}
+                        
                         </View>
 
                         {/* infiView */}

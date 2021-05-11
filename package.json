@@ -19,6 +19,7 @@
     "expo-device": "~2.4.0",
     "expo-notifications": "~0.8.2",
     "expo-status-bar": "~1.0.3",
+    "expo-web-browser": "~8.6.0",
     "link": "^0.1.5",
     "moment": "^2.29.1",
     "native-base": "^2.15.2",
