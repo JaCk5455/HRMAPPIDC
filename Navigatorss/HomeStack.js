@@ -13,18 +13,33 @@ import CompensatoryOffScreen from '../Screens/FrontScreens/CompOff';
 import LoanApplicationScreen from '../Screens/FrontScreens/LoanApplication';
 import FAQScreen from '../Screens/FrontScreens/FAQ';
 
-import NewLeaveRequestScreen from '../Screens/FrontScreens/NewLeaveRequest';
-import MainLeaveScreen from '../Screens/FrontScreens/LeaveMain';
-import LeaveFisicalScreen from '../Screens/FrontScreens/LeaveFiscal';
-import LeavesScreen from '../Screens/FrontScreens/Leaves';
+// import NewLeaveRequestScreen from '../Screens/FrontScreens/NewLeaveRequest';
+// import MainLeaveScreen from '../Screens/FrontScreens/LeaveMain';
+// import LeaveFisicalScreen from '../Screens/FrontScreens/LeaveFiscal';
+// import LeavesScreen from '../Screens/FrontScreens/Leaves';
 
-import AttendanceFisicalScreen from '../Screens/FrontScreens/AttandanceFisical';
-import MainAttendanceScreen from '../Screens/FrontScreens/AttandanceMainScreen';
-import AttendanceScreen from '../Screens/FrontScreens/Attendance';
+import NewLeaveRequestScreen from '../Screens/FrontScreens/Leaves/NewLeaveRequest';
+import MainLeaveScreen from '../Screens/FrontScreens/Leaves/LeaveMain';
+import LeaveFisicalScreen from '../Screens/FrontScreens/Leaves/LeaveFiscal';
+import LeavesScreen from '../Screens/FrontScreens/Leaves/Leaves';
 
-import MainSalarySlip from '../Screens/FrontScreens/mainSalarySlip';
-import SalaryFisicalYearScreen from '../Screens/FrontScreens/SalaryFiscalYear';
-import SalarySlipScreen from '../Screens/FrontScreens/Salary';
+
+// import AttendanceFisicalScreen from '../Screens/FrontScreens/AttandanceFisical';
+// import MainAttendanceScreen from '../Screens/FrontScreens/AttandanceMainScreen';
+// import AttendanceScreen from '../Screens/FrontScreens/Attendance';
+
+import AttendanceFisicalScreen from '../Screens/FrontScreens/Attandance/AttandanceFisical';
+import MainAttendanceScreen from '../Screens/FrontScreens/Attandance/AttandanceMainScreen';
+import AttendanceScreen from '../Screens/FrontScreens/Attandance/Attendance';
+
+
+// import MainSalarySlip from '../Screens/FrontScreens/mainSalarySlip';
+// import SalaryFisicalYearScreen from '../Screens/FrontScreens/SalaryFiscalYear';
+// import SalarySlipScreen from '../Screens/FrontScreens/Salary';
+
+import MainSalarySlip from '../Screens/FrontScreens/Salary/mainSalarySlip';
+import SalaryFisicalYearScreen from '../Screens/FrontScreens/Salary/SalaryFiscalYear';
+import SalarySlipScreen from '../Screens/FrontScreens/Salary/Salary';
 
 const HomeStack = createStackNavigator();
 const { height, width } = Dimensions.get('window');

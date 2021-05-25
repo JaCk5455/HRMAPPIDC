@@ -48,9 +48,13 @@ export default function SignIn({ navigation }) {
     React.useEffect(() => {
 
         Helper.storeTokenInLocalStorage().then((Token) => {
+            if(Token !== '' || Token !== null){
             setToken(Token)
             console.log('Get_token_SignIn_from_Helper_Class', Token)
-
+            }
+            else{
+                Alert.alert('Error', 'Please Close the App and try again later.')
+            }
         }).catch((e) => {
             console.log('no token get from helperclass for signin Api param', e);
         });

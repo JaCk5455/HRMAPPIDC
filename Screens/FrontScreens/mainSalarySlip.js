@@ -1,1039 +1,1039 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Dimensions, ScrollView, StyleSheet, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import * as Contants from '../../constants/constants';
-import { Helper } from '../../Components/Helpers';
-const { height, width } = Dimensions.get('window');
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons , FontAwesome } from '@expo/vector-icons';
-import moment from 'moment';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, Image, Dimensions, ScrollView, StyleSheet, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
+// import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+// import * as Contants from '../../constants/constants';
+// import { Helper } from '../../Components/Helpers';
+// const { height, width } = Dimensions.get('window');
+// import { MaterialIcons } from '@expo/vector-icons';
+// import { MaterialCommunityIcons , FontAwesome } from '@expo/vector-icons';
+// import moment from 'moment';
+// // import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import * as WebBrowser from 'expo-web-browser';
-
-
-export default function MainSalarySlip({ navigation }) {
-    const [fisicalapidata, SetFiscalApiData] = useState([]);
-    const [monthapidata, SetMonthApiData] = useState([]);
-    const [data, SetData] = useState([]);
-    const [infodata, SetInfoData] = useState([]);
-    const [allownsdata, SetAllownsData] = useState([]);
-    const [deductiondata, SetDeductionData] = useState([]);
-    const [loandata, setLoanData] = useState([]);
-    const [noloandata, SetNoLoanData] = useState(true);
-    const [maxfiscalid, setMaxFiscalId] = useState(null);
-    const [maxperiodid, setMaxPeriodId] = useState(null);
-    const [loading, IsLoading] = useState(true);
+// import * as WebBrowser from 'expo-web-browser';
 
 
-
-    // ............. Begin: GetdatafromHelper  useEffect...............//
-    useEffect(() => {
-        Helper.getLoggedInData().then((response) => {
-            SetData(response);
-
-        }).catch((e) => {
-            console.log('eee', e);
-        });
-    }, [])
-    // ............. End: GetdatafromHelper useEffect...............//
+// export default function MainSalarySlip({ navigation }) {
+//     const [fisicalapidata, SetFiscalApiData] = useState([]);
+//     const [monthapidata, SetMonthApiData] = useState([]);
+//     const [data, SetData] = useState([]);
+//     const [infodata, SetInfoData] = useState([]);
+//     const [allownsdata, SetAllownsData] = useState([]);
+//     const [deductiondata, SetDeductionData] = useState([]);
+//     const [loandata, setLoanData] = useState([]);
+//     const [noloandata, SetNoLoanData] = useState(true);
+//     const [maxfiscalid, setMaxFiscalId] = useState(null);
+//     const [maxperiodid, setMaxPeriodId] = useState(null);
+//     const [loading, IsLoading] = useState(true);
 
 
 
+//     // ............. Begin: GetdatafromHelper  useEffect...............//
+//     useEffect(() => {
+//         Helper.getLoggedInData().then((response) => {
+//             SetData(response);
 
-//   // ............. Begin: salaryapi useEffect ...............//
-//   useEffect(() => {
-//     if (data.length > 0 ) {
-//         // console.log(route.params.SalPeriodId[0].PeriodId);
-//         SalaryApiData();
-//         // IsLoading(false);
-//     }
-// }, [data])
-// // ............. End: salaryapi useEffect ...............//
+//         }).catch((e) => {
+//             console.log('eee', e);
+//         });
+//     }, [])
+//     // ............. End: GetdatafromHelper useEffect...............//
 
 
 
-    // ............. Begin: salaryapi useEffect ...............//
-    useEffect(() => {
-        if (data.length > 0 && maxperiodid !== null) {
-            // console.log(route.params.SalPeriodId[0].PeriodId);
-            SalaryApiData();
-            // IsLoading(false);
-        }
-    }, [data, maxperiodid])
-    // ............. End: salaryapi useEffect ...............//
+
+// //   // ............. Begin: salaryapi useEffect ...............//
+// //   useEffect(() => {
+// //     if (data.length > 0 ) {
+// //         // console.log(route.params.SalPeriodId[0].PeriodId);
+// //         SalaryApiData();
+// //         // IsLoading(false);
+// //     }
+// // }, [data])
+// // // ............. End: salaryapi useEffect ...............//
+
+
+
+//     // ............. Begin: salaryapi useEffect ...............//
+//     useEffect(() => {
+//         if (data.length > 0 && maxperiodid !== null) {
+//             // console.log(route.params.SalPeriodId[0].PeriodId);
+//             SalaryApiData();
+//             // IsLoading(false);
+//         }
+//     }, [data, maxperiodid])
+//     // ............. End: salaryapi useEffect ...............//
 
 
 
  
 
 
-    useEffect(() => {
-        if (maxfiscalid !== null) {
-            // console.log('aaa', yearapidata[0].fiscalyearid)
-            MonthApiCall();
-        }
-    }, [maxfiscalid])
+//     useEffect(() => {
+//         if (maxfiscalid !== null) {
+//             // console.log('aaa', yearapidata[0].fiscalyearid)
+//             MonthApiCall();
+//         }
+//     }, [maxfiscalid])
 
 
 
 
 
 
-    // ............. Begin: GetMaxFiscalID ...............//
+//     // ............. Begin: GetMaxFiscalID ...............//
 
-    useEffect(() => {
-        let Maxfiscalvalue = [];
-        if (fisicalapidata.length > 0) {
+//     useEffect(() => {
+//         let Maxfiscalvalue = [];
+//         if (fisicalapidata.length > 0) {
 
-            // fisicalapidata.map((item) => {
-            //     Maxfiscalvalue = Math.max(item.fiscalyearid)
-            // })
-
-
-            Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
-                return item.fiscalyearid;
-            }))
-
-            setMaxFiscalId(Maxfiscalvalue);
-           // console.log('maxfiscalvalue', maxfiscalid)
-        }
-    }, [fisicalapidata])
-    // ............. End: GetMaxFiscalID ...............//
+//             // fisicalapidata.map((item) => {
+//             //     Maxfiscalvalue = Math.max(item.fiscalyearid)
+//             // })
 
 
+//             Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
+//                 return item.fiscalyearid;
+//             }))
+
+//             setMaxFiscalId(Maxfiscalvalue);
+//            // console.log('maxfiscalvalue', maxfiscalid)
+//         }
+//     }, [fisicalapidata])
+//     // ............. End: GetMaxFiscalID ...............//
 
 
 
-    // ............. Begin: GetMaxPeriodID ...............//
-    useEffect(() => {
-        // let abc = [];
-        let maxPeriod;
-        if (monthapidata.length > 0) {
-
-            maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-               //   console.log('maxperiod id', item.PeriodId)
-
-                if (item.IsPayGenerated == 1) {
-                    return item.PeriodId;
 
 
-                }
-                else {
-                    return -Infinity;
-                }
-            }))
+//     // ............. Begin: GetMaxPeriodID ...............//
+//     useEffect(() => {
+//         // let abc = [];
+//         let maxPeriod;
+//         if (monthapidata.length > 0) {
 
-            // maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-            //     if (item.IsPayGenerated == 1) {
-            //         console.log('aaa', item.PeriodId)
-            //         return item.PeriodId;
-            //     }
-            //     else {
-            //         return Infinity;
-            //     }
-            // }))
-            setMaxPeriodId(maxPeriod)
-             //   console.log('maxperidvalue', maxPeriod)
+//             maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
+//                //   console.log('maxperiod id', item.PeriodId)
 
-        }
-
-    }, [monthapidata])
-    // ............. End: GetMaxPeriodID ...............//
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        const signal = abortController.signal;
-        FicicalYearApiCall(signal);
-        return function cleanup() {
-            abortController.abort();
-        }
-    }, [])
+//                 if (item.IsPayGenerated == 1) {
+//                     return item.PeriodId;
 
 
-    // ........... Begin: Fiscal Year ApiCall ............... //
-    const FicicalYearApiCall = async (signal) => {
-        try {
-   // console.log('fiscalyearApidata' , Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList')
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
-            signal: signal,
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            });
-            const responseObj = await response.json();
-            //console.log(responseObj)
-            if (responseObj.statusCode == 200) {
-                let payloadData = JSON.parse(responseObj.payload);
-                // console.log('aaa', payloadData)
-                if (payloadData.length > 0) {
-                    // console.log('FiscalYear', payloadData)
-                    SetFiscalApiData(payloadData);
-                    // IsLoading(false);
-                }
-                else {
-                    Alert.alert('Error')
-                }
-            }
-        }
-        catch (e) {
-            console.log('FiscalError', e);
-        }
-    }
-    // ........... End: Fiscal Year ApiCall ............... //
+//                 }
+//                 else {
+//                     return -Infinity;
+//                 }
+//             }))
+
+//             // maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
+//             //     if (item.IsPayGenerated == 1) {
+//             //         console.log('aaa', item.PeriodId)
+//             //         return item.PeriodId;
+//             //     }
+//             //     else {
+//             //         return Infinity;
+//             //     }
+//             // }))
+//             setMaxPeriodId(maxPeriod)
+//              //   console.log('maxperidvalue', maxPeriod)
+
+//         }
+
+//     }, [monthapidata])
+//     // ............. End: GetMaxPeriodID ...............//
+
+//     useEffect(() => {
+//         const abortController = new AbortController();
+//         const signal = abortController.signal;
+//         FicicalYearApiCall(signal);
+//         return function cleanup() {
+//             abortController.abort();
+//         }
+//     }, [])
+
+
+//     // ........... Begin: Fiscal Year ApiCall ............... //
+//     const FicicalYearApiCall = async (signal) => {
+//         try {
+//    // console.log('fiscalyearApidata' , Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList')
+//             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
+//             signal: signal,
+//                 method: 'POST',
+//                 headers: {
+//                     'Accept': 'application/json',
+//                     'Content-Type': 'application/json'
+//                 },
+//             });
+//             const responseObj = await response.json();
+//             //console.log(responseObj)
+//             if (responseObj.statusCode == 200) {
+//                 let payloadData = JSON.parse(responseObj.payload);
+//                 // console.log('aaa', payloadData)
+//                 if (payloadData.length > 0) {
+//                     // console.log('FiscalYear', payloadData)
+//                     SetFiscalApiData(payloadData);
+//                     // IsLoading(false);
+//                 }
+//                 else {
+//                     Alert.alert('Error')
+//                 }
+//             }
+//         }
+//         catch (e) {
+//             console.log('FiscalError', e);
+//         }
+//     }
+//     // ........... End: Fiscal Year ApiCall ............... //
 
 
 
-   // ........... Begin: Month ApiCall ............... //
-    const MonthApiCall = async () => {
-        try {
+//    // ........... Begin: Month ApiCall ............... //
+//     const MonthApiCall = async () => {
+//         try {
 
-        // Live...   const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+//         // Live...   const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
 
-        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
+//         const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
 
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    fiscalYearId: maxfiscalid
-                })
-            });
-            const responseObj = await response.json();
-            // console.log(responseObj)
+//                 method: 'POST',
+//                 headers: {
+//                     'Accept': 'application/json',
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify({
+//                     fiscalYearId: maxfiscalid
+//                 })
+//             });
+//             const responseObj = await response.json();
+//             // console.log(responseObj)
             
-            if (responseObj.statusCode == 200) {
-                let monthpayload = JSON.parse(responseObj.payload);
-                //  console.log('month', monthpayload)
-                if (monthpayload.length > 0) {
-                    SetMonthApiData(monthpayload);
-                    // IsLoading(false);
-                }
-                else {
-                    Alert.alert('Error')
-                }
-            }
-        }
-        catch (e) {
-            console.log('MonthError', e);
-        }
-    }
-    //........... End: Month ApiCall ............... //
+//             if (responseObj.statusCode == 200) {
+//                 let monthpayload = JSON.parse(responseObj.payload);
+//                 //  console.log('month', monthpayload)
+//                 if (monthpayload.length > 0) {
+//                     SetMonthApiData(monthpayload);
+//                     // IsLoading(false);
+//                 }
+//                 else {
+//                     Alert.alert('Error')
+//                 }
+//             }
+//         }
+//         catch (e) {
+//             console.log('MonthError', e);
+//         }
+//     }
+//     //........... End: Month ApiCall ............... //
 
 
 
 
-    //..................Begin: SalaryApiData ...................//
-    const SalaryApiData = async () => {
-        try {
-            //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
-            // Live..... const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
-            // TEsting 
-            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/EmployeeSalarySlip', {
+//     //..................Begin: SalaryApiData ...................//
+//     const SalaryApiData = async () => {
+//         try {
+//             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
+//             // Live..... const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
+//             // TEsting 
+//             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/EmployeeSalarySlip', {
 
-            method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
+//             method: 'POST',
+//                 headers: {
+//                     'Accept': 'application/json',
+//                     'Content-Type': 'application/json'
+//                 },
 
-                body: JSON.stringify({
-                    Empid: data[0].EmpId,
-                    periodId: maxperiodid
+//                 body: JSON.stringify({
+//                     Empid: data[0].EmpId,
+//                     periodId: maxperiodid
 
-                        // Empid: 277,                        
-                        // periodId : 98 
+//                         // Empid: 277,                        
+//                         // periodId : 98 
 
-                })
-            });
-            const responseObj = await response.json();
-            if (responseObj.statusCode == 200) {
-                let payload = JSON.parse(responseObj.payload);
-                //  console.log('salary', payload)
-                if (payload.Table.length > 0) {
-                    SetInfoData(payload.Table);
-                    IsLoading(false);
-                }
-                else {
-                    Alert.alert(
-                        "Alert",
-                        "No Record Found",
-                        [
-                            {
-                                text: "Cancel",
-                                onPress: () => navigation.navigate("HomeScreen"),
-                                style: "cancel"
-                            },
-                            { text: "OK", onPress: () => navigation.navigate("HomeScreen") }
-                        ],
-                        { cancelable: false }
-                    )
-                }
+//                 })
+//             });
+//             const responseObj = await response.json();
+//             if (responseObj.statusCode == 200) {
+//                 let payload = JSON.parse(responseObj.payload);
+//                 //  console.log('salary', payload)
+//                 if (payload.Table.length > 0) {
+//                     SetInfoData(payload.Table);
+//                     IsLoading(false);
+//                 }
+//                 else {
+//                     Alert.alert(
+//                         "Alert",
+//                         "No Record Found",
+//                         [
+//                             {
+//                                 text: "Cancel",
+//                                 onPress: () => navigation.navigate("HomeScreen"),
+//                                 style: "cancel"
+//                             },
+//                             { text: "OK", onPress: () => navigation.navigate("HomeScreen") }
+//                         ],
+//                         { cancelable: false }
+//                     )
+//                 }
 
-                if (payload.Table1.length > 0) {
-                    SetAllownsData(payload.Table1);
-                    //  console.log('xyz', payload.Table1);
-                    IsLoading(false);
-                }
-                else {
-                    console.log('Error')
-                }
+//                 if (payload.Table1.length > 0) {
+//                     SetAllownsData(payload.Table1);
+//                     //  console.log('xyz', payload.Table1);
+//                     IsLoading(false);
+//                 }
+//                 else {
+//                     console.log('Error')
+//                 }
 
-                if (payload.Table2.length > 0) {
-                    SetDeductionData(payload.Table2);
-                    // console.log('xyz', payload.Table2);
-                    IsLoading(false);
-                }
-                else {
-                    console.log('Error')
-                }
+//                 if (payload.Table2.length > 0) {
+//                     SetDeductionData(payload.Table2);
+//                     // console.log('xyz', payload.Table2);
+//                     IsLoading(false);
+//                 }
+//                 else {
+//                     console.log('Error')
+//                 }
 
-                if (payload.Table3.length > 0) {
-                    setLoanData(payload.Table3);
-                    // console.log('xyz', payload.Table3);
-                    IsLoading(false);
-                    SetNoLoanData(false);
-                }
-                else {
-                    SetNoLoanData(true);
-                }
-            }
+//                 if (payload.Table3.length > 0) {
+//                     setLoanData(payload.Table3);
+//                     // console.log('xyz', payload.Table3);
+//                     IsLoading(false);
+//                     SetNoLoanData(false);
+//                 }
+//                 else {
+//                     SetNoLoanData(true);
+//                 }
+//             }
 
-        }
-        catch (e) {
-            console.log('SalaryApiError', e);
-            Alert.alert("Error" , "No Record Found, please try again later")
-        }
-    }
-    //..................End: SalaryApiData ...................//
-
-
-
-
-
-    const GetAllownsData = () => {
-        if (allownsdata.length > 0) {
-            return (
-                allownsdata.map((item, index) => {
-
-                    return (
-                        <Text
-                            style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
-                            key={index}>
-                            {item.Allowance}
-                        </Text>
-                    )
-                })
-            )
-        }
-
-    }
-
-    const GetDetectionData = () => {
-        if (deductiondata.length > 0) {
-            return (
-                deductiondata.map((item, index) => {
-
-                    return (
-                        <Text
-                            style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
-                            key={index}>
-                            {item.Deduction}
-                        </Text>
-                    )
-                })
-            )
-        }
-    }
-
-    const getAllowanceSum = () => {
-        if (allownsdata.length > 0) {
-            let totalAllowance = 0;
-            allownsdata.map((item, index) => {
-                totalAllowance += item.Amount
-            });
-            return totalAllowance
-        }
-        else {
-            return 0;
-        }
-    }
-
-    const getDeductionSum = () => {
-        if (deductiondata.length > 0) {
-            let totalDeduction = 0;
-            deductiondata.map((item, index) => {
-                totalDeduction += item.Amount
-            });
-            return totalDeduction
-        }
-        else {
-            return 0;
-        }
-    }
+//         }
+//         catch (e) {
+//             console.log('SalaryApiError', e);
+//             Alert.alert("Error" , "No Record Found, please try again later")
+//         }
+//     }
+//     //..................End: SalaryApiData ...................//
 
 
 
 
-    const _handlePressButtonAsync = async () => {
-        let result = await WebBrowser.openBrowserAsync('https://expo.io');
-        setResult(result);
-      };
 
-    return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-            {loading ?
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+//     const GetAllownsData = () => {
+//         if (allownsdata.length > 0) {
+//             return (
+//                 allownsdata.map((item, index) => {
 
-                    <ActivityIndicator size="small" color="#008080" />
-                </View>
-                :
-                <>
-                    <View style={styles.salarytmaincontainer}>
+//                     return (
+//                         <Text
+//                             style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
+//                             key={index}>
+//                             {item.Allowance}
+//                         </Text>
+//                     )
+//                 })
+//             )
+//         }
 
-                    <View style={{ flexDirection: 'row', marginTop: wp('1%') , justifyContent: 'flex-end' , marginRight:wp('2%')  }}>
+//     }
 
-                    {/* <View style={{flex:2 , alignItems:'flex-end' , paddingRight:wp('2%')}}>
-                         <TouchableOpacity onPress= {()=>{
-                         _handlePressButtonAsync
-                        }}>
-                        <FontAwesome name="file-pdf-o" size={wp('6%')} color="red" />  
-                        </TouchableOpacity>
+//     const GetDetectionData = () => {
+//         if (deductiondata.length > 0) {
+//             return (
+//                 deductiondata.map((item, index) => {
 
-                    </View> */}
+//                     return (
+//                         <Text
+//                             style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
+//                             key={index}>
+//                             {item.Deduction}
+//                         </Text>
+//                     )
+//                 })
+//             )
+//         }
+//     }
+
+//     const getAllowanceSum = () => {
+//         if (allownsdata.length > 0) {
+//             let totalAllowance = 0;
+//             allownsdata.map((item, index) => {
+//                 totalAllowance += item.Amount
+//             });
+//             return totalAllowance
+//         }
+//         else {
+//             return 0;
+//         }
+//     }
+
+//     const getDeductionSum = () => {
+//         if (deductiondata.length > 0) {
+//             let totalDeduction = 0;
+//             deductiondata.map((item, index) => {
+//                 totalDeduction += item.Amount
+//             });
+//             return totalDeduction
+//         }
+//         else {
+//             return 0;
+//         }
+//     }
 
 
-                    {/*.... attach <TouchableOpacity onPress= {()=>{
-                        _handlePressButtonAsync
-                    }}
- style={{paddingRight:wp('1%')}}>
-
-<FontAwesome name="file-pdf-o" size={wp('6%')} color="red" />  
- </TouchableOpacity> */}
 
 
-                            {/* <View style={{ flex:1 , justifyContent: 'flex-end' , marginRight:wp('2%')  }}> */}
+//     const _handlePressButtonAsync = async () => {
+//         let result = await WebBrowser.openBrowserAsync('https://expo.io');
+//         setResult(result);
+//       };
+
+//     return (
+//         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+//             {loading ?
+//                 <View style={{ flex: 1, justifyContent: 'center' }}>
+
+//                     <ActivityIndicator size="small" color="#008080" />
+//                 </View>
+//                 :
+//                 <>
+//                     <View style={styles.salarytmaincontainer}>
+
+//                     <View style={{ flexDirection: 'row', marginTop: wp('1%') , justifyContent: 'flex-end' , marginRight:wp('2%')  }}>
+
+//                     {/* <View style={{flex:2 , alignItems:'flex-end' , paddingRight:wp('2%')}}>
+//                          <TouchableOpacity onPress= {()=>{
+//                          _handlePressButtonAsync
+//                         }}>
+//                         <FontAwesome name="file-pdf-o" size={wp('6%')} color="red" />  
+//                         </TouchableOpacity>
+
+//                     </View> */}
+
+
+//                     {/*.... attach <TouchableOpacity onPress= {()=>{
+//                         _handlePressButtonAsync
+//                     }}
+//  style={{paddingRight:wp('1%')}}>
+
+// <FontAwesome name="file-pdf-o" size={wp('6%')} color="red" />  
+//  </TouchableOpacity> */}
+
+
+//                             {/* <View style={{ flex:1 , justifyContent: 'flex-end' , marginRight:wp('2%')  }}> */}
                                 
-                                <TouchableOpacity onPress={() => {
-                                 navigation.navigate('SalaryFisicalYearScreen', {
-                                    FiscalYears: fisicalapidata
-                                 })
-                                 }}
-                                    style={{ flexDirection: 'row' }}>
-                                 <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
-                                        Previous Record
-                                    </Text>
-                                    <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
+//                                 <TouchableOpacity onPress={() => {
+//                                  navigation.navigate('SalaryFisicalYearScreen', {
+//                                     FiscalYears: fisicalapidata
+//                                  })
+//                                  }}
+//                                     style={{ flexDirection: 'row' }}>
+//                                  <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
+//                                         Previous Record
+//                                     </Text>
+//                                     <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
 
-                                </TouchableOpacity>
+//                                 </TouchableOpacity>
 
-                            {/* </View> */}
+//                             {/* </View> */}
                         
-                        </View>
+//                         </View>
 
-                        {/* infiView */}
+//                         {/* infiView */}
 
-                        <View style={styles.ViewSection}>
+//                         <View style={styles.ViewSection}>
 
-                            <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                        <Image
-                                            style={{ width: wp('10%'), height: wp('10%'), marginBottom: wp('2%') }}
-                                            source={require('../../assets/logo.png')}
-                                        />
-                                    </View>
+//                             <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
+//                                 <View style={{ flexDirection: 'row' }}>
+//                                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//                                         <Image
+//                                             style={{ width: wp('10%'), height: wp('10%'), marginBottom: wp('2%') }}
+//                                             source={require('../../assets/logo.png')}
+//                                         />
+//                                     </View>
 
 
-                                    <View style={{ flex: 10, }}>
-                                        <Text style={{
-                                            paddingLeft: wp('2%'),
-                                            paddingTop: wp('2%'),
-                                            color: '#0041c4',
-                                            fontSize: wp('5%'),
-                                            fontWeight: 'bold',
-                                            // paddingLeft: wp('1%'),
-                                            textAlign: 'center'
-                                        }}>
-                                            Islamabad Diognostic Centre(Pvt) Ltd.
-                                        </Text>
-                                    </View>
+//                                     <View style={{ flex: 10, }}>
+//                                         <Text style={{
+//                                             paddingLeft: wp('2%'),
+//                                             paddingTop: wp('2%'),
+//                                             color: '#0041c4',
+//                                             fontSize: wp('5%'),
+//                                             fontWeight: 'bold',
+//                                             // paddingLeft: wp('1%'),
+//                                             textAlign: 'center'
+//                                         }}>
+//                                             Islamabad Diognostic Centre(Pvt) Ltd.
+//                                         </Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#1f1f2e' }}>
-                                    Salary Slip
-                                </Text>
+//                                 <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#1f1f2e' }}>
+//                                     Salary Slip
+//                                 </Text>
 
-                                <Text
-                                    style={{
-                                        paddingTop: wp('1%'),
-                                        fontSize: wp('5%'),
-                                        fontWeight: '500',
-                                        color: '#1f1f2e',
-                                        textAlign: 'center'
-                                    }}>
-                                    {infodata.length > 0 ? (infodata[0].FiscalYear == null || infodata[0].FiscalYear == '' || infodata[0].Name == null || infodata[0].Name == '' ? 'N/A' : infodata[0].Name + ',' + infodata[0].FiscalYear) : 'N/A'}
-                                </Text>
+//                                 <Text
+//                                     style={{
+//                                         paddingTop: wp('1%'),
+//                                         fontSize: wp('5%'),
+//                                         fontWeight: '500',
+//                                         color: '#1f1f2e',
+//                                         textAlign: 'center'
+//                                     }}>
+//                                     {infodata.length > 0 ? (infodata[0].FiscalYear == null || infodata[0].FiscalYear == '' || infodata[0].Name == null || infodata[0].Name == '' ? 'N/A' : infodata[0].Name + ',' + infodata[0].FiscalYear) : 'N/A'}
+//                                 </Text>
 
-                                {/* 
-                                <View style={{ flexDirection: 'row', marginTop: wp('1%') }}>
-                                    <Text style={{ fontSize: wp('4%'), color: '#1f1f2e' }}>From:</Text>
-                                    <Text style={{ fontSize: wp('4%'), paddingLeft: wp('2%'), color: '#1f1f2e', }}>{infodata.length > 0 ? (infodata[0].StartDate == null || infodata[0].StartDate == '' ? 'N/A' : moment(infodata[0].StartDate).format("MMMM D, YYYY")) : "N/A"}</Text>
-                                </View>
+//                                 {/* 
+//                                 <View style={{ flexDirection: 'row', marginTop: wp('1%') }}>
+//                                     <Text style={{ fontSize: wp('4%'), color: '#1f1f2e' }}>From:</Text>
+//                                     <Text style={{ fontSize: wp('4%'), paddingLeft: wp('2%'), color: '#1f1f2e', }}>{infodata.length > 0 ? (infodata[0].StartDate == null || infodata[0].StartDate == '' ? 'N/A' : moment(infodata[0].StartDate).format("MMMM D, YYYY")) : "N/A"}</Text>
+//                                 </View>
 
-                                <View style={{ flexDirection: 'row', marginTop: wp('0.5%') }}>
-                                    <Text style={{ fontSize: wp('4%'), color: '#1f1f2e', }}>T0:</Text>
-                                    <Text style={{ fontSize: wp('4%'), paddingLeft: wp('2%'), color: '#1f1f2e', }}>{infodata.length > 0 ? (infodata[0].EndDate == null || infodata[0].EndDate == '' ? 'N/A' : moment(infodata[0].EndDate).format("MMMM D, YYYY")) : "N/A"}</Text>
-                                </View> */}
+//                                 <View style={{ flexDirection: 'row', marginTop: wp('0.5%') }}>
+//                                     <Text style={{ fontSize: wp('4%'), color: '#1f1f2e', }}>T0:</Text>
+//                                     <Text style={{ fontSize: wp('4%'), paddingLeft: wp('2%'), color: '#1f1f2e', }}>{infodata.length > 0 ? (infodata[0].EndDate == null || infodata[0].EndDate == '' ? 'N/A' : moment(infodata[0].EndDate).format("MMMM D, YYYY")) : "N/A"}</Text>
+//                                 </View> */}
 
 
-                            </View>
+//                             </View>
 
 
-                            <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
-                                <View style={styles.salaryempinfoview}>
+//                             <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
+//                                 <View style={styles.salaryempinfoview}>
 
-                                    <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryemptxt}>Employee ID :</Text>
-                                    </View>
+//                                     <View style={{ flex: 1.5, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryemptxt}>Employee ID :</Text>
+//                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                     <View style={{ flex: 2, justifyContent: 'center' }}>
 
 
 
-                                        {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
+//                                         {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
 
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
-                                    </View>
+//                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
-                                <View style={styles.salaryempinfoview}>
-                                    <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryemptxt}>Employee Name :</Text>
-                                    </View>
+//                                 <View style={styles.salaryempinfoview}>
+//                                     <View style={{ flex: 1.5, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryemptxt}>Employee Name :</Text>
+//                                     </View>
 
 
-                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
-                                    </View> */}
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
-                                    </View>
+//                                     {/* <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
+//                                     </View> */}
+//                                     <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
-                                <View style={styles.salaryempinfoview}>
-                                    <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryemptxt}>Department :</Text>
-                                    </View>
+//                                 <View style={styles.salaryempinfoview}>
+//                                     <View style={{ flex: 1.5, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryemptxt}>Department :</Text>
+//                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text>
+//                                     <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text>
 
-                                    </View>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
-                                <View style={styles.salaryempinfoview}>
-                                    <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryemptxt}>Designation :</Text>
-                                    </View>
+//                                 <View style={styles.salaryempinfoview}>
+//                                     <View style={{ flex: 1.5, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryemptxt}>Designation :</Text>
+//                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].Designation == null || infodata[0].Designation == '' ? 'N/A' : infodata[0].Designation) : 'N/A'}</Text>
-                                    </View>
+//                                     <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].Designation == null || infodata[0].Designation == '' ? 'N/A' : infodata[0].Designation) : 'N/A'}</Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
-                                <View style={styles.salaryempinfoview}>
-                                    <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryemptxt}>Bank Account #</Text>
-                                    </View>
+//                                 <View style={styles.salaryempinfoview}>
+//                                     <View style={{ flex: 1.5, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryemptxt}>Bank Account #</Text>
+//                                     </View>
 
 
 
 
-                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>1111111111111</Text>
-                                    </View> */}
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
-                                    </View>
-                                </View>
+//                                     {/* <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryempsubtxt}>1111111111111</Text>
+//                                     </View> */}
+//                                     <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
+//                                     </View>
+//                                 </View>
 
-                            </View>
+//                             </View>
 
-                        </View>
+//                         </View>
 
 
 
 
 
-                        <View style={[styles.ViewSection, { flexDirection: 'row' }]}>
+//                         <View style={[styles.ViewSection, { flexDirection: 'row' }]}>
 
-                            <View style={{ flex: 1, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Gross Salary</Text>
+//                             <View style={{ flex: 1, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
+//                                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Gross Salary</Text>
 
 
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
-                                    {infodata.length > 0 ? (infodata[0].GrossSalary == null || infodata[0].GrossSalary == '' ? 'N/A' : infodata[0].GrossSalary) : 'N/A'}
-                                </Text>
-                            </View>
+//                                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
+//                                     {infodata.length > 0 ? (infodata[0].GrossSalary == null || infodata[0].GrossSalary == '' ? 'N/A' : infodata[0].GrossSalary) : 'N/A'}
+//                                 </Text>
+//                             </View>
 
 
-                            <View style={{ flex: 1, backgroundColor: '#0041c4', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Net Salary</Text>
+//                             <View style={{ flex: 1, backgroundColor: '#0041c4', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
+//                                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Net Salary</Text>
 
 
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
-                                    {infodata.length > 0 ? (infodata[0].NetSalary == null || infodata[0].NetSalary == '' ? 'N/A' : infodata[0].NetSalary) : 'N/A'}
-                                </Text>
-                            </View>
+//                                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
+//                                     {infodata.length > 0 ? (infodata[0].NetSalary == null || infodata[0].NetSalary == '' ? 'N/A' : infodata[0].NetSalary) : 'N/A'}
+//                                 </Text>
+//                             </View>
 
 
 
-                        </View>
+//                         </View>
 
 
 
-                        <View style={styles.ViewSection}>
+//                         <View style={styles.ViewSection}>
 
-                            <View style={{
-                                flexDirection: 'row',
-                                borderBottomWidth: 2,
-                                borderColor: '#D8D8D8',
-                                marginHorizontal: wp('2%'),
-                                paddingTop: wp('2%')
-                            }}>
+//                             <View style={{
+//                                 flexDirection: 'row',
+//                                 borderBottomWidth: 2,
+//                                 borderColor: '#D8D8D8',
+//                                 marginHorizontal: wp('2%'),
+//                                 paddingTop: wp('2%')
+//                             }}>
 
-                                <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
-                                        Allowance
-                                    </Text>
-                                </View>
-                                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', right: wp('1.8%'), position: 'absolute', }}>
-                                        Amount
-                                    </Text>
-                                </View>
+//                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
+//                                         Allowance
+//                                     </Text>
+//                                 </View>
+//                                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', right: wp('1.8%'), position: 'absolute', }}>
+//                                         Amount
+//                                     </Text>
+//                                 </View>
 
-                            </View>
+//                             </View>
 
 
 
 
-                            <View style={{
-                                flexDirection: 'row',
-                                borderBottomWidth: 2,
-                                borderColor: '#D8D8D8',
-                                marginHorizontal: wp('2%'),
-                                paddingTop: wp('2%')
-                            }}>
+//                             <View style={{
+//                                 flexDirection: 'row',
+//                                 borderBottomWidth: 2,
+//                                 borderColor: '#D8D8D8',
+//                                 marginHorizontal: wp('2%'),
+//                                 paddingTop: wp('2%')
+//                             }}>
 
 
-                                <View style={{ flex: 2, }}>
+//                                 <View style={{ flex: 2, }}>
 
-                                    {GetAllownsData()}
-                                    {/* {allownsdata.map((item, index) => {
-                                        return (
-                                            <Text
-                                                style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
-                                                key={index}>
-                                                {item.Allowance}
-                                            </Text>
-                                        )
+//                                     {GetAllownsData()}
+//                                     {/* {allownsdata.map((item, index) => {
+//                                         return (
+//                                             <Text
+//                                                 style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
+//                                                 key={index}>
+//                                                 {item.Allowance}
+//                                             </Text>
+//                                         )
 
-                                    })} */}
-                                </View>
+//                                     })} */}
+//                                 </View>
 
 
-                                <View style={{ flex: 1, }}>
+//                                 <View style={{ flex: 1, }}>
 
-                                    {allownsdata.map((item, index) => {
-                                        return (
-                                            <Text
-                                                style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}
-                                                key={index}>
-                                                {item.Amount}
-                                            </Text>
-                                        )
+//                                     {allownsdata.map((item, index) => {
+//                                         return (
+//                                             <Text
+//                                                 style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}
+//                                                 key={index}>
+//                                                 {item.Amount}
+//                                             </Text>
+//                                         )
 
-                                    })}
-                                </View>
+//                                     })}
+//                                 </View>
 
-                            </View>
+//                             </View>
 
 
 
-                            <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
-                                <View style={{ flex: 2.3, justifyContent: 'center' }}>
+//                             <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
+//                                 <View style={{ flex: 2.3, justifyContent: 'center' }}>
 
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
-                                        Total Allowance
-                                    </Text>
-                                </View>
-                                <View style={{ flex: 2, justifyContent: 'center' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'green', right: wp('1.8%'), position: 'absolute', }}>
-                                        {getAllowanceSum()}
-                                    </Text>
-                                </View>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+//                                         Total Allowance
+//                                     </Text>
+//                                 </View>
+//                                 <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'green', right: wp('1.8%'), position: 'absolute', }}>
+//                                         {getAllowanceSum()}
+//                                     </Text>
+//                                 </View>
 
-                            </View>
+//                             </View>
 
 
 
 
-                            {/* <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
-                                <View style={{ flex: 2.3, justifyContent: 'center', marginBottom: wp('2%') }}>
+//                             {/* <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
+//                                 <View style={{ flex: 2.3, justifyContent: 'center', marginBottom: wp('2%') }}>
 
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
-                                        Gross Salary
-                                    </Text>
-                                </View>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+//                                         Gross Salary
+//                                     </Text>
+//                                 </View>
 
-                                <View style={{ flex: 2, justifyContent: 'center', }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', color: '#595959', right: wp('1.8%'), position: 'absolute', }}>
-                                        {infodata.length > 0 ? (infodata[0].GrossSalary == null || infodata[0].GrossSalary == '' ? 'N/A' : infodata[0].GrossSalary) : 'N/A'}
+//                                 <View style={{ flex: 2, justifyContent: 'center', }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', color: '#595959', right: wp('1.8%'), position: 'absolute', }}>
+//                                         {infodata.length > 0 ? (infodata[0].GrossSalary == null || infodata[0].GrossSalary == '' ? 'N/A' : infodata[0].GrossSalary) : 'N/A'}
 
-                                    </Text>
-                                </View>
-                            </View> */}
+//                                     </Text>
+//                                 </View>
+//                             </View> */}
 
 
-                        </View>
+//                         </View>
 
 
 
-                        <View style={[styles.ViewSection, { marginBottom: wp('2%') }]}>
+//                         <View style={[styles.ViewSection, { marginBottom: wp('2%') }]}>
 
-                            <View style={{
-                                flexDirection: 'row',
-                                borderBottomWidth: 2,
-                                borderColor: '#D8D8D8',
-                                marginHorizontal: wp('2%'),
-                                paddingTop: wp('2%')
-                            }}>
+//                             <View style={{
+//                                 flexDirection: 'row',
+//                                 borderBottomWidth: 2,
+//                                 borderColor: '#D8D8D8',
+//                                 marginHorizontal: wp('2%'),
+//                                 paddingTop: wp('2%')
+//                             }}>
 
-                                <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
-                                        Deduction
-                                    </Text>
-                                </View>
-                                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', right: wp('1.8%'), position: 'absolute', }}>
-                                        Amount
-                                    </Text>
-                                </View>
+//                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
+//                                         Deduction
+//                                     </Text>
+//                                 </View>
+//                                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', right: wp('1.8%'), position: 'absolute', }}>
+//                                         Amount
+//                                     </Text>
+//                                 </View>
 
-                            </View>
+//                             </View>
 
 
 
 
-                            <View style={{
-                                flexDirection: 'row',
-                                borderBottomWidth: 2,
-                                borderColor: '#D8D8D8',
-                                marginHorizontal: wp('2%'),
-                                paddingTop: wp('2%')
-                            }}>
+//                             <View style={{
+//                                 flexDirection: 'row',
+//                                 borderBottomWidth: 2,
+//                                 borderColor: '#D8D8D8',
+//                                 marginHorizontal: wp('2%'),
+//                                 paddingTop: wp('2%')
+//                             }}>
 
 
-                                <View style={{ flex: 2 }}>
-                                    {GetDetectionData()}
-                                    {/* {deductiondata.map((item, index) => {
-                                        return (
-                                            <Text
-                                                style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
-                                                key={index}>
-                                                {item.Deduction}
-                                            </Text>
-                                        )
+//                                 <View style={{ flex: 2 }}>
+//                                     {GetDetectionData()}
+//                                     {/* {deductiondata.map((item, index) => {
+//                                         return (
+//                                             <Text
+//                                                 style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
+//                                                 key={index}>
+//                                                 {item.Deduction}
+//                                             </Text>
+//                                         )
 
-                                    })} */}
-                                </View>
+//                                     })} */}
+//                                 </View>
 
 
-                                <View style={{ flex: 1 }}>
-                                    {deductiondata.map((item, index) => {
-                                        return (
-                                            <Text
-                                                style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}
-                                                key={index}>
-                                                {item.Amount}
-                                            </Text>
-                                        )
+//                                 <View style={{ flex: 1 }}>
+//                                     {deductiondata.map((item, index) => {
+//                                         return (
+//                                             <Text
+//                                                 style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}
+//                                                 key={index}>
+//                                                 {item.Amount}
+//                                             </Text>
+//                                         )
 
-                                    })}
-                                </View>
+//                                     })}
+//                                 </View>
 
-                            </View>
+//                             </View>
 
 
 
-                            <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
-                                <View style={{ flex: 2.3, justifyContent: 'center' }}>
+//                             <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
+//                                 <View style={{ flex: 2.3, justifyContent: 'center' }}>
 
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
-                                        Total Deduction
-                                    </Text>
-                                </View>
-                                <View style={{ flex: 2, justifyContent: 'center' }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'red', right: wp('1.8%'), position: 'absolute', }}>
-                                        {getDeductionSum()}
-                                    </Text>
-                                </View>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+//                                         Total Deduction
+//                                     </Text>
+//                                 </View>
+//                                 <View style={{ flex: 2, justifyContent: 'center' }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'red', right: wp('1.8%'), position: 'absolute', }}>
+//                                         {getDeductionSum()}
+//                                     </Text>
+//                                 </View>
 
-                            </View>
+//                             </View>
 
 
 
 
-                            {/* <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
-                                <View style={{ flex: 2.3, justifyContent: 'center', marginBottom: wp('2%') }}>
+//                             {/* <View style={{ flex: 0.2, flexDirection: 'row', backgroundColor: '#fff', marginTop: wp('2%') }}>
+//                                 <View style={{ flex: 2.3, justifyContent: 'center', marginBottom: wp('2%') }}>
 
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
-                                        Net Salary
-                                    </Text>
-                                </View>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
+//                                         Net Salary
+//                                     </Text>
+//                                 </View>
 
-                                <View style={{ flex: 2, justifyContent: 'center', }}>
-                                    <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', color: '#595959', right: wp('1.8%'), position: 'absolute', }}>
-                                        {infodata.length > 0 ? (infodata[0].NetSalary == null || infodata[0].NetSalary == '' ? 'N/A' : infodata[0].NetSalary) : 'N/A'}
+//                                 <View style={{ flex: 2, justifyContent: 'center', }}>
+//                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', color: '#595959', right: wp('1.8%'), position: 'absolute', }}>
+//                                         {infodata.length > 0 ? (infodata[0].NetSalary == null || infodata[0].NetSalary == '' ? 'N/A' : infodata[0].NetSalary) : 'N/A'}
 
-                                    </Text>
-                                </View>
-                            </View> */}
+//                                     </Text>
+//                                 </View>
+//                             </View> */}
 
 
-                        </View>
+//                         </View>
 
 
 
-                        {noloandata ?
-                            <></> :
+//                         {noloandata ?
+//                             <></> :
 
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: '#fff',
-                                // marginTop: wp('1.5%'),
-                                marginHorizontal: wp('1%'),
-                                borderRadius: 10,
-                                borderWidth: 2,
-                                borderColor: '#CBCBCB',
-                                paddingBottom: wp('2%'),
-                                marginBottom: wp('2%')
-                            }}>
+//                             <View style={{
+//                                 flex: 1,
+//                                 backgroundColor: '#fff',
+//                                 // marginTop: wp('1.5%'),
+//                                 marginHorizontal: wp('1%'),
+//                                 borderRadius: 10,
+//                                 borderWidth: 2,
+//                                 borderColor: '#CBCBCB',
+//                                 paddingBottom: wp('2%'),
+//                                 marginBottom: wp('2%')
+//                             }}>
 
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    borderBottomWidth: 2,
-                                    borderColor: '#D8D8D8',
-                                    marginHorizontal: wp('2%'),
-                                    paddingTop: wp('2%')
-                                }}>
+//                                 <View style={{
+//                                     flexDirection: 'row',
+//                                     borderBottomWidth: 2,
+//                                     borderColor: '#D8D8D8',
+//                                     marginHorizontal: wp('2%'),
+//                                     paddingTop: wp('2%')
+//                                 }}>
 
-                                    <View style={{ justifyContent: 'flex-end' }}>
-                                        <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
-                                            Loan Information
-                                    </Text>
-                                    </View>
+//                                     <View style={{ justifyContent: 'flex-end' }}>
+//                                         <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
+//                                             Loan Information
+//                                     </Text>
+//                                     </View>
 
 
-                                </View>
+//                                 </View>
 
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    // borderBottomWidth: 2,
-                                    // borderColor: '#D8D8D8',
-                                    marginHorizontal: wp('2%'),
-                                    paddingTop: wp('2%')
-                                }}>
+//                                 <View style={{
+//                                     flexDirection: 'row',
+//                                     // borderBottomWidth: 2,
+//                                     // borderColor: '#D8D8D8',
+//                                     marginHorizontal: wp('2%'),
+//                                     paddingTop: wp('2%')
+//                                 }}>
 
-                                    <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
-                                            Description
-                                    </Text>
-                                    </View>
+//                                     <View style={{ flex: 2 }}>
+//                                         <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+//                                             Description
+//                                     </Text>
+//                                     </View>
 
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end', }}>
-                                            {loandata.length > 0 ? (loandata[0].Description == null || loandata[0].Description == '' ? 'N/A' : loandata[0].Description) : 'N/A'}
-                                        </Text>
-                                    </View>
+//                                     <View style={{ flex: 1 }}>
+//                                         <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end', }}>
+//                                             {loandata.length > 0 ? (loandata[0].Description == null || loandata[0].Description == '' ? 'N/A' : loandata[0].Description) : 'N/A'}
+//                                         </Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    // borderBottomWidth: 2,
-                                    // borderColor: '#D8D8D8',
-                                    marginHorizontal: wp('2%'),
-                                    paddingTop: wp('2%')
-                                }}>
+//                                 <View style={{
+//                                     flexDirection: 'row',
+//                                     // borderBottomWidth: 2,
+//                                     // borderColor: '#D8D8D8',
+//                                     marginHorizontal: wp('2%'),
+//                                     paddingTop: wp('2%')
+//                                 }}>
 
-                                    <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
-                                            Loan Amount
-                                    </Text>
-                                    </View>
+//                                     <View style={{ flex: 2 }}>
+//                                         <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+//                                             Loan Amount
+//                                     </Text>
+//                                     </View>
 
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
-                                            {loandata.length > 0 ? (loandata[0].LoanAmount == null || loandata[0].LoanAmount == '' ? 'N/A' : loandata[0].LoanAmount) : 'N/A'}
-                                        </Text>
-                                    </View>
+//                                     <View style={{ flex: 1 }}>
+//                                         <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+//                                             {loandata.length > 0 ? (loandata[0].LoanAmount == null || loandata[0].LoanAmount == '' ? 'N/A' : loandata[0].LoanAmount) : 'N/A'}
+//                                         </Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    // borderBottomWidth: 2,
-                                    // borderColor: '#D8D8D8',
-                                    marginHorizontal: wp('2%'),
-                                    paddingTop: wp('2%')
-                                }}>
+//                                 <View style={{
+//                                     flexDirection: 'row',
+//                                     // borderBottomWidth: 2,
+//                                     // borderColor: '#D8D8D8',
+//                                     marginHorizontal: wp('2%'),
+//                                     paddingTop: wp('2%')
+//                                 }}>
 
-                                    <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
-                                            Instalments
-                                    </Text>
-                                    </View>
+//                                     <View style={{ flex: 2 }}>
+//                                         <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+//                                             Instalments
+//                                     </Text>
+//                                     </View>
 
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
-                                            {loandata.length > 0 ? (loandata[0].Instalments == null || loandata[0].Instalments == '' ? 'N/A' : loandata[0].Instalments) : 'N/A'}
-                                        </Text>
-                                    </View>
+//                                     <View style={{ flex: 1 }}>
+//                                         <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+//                                             {loandata.length > 0 ? (loandata[0].Instalments == null || loandata[0].Instalments == '' ? 'N/A' : loandata[0].Instalments) : 'N/A'}
+//                                         </Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginHorizontal: wp('2%'),
-                                    paddingTop: wp('2%')
-                                }}>
+//                                 <View style={{
+//                                     flexDirection: 'row',
+//                                     marginHorizontal: wp('2%'),
+//                                     paddingTop: wp('2%')
+//                                 }}>
 
-                                    <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
-                                            Balance
-                                    </Text>
-                                    </View>
+//                                     <View style={{ flex: 2 }}>
+//                                         <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+//                                             Balance
+//                                     </Text>
+//                                     </View>
 
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
-                                            {loandata.length > 0 ? (loandata[0].Balance == null || loandata[0].Balance == '' ? 'N/A' : loandata[0].Balance) : 'N/A'}
-                                        </Text>
-                                    </View>
+//                                     <View style={{ flex: 1 }}>
+//                                         <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+//                                             {loandata.length > 0 ? (loandata[0].Balance == null || loandata[0].Balance == '' ? 'N/A' : loandata[0].Balance) : 'N/A'}
+//                                         </Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
 
 
 
-                                <View style={{
-                                    flexDirection: 'row',
-                                    borderBottomWidth: 2,
-                                    borderColor: '#D8D8D8',
-                                    marginHorizontal: wp('2%'),
-                                    resizeMode: 'contain',
-                                    paddingTop: wp('2%')
-                                }}>
+//                                 <View style={{
+//                                     flexDirection: 'row',
+//                                     borderBottomWidth: 2,
+//                                     borderColor: '#D8D8D8',
+//                                     marginHorizontal: wp('2%'),
+//                                     resizeMode: 'contain',
+//                                     paddingTop: wp('2%')
+//                                 }}>
 
-                                    <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
-                                            Paid Amount
-                                    </Text>
-                                    </View>
+//                                     <View style={{ flex: 2 }}>
+//                                         <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+//                                             Paid Amount
+//                                     </Text>
+//                                     </View>
 
 
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
-                                            {loandata.length > 0 ? (loandata[0].Paidamount == null || loandata[0].Paidamount == '' ? 'N/A' : loandata[0].Paidamount) : 'N/A'}
-                                        </Text>
-                                    </View>
+//                                     <View style={{ flex: 1 }}>
+//                                         <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+//                                             {loandata.length > 0 ? (loandata[0].Paidamount == null || loandata[0].Paidamount == '' ? 'N/A' : loandata[0].Paidamount) : 'N/A'}
+//                                         </Text>
+//                                     </View>
 
-                                </View>
+//                                 </View>
 
 
 
 
-                            </View>
-                        }
+//                             </View>
+//                         }
 
-                    </View >
-                </>}
-        </ScrollView >
+//                     </View >
+//                 </>}
+//         </ScrollView >
 
-    );
-}
+//     );
+// }
 
-const styles = StyleSheet.create({
-    salarytmaincontainer: {
-        flex: 1,
-        backgroundColor: '#D8D8D8'
-    },
-    ViewSection: {
-        flex: 1,
-        resizeMode: 'contain',
-        backgroundColor: '#fff',
-        marginTop: wp('1.5%'),
-        marginHorizontal: wp('1%'),
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor: '#CBCBCB',
-        paddingBottom: wp('2%'),
+// const styles = StyleSheet.create({
+//     salarytmaincontainer: {
+//         flex: 1,
+//         backgroundColor: '#D8D8D8'
+//     },
+//     ViewSection: {
+//         flex: 1,
+//         resizeMode: 'contain',
+//         backgroundColor: '#fff',
+//         marginTop: wp('1.5%'),
+//         marginHorizontal: wp('1%'),
+//         borderRadius: 10,
+//         borderWidth: 2,
+//         borderColor: '#CBCBCB',
+//         paddingBottom: wp('2%'),
 
-    },
+//     },
 
-    salaryempinfoview: {
-        flexDirection: 'row',
-        borderBottomWidth: 0.5,
-        borderColor: '#D8D8D8',
-        marginHorizontal: wp('2%'),
-        paddingTop: wp('1%')
-    },
+//     salaryempinfoview: {
+//         flexDirection: 'row',
+//         borderBottomWidth: 0.5,
+//         borderColor: '#D8D8D8',
+//         marginHorizontal: wp('2%'),
+//         paddingTop: wp('1%')
+//     },
 
-    salaryemptxt: {
-        paddingTop: wp('2%'),
-        color: '#59ABE3',
-        fontSize: wp('4%'),
-        fontWeight: 'bold'
-    },
-    salaryempsubtxt: {
-        paddingTop: wp('2%'),
-        fontSize: wp('3.6%'),
-        fontWeight: '500'
+//     salaryemptxt: {
+//         paddingTop: wp('2%'),
+//         color: '#59ABE3',
+//         fontSize: wp('4%'),
+//         fontWeight: 'bold'
+//     },
+//     salaryempsubtxt: {
+//         paddingTop: wp('2%'),
+//         fontSize: wp('3.6%'),
+//         fontWeight: '500'
 
-    },
+//     },
 
-    PDfcontainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
+//     PDfcontainer: {
+//         flex: 1,
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         backgroundColor: '#F5FCFF',
+//     },
 
 
-})
+// })
