@@ -229,10 +229,11 @@ export default function MainAttendanceScreen({ navigation, route }) {
                 })
             });
             const responseObj = await response.json();
-            // console.log('responceapi', responseObj)
+            // console.log('Apidataassending', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                // console.log('Attandancedata', payload)
+                payload=payload.reverse();
+                // console.log('reverse', payload)
                 if (payload.length > 0) {
                     setApiData(payload);
                     IsLoading(false);
@@ -274,6 +275,26 @@ export default function MainAttendanceScreen({ navigation, route }) {
         }
     }
     // ........... End: AttandanceApiCall ....... //
+
+    useEffect(() => {
+        getDate()
+      
+
+    }, [])
+
+
+
+    const getDate = () => {
+        var date = new Date().getDate();
+        
+      var date=moment(date).format("yyyy D, mm")
+
+        console.log('date' , date)
+
+
+    }
+
+
 
 
     // .........Begin: FlatList Function(_RenderItem) ........... //
@@ -328,7 +349,8 @@ export default function MainAttendanceScreen({ navigation, route }) {
                         
                     </View> */}
 
-
+{/* {item.AttendanceDate >= (new Date().getDate()) ?
+<> */}
                     {item.AttendanceTimeIN == null && item.AttendanceTimeOut == null && item.LeaveType == null ?
 
 
@@ -525,6 +547,8 @@ export default function MainAttendanceScreen({ navigation, route }) {
                         </>
 
                     }
+                    {/* </> :
+                    null } */}
 
 
 

@@ -5,7 +5,10 @@ import * as Contants from '../../../constants/constants';
 import { Helper } from '../../../Components/Helpers';
 const { height, width } = Dimensions.get('window');
 import moment from 'moment';
+import * as WebBrowser from 'expo-web-browser';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
+
 
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
@@ -113,7 +116,7 @@ export default function SalarySlipScreen({ navigation, route }) {
     const SalaryApiData = async () => {
         try {
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
- //           const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId, {
+            //           const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId, {
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/EmployeeSalarySlip', {
 
                 method: 'POST',
@@ -124,8 +127,8 @@ export default function SalarySlipScreen({ navigation, route }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                   periodId: route.params.SalPeriodId
-                   // periodId: 100
+                    periodId: route.params.SalPeriodId
+                    // periodId: 100
 
                 })
             });
@@ -190,7 +193,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                 "Alert",
                 "No Record Found",
                 [
-                    
+
                     { text: "OK", onPress: () => navigation.navigate("SalaryFisicalYearScreen") }
                 ],
                 { cancelable: false }
@@ -215,6 +218,11 @@ export default function SalarySlipScreen({ navigation, route }) {
     //     return file;
     // }
 
+    const _handlePressButtonAsync = async () => {
+        let result = await WebBrowser.openBrowserAsync('https://reports.idc.net.pk/PatientReportsPortal/salary-slip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId);
+        // setResult(result);
+        return result;
+    };
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -226,6 +234,36 @@ export default function SalarySlipScreen({ navigation, route }) {
                 :
                 <>
                     <View style={styles.salarytmaincontainer}>
+
+                        {/* <View style={[styles.ViewSection, { flexDirection: 'row' }]}> */}
+
+                        {/* <View style={{ flex: 2, alignItems: 'flex-0041c4', alignItems: 'flex-008080', paddingLeft: wp('2%') }}> */}
+                        <View style={{ flex: 1, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: wp('1%'), padding: wp('1%') }}>
+
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    _handlePressButtonAsync()
+
+
+                                }}
+                                style={{ justifyContent: 'center', flexDirection: 'row', size: wp('3%'), padding: wp("1.5%") }}>
+                                <Text style={{ color: '#fff', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
+                                    Print Salary Slip
+                                 </Text>
+                                <Ionicons name="ios-print-outline" size={wp('5.5%')} color="#fff" />
+
+                            </TouchableOpacity>
+
+
+                            {/* </View> */}
+
+
+
+
+                        </View>
+
+
 
                         {/* infiView */}
 
@@ -242,12 +280,12 @@ export default function SalarySlipScreen({ navigation, route }) {
                                     </View>
 
 
-                                    <View style={{ flex: 10, }}>
+                                    <View style={{ flex: 10 }}>
                                         <Text style={{
                                             paddingLeft: wp('2%'),
                                             paddingTop: wp('2%'),
                                             color: '#0041c4',
-                                            fontSize: wp('5%'),
+                                            fontSize: wp('4.5%'),
                                             fontWeight: 'bold',
                                             // paddingLeft: wp('1%'),
                                             textAlign: 'center'
@@ -259,14 +297,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 </View>
 
 
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#1f1f2e' }}>
-                                    Salary slip
+                                <Text style={{ fontSize: wp('4.5%'), fontWeight: '600', color: '#1f1f2e' }}>
+                                    Salary Slip
                                 </Text>
 
                                 <Text
                                     style={{
                                         paddingTop: wp('1%'),
-                                        fontSize: wp('5%'),
+                                        fontSize: wp('4.5%'),
                                         fontWeight: '500',
                                         color: '#1f1f2e',
                                         textAlign: 'center'
@@ -296,7 +334,12 @@ export default function SalarySlipScreen({ navigation, route }) {
                                         <Text style={styles.salaryemptxt}>Employee ID :</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+
+
+                                        {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
+
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
                                     </View>
 
@@ -307,7 +350,11 @@ export default function SalarySlipScreen({ navigation, route }) {
                                         <Text style={styles.salaryemptxt}>Employee Name :</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
+
+                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
+                                        <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
+                                    </View> */}
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
                                     </View>
 
@@ -319,7 +366,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                                         <Text style={styles.salaryemptxt}>Department :</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text>
 
                                     </View>
@@ -332,7 +379,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                                         <Text style={styles.salaryemptxt}>Designation :</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].Designation == null || infodata[0].Designation == '' ? 'N/A' : infodata[0].Designation) : 'N/A'}</Text>
                                     </View>
 
@@ -344,10 +391,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                         <Text style={styles.salaryemptxt}>Bank Account #</Text>
                                     </View>
 
-                                    <View style={{ flex: 2, justifyContent: 'center' }}>
 
+
+
+                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
+                                        <Text style={styles.salaryempsubtxt}>1111111111111</Text>
+                                    </View> */}
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
                                         <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
-
                                     </View>
                                 </View>
 
@@ -358,24 +409,24 @@ export default function SalarySlipScreen({ navigation, route }) {
 
 
 
-
+                        {/*  gross/NetSalary Section */}
                         <View style={[styles.ViewSection, { flexDirection: 'row' }]}>
 
-                            <View style={{ flex: 1, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Gross Salary</Text>
+                            <View style={{ flex: 1, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: wp('1%'), flexDirection: 'column', padding: wp('1%') }}>
+                                <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Gross Salary</Text>
 
 
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
+                                <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
                                     {infodata.length > 0 ? (infodata[0].GrossSalary == null || infodata[0].GrossSalary == '' ? 'N/A' : infodata[0].GrossSalary) : 'N/A'}
                                 </Text>
                             </View>
 
 
-                            <View style={{ flex: 1, backgroundColor: '#0041c4', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Net Salary</Text>
+                            <View style={{ flex: 1, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: wp('1%'), flexDirection: 'column', padding: wp('1%') }}>
+                                <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Net Salary</Text>
 
 
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
+                                <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
                                     {infodata.length > 0 ? (infodata[0].NetSalary == null || infodata[0].NetSalary == '' ? 'N/A' : infodata[0].NetSalary) : 'N/A'}
                                 </Text>
                             </View>
@@ -385,7 +436,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                         </View>
 
 
-
+                        {/* Allowances Table */}
                         <View style={styles.ViewSection}>
 
                             <View style={{
@@ -399,12 +450,12 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 <View style={{ flex: 1.3, justifyContent: 'flex-end' }}>
                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('1%') }}>
                                         Allowance
-                                    </Text>
+        </Text>
                                 </View>
                                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', right: wp('1.8%'), position: 'absolute', }}>
                                         Amount
-                                    </Text>
+        </Text>
                                 </View>
 
                             </View>
@@ -425,15 +476,15 @@ export default function SalarySlipScreen({ navigation, route }) {
 
                                     {GetAllownsData()}
                                     {/* {allownsdata.map((item, index) => {
-                                        return (
-                                            <Text
-                                                style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
-                                                key={index}>
-                                                {item.Allowance}
-                                            </Text>
-                                        )
+            return (
+                <Text
+                    style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}
+                    key={index}>
+                    {item.Allowance}
+                </Text>
+            )
 
-                                    })} */}
+        })} */}
                                 </View>
 
 
@@ -442,7 +493,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                                     {allownsdata.map((item, index) => {
                                         return (
                                             <Text
-                                                style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}
+                                                style={styles.InfoInnersubTxt}
                                                 key={index}>
                                                 {item.Amount}
                                             </Text>
@@ -460,7 +511,7 @@ export default function SalarySlipScreen({ navigation, route }) {
 
                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'black', paddingHorizontal: wp('2%') }}>
                                         Total Allowance
-                                    </Text>
+        </Text>
                                 </View>
                                 <View style={{ flex: 2, justifyContent: 'center' }}>
                                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: 'green', right: wp('1.8%'), position: 'absolute', }}>
@@ -494,6 +545,7 @@ export default function SalarySlipScreen({ navigation, route }) {
 
 
 
+                        {/* Deduction Table */}
                         <View style={[styles.ViewSection, { marginBottom: wp('2%') }]}>
 
                             <View style={{
@@ -548,7 +600,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                                     {deductiondata.map((item, index) => {
                                         return (
                                             <Text
-                                                style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}
+                                                style={styles.InfoInnersubTxt}
                                                 key={index}>
                                                 {item.Amount}
                                             </Text>
@@ -599,7 +651,7 @@ export default function SalarySlipScreen({ navigation, route }) {
                         </View>
 
 
-
+                        {/* Loan Table */}
                         {noloandata ?
                             <></> :
 
@@ -643,14 +695,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 }}>
 
                                     <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+                                        <Text style={styles.InfoInnerTxt}>
                                             Description
                                     </Text>
                                     </View>
 
 
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end', }}>
+                                        <Text style={styles.InfoInnersubTxt}>
                                             {loandata.length > 0 ? (loandata[0].Description == null || loandata[0].Description == '' ? 'N/A' : loandata[0].Description) : 'N/A'}
                                         </Text>
                                     </View>
@@ -667,14 +719,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 }}>
 
                                     <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+                                        <Text style={styles.InfoInnerTxt}>
                                             Loan Amount
                                     </Text>
                                     </View>
 
 
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+                                        <Text style={styles.InfoInnersubTxt}>
                                             {loandata.length > 0 ? (loandata[0].LoanAmount == null || loandata[0].LoanAmount == '' ? 'N/A' : loandata[0].LoanAmount) : 'N/A'}
                                         </Text>
                                     </View>
@@ -691,14 +743,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 }}>
 
                                     <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+                                        <Text style={styles.InfoInnerTxt}>
                                             Instalments
                                     </Text>
                                     </View>
 
 
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+                                        <Text style={styles.InfoInnersubTxt}>
                                             {loandata.length > 0 ? (loandata[0].Instalments == null || loandata[0].Instalments == '' ? 'N/A' : loandata[0].Instalments) : 'N/A'}
                                         </Text>
                                     </View>
@@ -714,14 +766,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 }}>
 
                                     <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+                                        <Text style={styles.InfoInnerTxt}>
                                             Balance
                                     </Text>
                                     </View>
 
 
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+                                        <Text style={styles.InfoInnersubTxt}>
                                             {loandata.length > 0 ? (loandata[0].Balance == null || loandata[0].Balance == '' ? 'N/A' : loandata[0].Balance) : 'N/A'}
                                         </Text>
                                     </View>
@@ -742,14 +794,14 @@ export default function SalarySlipScreen({ navigation, route }) {
                                 }}>
 
                                     <View style={{ flex: 2 }}>
-                                        <Text style={{ fontSize: wp('4%'), color: '#808080', padding: wp('1%'), fontWeight: 'bold', }}>
+                                        <Text style={styles.InfoInnerTxt}>
                                             Paid Amount
                                     </Text>
                                     </View>
 
 
                                     <View style={{ flex: 1 }}>
-                                        <Text style={{ fontSize: wp('4%'), padding: wp('1%'), alignSelf: 'flex-end' }}>
+                                        <Text style={styles.InfoInnersubTxt}>
                                             {loandata.length > 0 ? (loandata[0].Paidamount == null || loandata[0].Paidamount == '' ? 'N/A' : loandata[0].Paidamount) : 'N/A'}
                                         </Text>
                                     </View>
@@ -763,11 +815,6 @@ export default function SalarySlipScreen({ navigation, route }) {
                         }
 
 
-                        {/* <View style={styles.container}>
-                            <TouchableOpacity onPress={() => { createPDF() }}>
-                                <Text>Create PDF</Text>
-                            </TouchableOpacity>
-                        </View> */}
 
 
 
@@ -815,24 +862,33 @@ const styles = StyleSheet.create({
 
     salaryemptxt: {
         paddingTop: wp('2%'),
-        color: '#59ABE3',
+        // color: '#59ABE3',
+        color: 'black',
         fontSize: wp('4%'),
         fontWeight: 'bold'
     },
     salaryempsubtxt: {
         paddingTop: wp('2%'),
         fontSize: wp('3.6%'),
-        fontWeight: '500'
+        fontWeight: 'bold',
+        color: '#808080'
+
 
     },
 
-    PDfcontainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+    InfoInnerTxt: {
+        fontSize: wp('4%'),
+        color: 'black',
+        padding: wp('1%'),
+        fontWeight: 'bold'
     },
+    InfoInnersubTxt: {
+        fontSize: wp('4%'),
+        padding: wp('1%'),
+        alignSelf: 'flex-end',
+        color: '#808080',
 
+    },
 
 })
 
