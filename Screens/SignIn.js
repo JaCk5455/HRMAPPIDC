@@ -53,7 +53,7 @@ export default function SignIn({ navigation }) {
             console.log('Get_token_SignIn_from_Helper_Class', Token)
             }
             else{
-                Alert.alert('Error', 'Please Close the App and try again later.')
+                Alert.alert('Error', 'Please Close the App , and try again later.')
             }
         }).catch((e) => {
             console.log('no token get from helperclass for signin Api param', e);

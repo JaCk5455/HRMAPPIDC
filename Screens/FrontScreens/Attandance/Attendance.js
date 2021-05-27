@@ -4,7 +4,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import * as Contants from '../../../constants/constants';
 import { Helper } from '../../../Components/Helpers';
 import moment from 'moment';
-import Collapsible from 'react-native-collapsible';
 
 
 export default function AttendanceScreen({ navigation, route }) {
@@ -12,7 +11,7 @@ export default function AttendanceScreen({ navigation, route }) {
     const [data, SetData] = useState([]);
     const [apidata, setApiData] = useState([]);
     const [loading, IsLoading] = useState(true);
-
+const [empwrkinghrs , setEmpWrkingHrs]=(null)
 
     // ......... Begin: AsynStorageData for EmpId ........ //
     useEffect(() => {
@@ -47,30 +46,66 @@ export default function AttendanceScreen({ navigation, route }) {
             // console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + route.params.AttendancePeriodId)
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
             // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualAttendanceDetail' , {
-            const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/EmployeeInfo/V2/IndividualAttendanceDetail', {
-                method: 'POST',
+                const response = await fetch(Contants.API_URL + 'EmployeeInfo/V2/IndividualAttendanceDetail' , {
+                    method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
 
                 body: JSON.stringify({
-                    // Empid: data[0].EmpId,
-                    // periodId: route.params.AttendancePeriodIdc
+                    Empid: data[0].EmpId,
+                    periodId: route.params.AttendancePeriodId
 
-                    Empid: 277,
-                    periodId: 104
+                    // Empid: 277,
+                    // periodId: 104
 
                 })
             });
             const responseObj = await response.json();
-            // console.log('responceapi', responseObj)
+          //   console.log('responceapi', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                console.log('aaa', payload)
+               // payload=payload.reverse();
+               // console.log('aaa', payload)
                 if (payload.length > 0) {
+
+                    // let newPayload = payload.filter((item) => {
+                       
+                    //     if(moment(new Date()).isSameOrAfter(item.AttendanceDate)){
+                    //         return true;
+                    //     }
+                    //     else
+                    //     {
+                    //         return false;
+                    //     }           
+                    // })
+                    
                     setApiData(payload);
                     IsLoading(false);
+
+                    // let WorkingHour = payload.map((item)=>{
+                    //     if(item.EmpWorkingHours !== null){
+                    //         return item.EmpWorkingHours;
+ 
+                    //     } 
+                         
+                    // } )
+
+                    // let WorkingHour = payload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
+                    //     return item.EmpWorkingHours
+                    // })
+
+                    // let WorkingHour = payload.filter((item)=>{
+                    //     item.EmpWorkingHours !== null.map((item,index)=>{
+                    //         return item.EmpWorkingHours;
+ 
+                    //     } )
+                         
+                    // } )
+                   // console.log('Abc' , WorkingHour)
+
+
                 }
                 else {
                     Alert.alert(
@@ -225,7 +260,7 @@ export default function AttendanceScreen({ navigation, route }) {
 
                                                 <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                     <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#0041c4', fontWeight: "700" }}>
-                                                        Leave{ ' (' + item.AttStatus + ')'}
+                                                        {item.LeaveType + ' (' + item.AttStatus + ')'}
                                                     </Text>
 
                                                 </View>
@@ -247,7 +282,7 @@ export default function AttendanceScreen({ navigation, route }) {
 
                                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                 <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#0041c4', fontWeight: "700" }}>
-                                                    Leave{  ' (' + item.AttStatus + ')'}
+                                                    {item.LeaveType + ' (' + item.AttStatus + ')'}
                                                 </Text>
 
                                             </View>

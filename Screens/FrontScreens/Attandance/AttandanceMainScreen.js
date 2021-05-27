@@ -23,8 +23,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
     const [monthapidata, SetMonthApiData] = useState([]);
     const [maxfiscalid, setMaxFiscalId] = useState(null);
     const [maxperiodid, setMaxPeriodId] = useState(null);
-
-
+const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -210,8 +209,8 @@ export default function MainAttendanceScreen({ navigation, route }) {
     const AttandanceApiCall = async () => {
         try {
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid)
-            // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualAttendanceDetail' , {
-            const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/EmployeeInfo/V2/IndividualAttendanceDetail', {
+             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V2/IndividualAttendanceDetail' , {
+            // const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/EmployeeInfo/V2/IndividualAttendanceDetail', {
 
                 method: 'POST',
                 headers: {
@@ -232,11 +231,54 @@ export default function MainAttendanceScreen({ navigation, route }) {
             // console.log('Apidataassending', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                payload=payload.reverse();
+                payload = payload.reverse();
                 // console.log('reverse', payload)
                 if (payload.length > 0) {
-                    setApiData(payload);
+
+                   // let date = moment(new Date()).format('YYYY-MM-DD ');
+
+      
+                    let newPayload = payload.filter((item) => {
+                       
+                        if(moment(new Date()).isSameOrAfter(item.AttendanceDate)){
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }           
+                    })
+                   // console.log('less data' , newPayload)
+                    setApiData(newPayload)
+                    // setApiData(payload);
                     IsLoading(false);
+
+
+   // let WorkingHour = payload.map((item)=>{
+                    //     if(item.EmpWorkingHours !== null){
+                    //         return item.EmpWorkingHours;
+ 
+                    //     } 
+                         
+                    // })
+
+                    let WorkingHour = payload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
+                        return item.EmpWorkingHours
+                    })
+                    setEmpWorkingHrs(WorkingHour);
+
+                    // let WorkingHour = payload.filter((item)=>{
+                    //     item.EmpWorkingHours !== null.map((item,index)=>{
+                    //         return item.EmpWorkingHours;
+ 
+                    //     } )
+                         
+                    // } )
+                    console.log('Abc' , WorkingHour)
+
+
+
+
                 }
                 else {
                     Alert.alert(
@@ -276,26 +318,6 @@ export default function MainAttendanceScreen({ navigation, route }) {
     }
     // ........... End: AttandanceApiCall ....... //
 
-    useEffect(() => {
-        getDate()
-      
-
-    }, [])
-
-
-
-    const getDate = () => {
-        var date = new Date().getDate();
-        
-      var date=moment(date).format("yyyy D, mm")
-
-        console.log('date' , date)
-
-
-    }
-
-
-
 
     // .........Begin: FlatList Function(_RenderItem) ........... //
     const _RenderItem = ({ item }) => {
@@ -309,7 +331,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
                 <View style={{ marginHorizontal: wp('2%'), flexDirection: 'row' }}>
 
                     <Text style={{ color: 'black', fontSize: wp('4%'), fontWeight: 'bold', padding: wp('1%'), color: '#008080' }}>
-                        {moment(item.AttendanceDate).format("MMMM D, YYYY")}
+                        {moment(item.AttendanceDate).format('MMMM D, YYYY ')}
                     </Text>
 
 
@@ -333,24 +355,6 @@ export default function MainAttendanceScreen({ navigation, route }) {
                 }}>
 
 
-
-                    {/* <View style={styles.Attanempinfoview}>
-                        <View style={{ flex: 1.7, justifyContent: 'center' }}>
-                            <Text style={styles.listtxt}>Day :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, justifyContent: 'center' }}>
-                            <Text style={styles.listSubtxt}>
-                                {
-                                    item.DayName
-                                }
-                            </Text>
-                        </View>
-                        
-                    </View> */}
-
-{/* {item.AttendanceDate >= (new Date().getDate()) ?
-<> */}
                     {item.AttendanceTimeIN == null && item.AttendanceTimeOut == null && item.LeaveType == null ?
 
 
@@ -358,7 +362,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
 
 
 
-
+//Absent case.............
                         <View style={styles.Attanempinfoview}>
                             <View style={{ flex: 1.7, justifyContent: 'center' }}>
                                 <Text style={styles.listtxt}>Status :</Text>
@@ -377,7 +381,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
                         :
                         <>
 
-
+{/* Leace_case............. */}
                             {item.LeaveType !== null ?
                                 <>
                                     {item.AttendanceTimeIN !== null && item.LeaveType !== null ?
@@ -423,7 +427,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
 
                                                 <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                     <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#0041c4', fontWeight: "700" }}>
-                                                        Leave{ ' (' + item.AttStatus + ')'}
+                                                        {item.LeaveType +' (' + item.AttStatus + ')'}
                                                     </Text>
 
                                                 </View>
@@ -445,7 +449,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
 
                                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                 <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#0041c4', fontWeight: "700" }}>
-                                                    Leave{  ' (' + item.AttStatus + ')'}
+                                                    {item.LeaveType +' (' + item.AttStatus + ')'}
                                                 </Text>
 
                                             </View>
@@ -547,8 +551,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
                         </>
 
                     }
-                    {/* </> :
-                    null } */}
+                    
 
 
 
@@ -646,7 +649,10 @@ export default function MainAttendanceScreen({ navigation, route }) {
 
 
                     <Text style={{ fontSize: wp('3.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
-                        {apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}
+                        {empworkinghrs.length > 0 ? (empworkinghrs[0].EmpWorkingHours == null || empworkinghrs[0].EmpWorkingHours == '' ? 'N/A' : empworkinghrs[0].EmpWorkingHours) + ' Hrs' : 'N/A'}
+
+
+                     
                     </Text>
                 </View>
 
