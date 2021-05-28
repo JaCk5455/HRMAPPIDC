@@ -2,7 +2,7 @@
   "expo": {
     "name": "IDC HRM",
     "slug": "idc-hrm",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "orientation": "portrait",
     "icon": "./assets/AppLogoo.png",
     "splash": {
@@ -18,12 +18,12 @@
     ],
     "ios": {
       "bundleIdentifier" : "com.idc.hrm",
-      "buildNumber" : "1.0.16",
+      "buildNumber" : "1.0.17",
       "supportsTablet": true
     },
     "android": {
       "package": "com.idc.hrm",
-      "versionCode":16,
+      "versionCode":17,
       "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json" ,
       "adaptiveIcon": {

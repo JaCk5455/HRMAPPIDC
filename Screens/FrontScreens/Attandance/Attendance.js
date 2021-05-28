@@ -11,7 +11,7 @@ export default function AttendanceScreen({ navigation, route }) {
     const [data, SetData] = useState([]);
     const [apidata, setApiData] = useState([]);
     const [loading, IsLoading] = useState(true);
-const [empwrkinghrs , setEmpWrkingHrs]=(null)
+    const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
     // ......... Begin: AsynStorageData for EmpId ........ //
     useEffect(() => {
@@ -67,44 +67,22 @@ const [empwrkinghrs , setEmpWrkingHrs]=(null)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
                // payload=payload.reverse();
-               // console.log('aaa', payload)
+               //vc console.log('aaa', payload)
                 if (payload.length > 0) {
-
-                    // let newPayload = payload.filter((item) => {
-                       
-                    //     if(moment(new Date()).isSameOrAfter(item.AttendanceDate)){
-                    //         return true;
-                    //     }
-                    //     else
-                    //     {
-                    //         return false;
-                    //     }           
-                    // })
-                    
                     setApiData(payload);
                     IsLoading(false);
 
-                    // let WorkingHour = payload.map((item)=>{
-                    //     if(item.EmpWorkingHours !== null){
-                    //         return item.EmpWorkingHours;
- 
-                    //     } 
-                         
-                    // } )
+                    let WorkingHour = payload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
+                        return item.EmpWorkingHours
+                    })
+                    // let EmpWorkingHours = WorkingHour[0];
+                    setEmpWorkingHrs(WorkingHour);
 
-                    // let WorkingHour = payload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
-                    //     return item.EmpWorkingHours
-                    // })
-
-                    // let WorkingHour = payload.filter((item)=>{
-                    //     item.EmpWorkingHours !== null.map((item,index)=>{
-                    //         return item.EmpWorkingHours;
- 
-                    //     } )
-                         
-                    // } )
                    // console.log('Abc' , WorkingHour)
 
+
+
+      
 
                 }
                 else {
@@ -511,8 +489,9 @@ const [empwrkinghrs , setEmpWrkingHrs]=(null)
 
                         <View style={{ flex: 2, justifyContent: 'center' }}>
                             <Text style={styles.Attanempsubtxt}>{apidata.length > 0 ? (apidata[0].FullName == null || apidata[0].FullName == '' ? 'N/A' : apidata[0].FullName) : 'N/A'}</Text>
+                            {/* <Text style={styles.Attanempsubtxt}>{empworkinghrs.length > 0 ? (empworkinghrs[0] == null || empworkinghrs[0] == '' ? 'N/A' : empworkinghrs[0]) + ' Hrs' : 'N/A'}</Text> */}
 
-                            {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text> */}
+                            {/* {empworkinghrs.length > 0 ? (empworkinghrs[0] == null || empworkinghrs[0] == '' ? 'N/A' : empworkinghrs[0]) + ' Hrs' : 'N/A'} */}
                         </View>
 
                     </View>
@@ -525,7 +504,8 @@ const [empwrkinghrs , setEmpWrkingHrs]=(null)
 
                         <View style={{ flex: 2, justifyContent: 'center' }}>
 
-                            <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text>
+                            {/* <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text> */}
+                            <Text style={styles.Attanempsubtxt}>{empworkinghrs.length > 0 ? (empworkinghrs[0] == null || empworkinghrs[0] == '' ? 'N/A' : empworkinghrs[0]) + ' Hrs' : 'N/A'}</Text>
 
                             {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
 

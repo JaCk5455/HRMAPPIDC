@@ -38,6 +38,8 @@ export default function SignIn({ navigation }) {
     // const [loading, Isloading] = React.useState(false);
 
     const [token, setToken] = React.useState('');
+    const [tokenError, setTokenError] = React.useState(false);
+    const [tokenErrorMessage, setTokenErrorMessage] = React.useState('');
 
     const [data, setData] = React.useState({
         secureTextEntry: true,
@@ -48,13 +50,9 @@ export default function SignIn({ navigation }) {
     React.useEffect(() => {
 
         Helper.storeTokenInLocalStorage().then((Token) => {
-            if(Token !== '' || Token !== null){
             setToken(Token)
             console.log('Get_token_SignIn_from_Helper_Class', Token)
-            }
-            else{
-                Alert.alert('Error', 'Please Close the App , and try again later.')
-            }
+           
         }).catch((e) => {
             console.log('no token get from helperclass for signin Api param', e);
         });
@@ -89,15 +87,16 @@ export default function SignIn({ navigation }) {
 
         setPasswordError(false);
         setPasswordErrorMessage("");
+
+        setTokenError(false);
+        setTokenErrorMessage("");
     }
 
     const validateFields = () => {
         // console.log('api called')
         resetValidation();
 
-        if (email.trim() == '' || email == null
-            || password.trim() == '' || password == null
-        ) {
+        if (email.trim() == '' || email == null || password.trim() == '' || password == null || token == '' || token == null) {
 
             if (email.trim() == '' || email == null) {
                 // console.log("abc")
@@ -108,6 +107,10 @@ export default function SignIn({ navigation }) {
             if (password.trim() == '' || password == null) {
                 setPasswordError(true);
                 setPasswordErrorMessage("Password is required.");
+            }
+            if(token =='' || token == null){
+                setTokenError(true);
+                setTokenErrorMessage("please close your App and try again.")
             }
 
         }
@@ -492,7 +495,9 @@ export default function SignIn({ navigation }) {
                                 }]}>Sign In</Text>
                             </LinearGradient>
                         </TouchableOpacity>
-
+                        {tokenError && (
+                        <Text style={{ fontSize: 11, color: 'red', marginTop: 5 }}>{tokenErrorMessage}</Text>
+                    )}
 
 
                         {/* <TouchableOpacity onPress={() => navigation.navigate('Signup')}

@@ -48,13 +48,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 
 export default function HomeStackScreen({ navigation }) {
-    // const url = 'https://www.facebook.com/';
-
-
-    // const _handlePressButtonAsync = async () => {
-    //     let result = await WebBrowser.openBrowserAsync('https://expo.io');
-    //     setResult(result);
-    //   };
+   
     const { signOut } = React.useContext(AuthContext);
     return (
 
@@ -204,16 +198,16 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-                headerRight: () => (
-                    <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
-                        <TouchableOpacity style={{ backgroundColor: "#008080", padding: 2 }}>
-                            <AntDesign name="pluscircle" color="#941313" size={28}
-                                // style={{ backgroundColor: "#0041c4", }}
-                                onPress={() => { navigation.navigate("NewLeaveRequestScreen"); }}> </AntDesign>
-                        </TouchableOpacity>
-                    </View>
+                // headerRight: () => (
+                //     <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
+                //         <TouchableOpacity style={{ backgroundColor: "#008080", padding: 2 }}>
+                //             <AntDesign name="pluscircle" color="#941313" size={28}
+                //                 // style={{ backgroundColor: "#0041c4", }}
+                //                 onPress={() => { navigation.navigate("NewLeaveRequestScreen"); }}> </AntDesign>
+                //         </TouchableOpacity>
+                //     </View>
 
-                )
+                // )
             }} />
 
             <HomeStack.Screen name="NewLeaveRequestScreen" component={NewLeaveRequestScreen} options={{

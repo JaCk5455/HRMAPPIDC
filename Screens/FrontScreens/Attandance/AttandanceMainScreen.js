@@ -254,27 +254,23 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                     IsLoading(false);
 
 
-   // let WorkingHour = payload.map((item)=>{
-                    //     if(item.EmpWorkingHours !== null){
-                    //         return item.EmpWorkingHours;
+//    let WorkingHour = newPayload.map((item)=>{
+//                         if(item.EmpWorkingHours !== null){
+//                             return item.EmpWorkingHours;
  
-                    //     } 
+//                         } 
+//                         console.log('aaa', WorkingHour)
                          
-                    // })
+//                     })
 
-                    let WorkingHour = payload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
+                    let WorkingHour = newPayload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
                         return item.EmpWorkingHours
                     })
+                    // let EmpWorkingHours = WorkingHour[0];
                     setEmpWorkingHrs(WorkingHour);
 
-                    // let WorkingHour = payload.filter((item)=>{
-                    //     item.EmpWorkingHours !== null.map((item,index)=>{
-                    //         return item.EmpWorkingHours;
- 
-                    //     } )
-                         
-                    // } )
-                    console.log('Abc' , WorkingHour)
+                   
+                   // console.log('Abc' , empworkinghrs)
 
 
 
@@ -381,7 +377,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                         :
                         <>
 
-{/* Leace_case............. */}
+{/* Leave_case............. */}
                             {item.LeaveType !== null ?
                                 <>
                                     {item.AttendanceTimeIN !== null && item.LeaveType !== null ?
@@ -649,10 +645,8 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
 
                     <Text style={{ fontSize: wp('3.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
-                        {empworkinghrs.length > 0 ? (empworkinghrs[0].EmpWorkingHours == null || empworkinghrs[0].EmpWorkingHours == '' ? 'N/A' : empworkinghrs[0].EmpWorkingHours) + ' Hrs' : 'N/A'}
-
-
-                     
+                        {empworkinghrs.length > 0 ? (empworkinghrs[0] == null || empworkinghrs[0] == '' ? 'N/A' : empworkinghrs[0]) + ' Hrs' : 'N/A'}
+   
                     </Text>
                 </View>
 

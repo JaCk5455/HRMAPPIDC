@@ -33,11 +33,11 @@ export default function App() {
     });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('sada', notification);
+      console.log('abc', notification);
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('sadaaaaaa', response);
+      console.log('abbb', response);
     });
 
     return () => {
