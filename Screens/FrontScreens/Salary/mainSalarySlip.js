@@ -515,9 +515,9 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-                                        {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
+                                        <Text style={styles.salaryempsubtxt}>1122</Text>
 
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
+                                        {/*Change For ios <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text> */}
                                     </View>
 
                                 </View>
@@ -528,12 +528,14 @@ export default function MainSalarySlip({ navigation }) {
                                     </View>
 
 
-                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
-                                    </View> */}
                                     <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
+                                        <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
                                     </View>
+
+
+                                     {/*Change For IoS <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
+                                    </View> */}
 
                                 </View>
 
@@ -571,12 +573,12 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-                                    {/* <View style={{ flex: 2, justifyContent: 'center' }}>
-                                        <Text style={styles.salaryempsubtxt}>1111111111111</Text>
-                                    </View> */}
                                     <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
+                                        <Text style={styles.salaryempsubtxt}>1111111111111</Text>
                                     </View>
+                                    {/*Change For IoS <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
+                                    </View> */}
                                 </View>
 
                             </View>
