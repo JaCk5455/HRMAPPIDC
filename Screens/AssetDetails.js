@@ -47,7 +47,7 @@ export default function AssetDetailsScreen({ navigation, route }) {
     // ........... Begin:ApiCall ............... //
     const GetDataAssetApi = async () => {
         try {
-
+//abcdes
             // Live...   const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
 
             // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
