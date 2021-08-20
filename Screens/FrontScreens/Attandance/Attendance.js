@@ -111,7 +111,20 @@ export default function AttendanceScreen({ navigation, route }) {
     // ........... End: AttandanceApiCall ....... //
 
 
+ // ........... Begin: Convert MinutesTo Hours ....... //
 
+ function timeConvert(n) {
+    let num = (n || 0);
+    let hours = (num / 60);
+    let rhours = Math.floor(hours);
+    let rminutes = num - rhours * 60;
+    return addPadding(rhours, 2) + ":" + addPadding(rminutes) + " Hrs";
+   }
+   function addPadding(num, pad = 2) {
+    return (num || 0).toString().padStart(pad, '0');
+   }
+
+// ........... End: Convert MinutesTo Hours ....... //
 
     // .........Begin: FlatList Function(_RenderItem) ........... //
     const _RenderItem = ({ item }) => {
@@ -329,10 +342,16 @@ export default function AttendanceScreen({ navigation, route }) {
                                                 <Text style={styles.listtxt}>Attended Time :</Text>
                                             </View>
 
+                                            
                                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                                <Text style={styles.listSubtxt}>{moment().startOf('day').add(item.TimeInMins, 'minutes').format('hh:mm') + ' Hrs'}</Text>
-                                                {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
+                                                {item.TimeInMins > 0 ?
+                                                // <Text style={styles.listSubtxt}>{moment().startOf('day').add(item.TimeInMins, 'minutes').format('hh:mm') + ' Hrs'}</Text>
 
+                                                <Text style={styles.listSubtxt}>{timeConvert(item.TimeInMins)}</Text>
+
+                                                :
+                                               <Text style={styles.listSubtxt}>0</Text>
+                                                }
                                             </View>
 
                                         </View> :
@@ -532,64 +551,7 @@ export default function AttendanceScreen({ navigation, route }) {
                 :
                 <>
 
-                    {/* <View style={[styles.ViewSection, { marginBottom: wp('1%') }]}>
-
-                        <View style={{ marginHorizontal: wp('2%'), alignItems: 'center', paddingTop: wp('2%'), paddingBottom: wp('2%'), }}>
-
-
-
-
-                            {route.params.AttendancePeriodName == '' || route.params.AttendancePeriodName == null ?
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
-                                :
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendancePeriodName}</Text>
-                            }
-
-
-                            {route.params.AttendanceFiscalName == '' || route.params.AttendanceFiscalName == null ?
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>N/A</Text>
-                                :
-                                <Text style={{ paddingTop: wp('1%'), fontSize: wp('5%'), fontWeight: '600', color: '#0041c4' }}>{route.params.AttendanceFiscalName}</Text>
-                            }
-
-                        </View>
-
-
-
-
-                        <View style={{ marginHorizontal: wp('2%'), marginBottom: wp('2%') }}>
-
-                            <View style={styles.Attanempinfoview}>
-                                <View style={{ flex: 1.9, justifyContent: 'center' }}>
-                                    <Text style={styles.Attanemptxt}>Employee Name :</Text>
-
-                                </View>
-
-                                <View style={{ flex: 2, justifyContent: 'center' }}>
-                                    <Text style={styles.Attanempsubtxt}>{apidata.length > 0 ? (apidata[0].FullName == null || apidata[0].FullName == '' ? 'N/A' : apidata[0].FullName) : 'N/A'}</Text>
-
-                                </View>
-
-                            </View>
-
-
-                            <View style={styles.Attanempinfoview}>
-                                <View style={{ flex: 1.9, justifyContent: 'center' }}>
-                                    <Text style={styles.Attanemptxt}>Total Working Hours :</Text>
-                                </View>
-
-                                <View style={{ flex: 2, justifyContent: 'center' }}>
-
-                                    <Text style={[styles.Attanempsubtxt, { color: '#0041c4' }]}>{apidata.length > 0 ? (apidata[0].EmpWorkingHours == null || apidata[0].EmpWorkingHours == '' ? 'N/A' : apidata[0].EmpWorkingHours) + ' Hrs' : 'N/A'}</Text>
-
-
-                                </View>
-
-                            </View>
-                        </View>
-
-                    </View> */}
-
+                   
                     <View >
                         <FlatList
                             data={apidata}

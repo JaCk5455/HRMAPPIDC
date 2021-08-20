@@ -59,7 +59,7 @@ export default function DrawerContent(props, { navigation }) {
                     <View style={styles.userInfoSection}>
                         <View style={{ flexDirection: 'row', marginTop: wp('2.5%') }}>
                             <Avatar.Image
-                                source={{ uri: ((data.EmployeePic) ? `data:image/png;base64,${data.EmployeePic}` : (data.EmployeeGender == "M" || data.EmployeeGender == "Male" || data.EmployeeGender == "male" || data.EmployeeGender == "MALE"  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
+                                source={{ uri: ((data.EmployeePic) ? `data:image/png;base64,${data.EmployeePic}` : (data.EmployeeGender == "M" || data.EmployeeGender == "Male" || data.EmployeeGender == "male" || data.EmployeeGender == "MALE" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
 
                                 //  source={{ uri: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" }}
                                 size={Platform.isPad ? wp('8%') : wp('15%')}
@@ -93,6 +93,17 @@ export default function DrawerContent(props, { navigation }) {
                             onPress={() => { props.navigation.navigate('SupportStackScreen') }}
                         // onPress={() => { props.navigation.navigate('NotificationStackScreen') }}
                         />
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                
+                                <AntDesign name="scan1" size={size} color={color} />
+                            )}
+                            label="Asset Barcode Reader"
+
+                            onPress={() => { props.navigation.navigate('AssetScanStackScreen') }}
+                        />
+
+
                         {/* <DrawerItem
                             icon={({ color, size }) => (
                                 <AntDesign name="user" size={size} color={color}
@@ -132,13 +143,13 @@ const styles = StyleSheet.create({
         paddingLeft: wp('3%'),
     },
     title: {
-        fontSize:Platform.isPad ? wp('1.7%') : wp('4%'),
+        fontSize: Platform.isPad ? wp('1.7%') : wp('4%'),
         marginTop: wp('1%'),
         fontWeight: 'bold',
     },
     caption: {
-        fontSize:Platform.isPad? wp('1.2%') : wp('3.5%'),
-        
+        fontSize: Platform.isPad ? wp('1.2%') : wp('3.5%'),
+
     },
     row: {
         marginTop: 20,

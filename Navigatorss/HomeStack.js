@@ -52,8 +52,6 @@ export default function HomeStackScreen({ navigation }) {
     const { signOut } = React.useContext(AuthContext);
     return (
 
-
-
         <HomeStack.Navigator>
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{
                 title: "Home",

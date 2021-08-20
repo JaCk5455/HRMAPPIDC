@@ -258,9 +258,6 @@ export default function SalarySlipScreen({ navigation, route }) {
 
                             {/* </View> */}
 
-
-
-
                         </View>
 
 
@@ -813,18 +810,6 @@ export default function SalarySlipScreen({ navigation, route }) {
 
                             </View>
                         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                     </View >

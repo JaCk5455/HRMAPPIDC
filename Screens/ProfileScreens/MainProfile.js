@@ -8,7 +8,7 @@ import {
     Title,
     Caption,
     Text,
-   
+
 
 } from 'react-native-paper';
 import { Spinner } from 'native-base';
@@ -32,6 +32,8 @@ export default function MainProfileScreen({ navigation }) {
     const [data, SetData] = useState([]);
     const [personalapidata, SetPersonalApiData] = useState([]);
     const [eduapidata, SetEduApiData] = useState([]);
+    const [Dependentapidata, SetDependentApiData] = useState([]);
+   
     const [loading, IsLoading] = useState(true);
     // const [deviceType,setDeviceType] = useState(null);
 
@@ -40,7 +42,7 @@ export default function MainProfileScreen({ navigation }) {
         Helper.getLoggedInData().then((response) => {
             // SetData(response);
             SetData(response)
-           //  console.log('abc', response)
+            //  console.log('abc', response)
 
         }).catch((e) => {
             console.log('eee', e);
@@ -83,15 +85,15 @@ export default function MainProfileScreen({ navigation }) {
 
 
 
-//..................Begin: ProfileApi .....................//
+    //..................Begin: ProfileApi .....................//
 
     const ProfileApiData = async (signal) => {
         try {
-//console.log(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails')
-           // ... Live const response = await fetch(Contants.API_URL + 'Employeeinfo/EmployeePerosnalDetails?Empid=' + data[0].EmpId, {
-           //... testing 
-           const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails' , {  
-           signal: signal,
+            //console.log(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails')
+            // ... Live const response = await fetch(Contants.API_URL + 'Employeeinfo/EmployeePerosnalDetails?Empid=' + data[0].EmpId, {
+            //... testing 
+            const response = await fetch(Contants.API_URL + 'Employeeinfo/V1/EmployeePerosnalDetails', {
+                signal: signal,
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -100,10 +102,12 @@ export default function MainProfileScreen({ navigation }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId
+                    // Empid: 1
+
                 })
             });
             const responseObj = await response.json();
-              //console.log(responseObj)
+            //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
                 //  console.log('prifile data',payloadData)
@@ -113,18 +117,24 @@ export default function MainProfileScreen({ navigation }) {
                     // StoreData(payload);
                     IsLoading(false);
                 }
-                else {
-                    Alert.alert('Error' , 'No Record Found')
-                }
+                // else {
+                //     Alert.alert('Error', 'No Record Found')
+                // }
                 if (payloadData.Table2.length > 0) {
                     SetEduApiData(payloadData.Table2);
                     // console.log('aaa', payloadData.Table2)
                     // StoreData(payload);
                     IsLoading(false);
                 }
-                else {
-                    Alert.alert('Error' , 'No Record Found')
+               
+
+                if (payloadData.Table4.length > 0) {
+                    SetDependentApiData(payloadData.Table4);
+                     //console.log('aaa', payloadData.Table4)
+                    // StoreData(payload);
+                    IsLoading(false);
                 }
+               
 
 
 
@@ -156,12 +166,11 @@ export default function MainProfileScreen({ navigation }) {
             console.log('Error', e);
         }
     }
-//..................End: ProfileApi .....................//
+    //..................End: ProfileApi .....................//
 
 
 
     return (
-
         <View style={styles.MainProfilecontainer}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
 
@@ -191,8 +200,8 @@ export default function MainProfileScreen({ navigation }) {
                                     // source={{
                                     //     uri: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
                                     // }}
-                                     source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender.toUpperCase() == "M" || data[0].EmployeeGender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
-                                   // source={{ uri: (personalapidata.length > 0 ? (personalapidata[0].EmployeePic ? `data:image/png;base64,${personalapidata[0].EmployeePic}` : (personalapidata[0].Gender.toUpperCase() == "M" || personalapidata[0].Gender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
+                                    source={{ uri: (personalapidata.length > 0 ? (personalapidata[0].EmployeePic ? `data:image/png;base64,${personalapidata[0].EmployeePic}` : (personalapidata[0].Gender.toUpperCase() == "M" || personalapidata[0].Gender.toUpperCase() == 'MALE' ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
+                                    // source={{ uri: (personalapidata.length > 0 ? (personalapidata[0].EmployeePic ? `data:image/png;base64,${personalapidata[0].EmployeePic}` : (personalapidata[0].Gender.toUpperCase() == "M" || personalapidata[0].Gender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     size={wp('27%')}
                                     style={{ marginTop: wp('-18%') }}
                                 />
@@ -209,53 +218,6 @@ export default function MainProfileScreen({ navigation }) {
 
                             </View>
                         </View>
-
-
-                        {/* <View style={styles.profileinfoBox}>
-
-                            <LinearGradient
-                                colors={["#006666", "#b2d8d8"]}
-                                style={{ height: "45%" }} />
-                            <View style={{ alignItems: 'center', marginBottom: wp("1%") }} >
-                                <Avatar.Image
-                                    // source={{ uri: ((apidata[0].EmployeePic) ? `data:image/png;base64,${apidata[0].EmployeePic}` : (apidata[0].Gender == "M" || apidata[0].Gender == "Male" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) }}
-                                    source={{ uri: (data.length > 0 ? (data[0].EmployeePic ? `data:image/png;base64,${data[0].EmployeePic}` : (data[0].EmployeeGender == "M" || data[0].EmployeeGender == "Male" ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
-                                    size={wp('27%')}
-                                    style={{ marginTop: wp('-18%') }}
-                                />
-
-                                <Title style={styles.title}>{personalapidata.length > 0 ? (personalapidata[0].EmpName == null || personalapidata[0].EmpName == '' ? 'N/A' : personalapidata[0].EmpName) : 'N/A'} </Title>
-
-                                <Caption style={styles.caption}>{personalapidata.length > 0 ? (personalapidata[0].Designation == null || personalapidata[0].Designation == '' ? 'N/A' : personalapidata[0].Designation) : ''}</Caption>
-                            </View>
-                        </View> */}
-
-
-
-
-                        {/* <View style={{ flex: 1.3, paddingHorizontal: wp('2.5%') }}>
-                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('5%'), paddingLeft: wp('2.5%'), alignItems: 'center' }}>
-
-                                <Icon name="map-marker-radius" color="#006666" size={wp('5%')} />
-                                <Text style={styles.profileinfotext}>Michigantown</Text>
-                            </View>
-
-
-                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%') }}>
-                                <Icon name="phone" color="#006666" size={wp('5%')} />
-                                <Text style={styles.profileinfotext}>219-9042161</Text>
-
-                            </View>
-
-
-                            <View style={{ flexDirection: 'row', marginTop: Platform.isPad ? wp('3%') : wp('4%'), paddingLeft: wp('2.5%'), paddingBottom: wp('2%') }}>
-                                <Icon name="email" color="#006666" size={wp('5%')} />
-                                <Text style={styles.profileinfotext}>John.Doe@gmail.com</Text>
-
-                            </View>
-                        </View> */}
-
-
 
 
 
@@ -285,6 +247,8 @@ export default function MainProfileScreen({ navigation }) {
 
                     <View style={styles.profilemenusection}>
                         <ScrollView>
+
+                            {/*//.................... Personal Information.................// */}
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('PersonalInformationScreen', {
                                     data: personalapidata
@@ -306,6 +270,8 @@ export default function MainProfileScreen({ navigation }) {
                                 </View>
                             </TouchableOpacity>
 
+
+                            {/*//.................... Educational Information.................// */}
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('EducationalInformationScreen', {
                                     Edudata: eduapidata
@@ -330,6 +296,8 @@ export default function MainProfileScreen({ navigation }) {
                             </TouchableOpacity>
 
 
+
+                            {/*//.................... Contact Information.................// */}
                             <TouchableOpacity onPress={() => {
                                 navigation.navigate('ContactInformationScreen', {
                                     data: personalapidata
@@ -351,18 +319,43 @@ export default function MainProfileScreen({ navigation }) {
                                 </View>
                             </TouchableOpacity>
 
+
+                            {/*//.................... Dependent Information.................// */}
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('DependentScreen' , {
+                                    DependData : Dependentapidata
+                                })
+                                
+                            }}>
+                                <View style={styles.menuItem}>
+
+                                    <View style={{ flex: 1.2, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%'), alignItems: 'center' }}>
+
+                                        <MaterialIcons name="family-restroom" size={wp('7%')} color="#006666" />
+                                    </View>
+
+                                    <View style={{ flex: 10, backgroundColor: '#fff', justifyContent: 'center', height: hp('5%') }}>
+                                        <Text style={styles.menuItemText}>Dependent Information</Text>
+                                        {/* <Ionicons style={{ alignSelf: 'center', position: 'absolute', right: 10 }} name="ios-eye" size={24} color="#777" /> */}
+                                        <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ alignSelf: 'center', position: 'absolute', right: Platform.isPad ? 5 : 1 }} />
+                                    </View>
+
+                                </View>
+                            </TouchableOpacity>
+
                         </ScrollView>
                     </View>
                 </>
             }
 
         </View >
+       
 
     );
 }
 const styles = StyleSheet.create({
     MainProfilecontainer: {
-        flex: 1,
+        flex:1,
         backgroundColor: '#D8D8D8'
     },
 

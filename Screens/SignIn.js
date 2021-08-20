@@ -88,8 +88,8 @@ export default function SignIn({ navigation }) {
         setPasswordError(false);
         setPasswordErrorMessage("");
 
-        setTokenError(false);
-        setTokenErrorMessage("");
+        // setTokenError(false);
+        // setTokenErrorMessage("");
     }
 
     const validateFields = () => {
@@ -97,6 +97,7 @@ export default function SignIn({ navigation }) {
         resetValidation();
 
         if (email.trim() == '' || email == null || password.trim() == '' || password == null || token == '' || token == null) {
+            // if (email.trim() == '' || email == null || password.trim() == '' || password == null ) {
 
             if (email.trim() == '' || email == null) {
                 // console.log("abc")

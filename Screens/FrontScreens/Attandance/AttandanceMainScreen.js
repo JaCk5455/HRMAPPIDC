@@ -117,7 +117,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
             }))
 
 
-            //console.log('minPeriodValue' , minPeriodValue)
+           // console.log('minPeriodValue' , minPeriodValue)
             setMaxPeriodId(minPeriodValue)
             // setMaxPeriodId(abc)
 
@@ -210,8 +210,6 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
         try {
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid)
              const response = await fetch(Contants.API_URL + 'EmployeeInfo/V2/IndividualAttendanceDetail' , {
-            // const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/EmployeeInfo/V2/IndividualAttendanceDetail', {
-
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -220,26 +218,22 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                    periodId: maxperiodid
+                    periodId: maxperiodid,
                     // periodId: 104,
-                    //  Empid: 277
-
+                    //   Empid: 1916
 
                 })
             });
             const responseObj = await response.json();
-            // console.log('Apidataassending', responseObj)
+             console.log('Apidataassending', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
                 payload = payload.reverse();
-                // console.log('reverse', payload)
+                 console.log('reverse', payload)
                 if (payload.length > 0) {
 
-                   // let date = moment(new Date()).format('YYYY-MM-DD ');
 
-      
-                    let newPayload = payload.filter((item) => {
-                       
+                    let newPayload = payload.filter((item) => {                       
                         if(moment(new Date()).isSameOrAfter(item.AttendanceDate)){
                             return true;
                         }
@@ -313,6 +307,23 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
         }
     }
     // ........... End: AttandanceApiCall ....... //
+
+
+ // ........... Begin: Convert MinutesTo Hours ....... //
+
+        function timeConvert(n) {
+            let num = (n || 0);
+            let hours = (num / 60);
+            let rhours = Math.floor(hours);
+            let rminutes = num - rhours * 60;
+            return addPadding(rhours, 2) + ":" + addPadding(rminutes) + " Hrs";
+           }
+           function addPadding(num, pad = 2) {
+            return (num || 0).toString().padStart(pad, '0');
+           }
+        
+// ........... End: Convert MinutesTo Hours ....... //
+
 
 
     // .........Begin: FlatList Function(_RenderItem) ........... //
@@ -515,9 +526,15 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                                             </View>
 
                                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                                <Text style={styles.listSubtxt}>{moment().startOf('day').add(item.TimeInMins, 'minutes').format('hh:mm') + ' Hrs'}</Text>
-                                                {/* <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].DepartmentName == null || infodata[0].DepartmentName == '' ? 'N/A' : infodata[0].DepartmentName) : 'N/A'}</Text> */}
+                                                {item.TimeInMins > 0 ?
+                                                // <Text style={styles.listSubtxt}>{moment().startOf('day').add(item.TimeInMins, 'minutes').format('hh:mm') + ' Hrs'}</Text>
+                                                <Text style={styles.listSubtxt}>{timeConvert(item.TimeInMins)}</Text>
 
+                                               
+                                                :
+
+                                               <Text style={{padding: wp('1%'),fontSize: wp('3.6%'),color: 'red',fontWeight: "700"}}>0</Text>
+                                                }
                                             </View>
 
                                         </View> :
@@ -647,7 +664,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                     <Text style={{ fontSize: wp('3.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
                         {empworkinghrs.length > 0 ? (empworkinghrs[0] == null || empworkinghrs[0] == '' ? 'N/A' : empworkinghrs[0]) + ' Hrs' : 'N/A'}
    
-                    </Text>
+                    </Text> 
                 </View>
 
 
@@ -759,7 +776,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                 :
                 <>
-                    <View >
+                    <View>
                         <FlatList
                             data={apidata}
                             renderItem={_RenderItem}

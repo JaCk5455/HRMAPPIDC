@@ -10,6 +10,7 @@ import { AuthContext } from './Components/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SupportStackScreen from './Navigatorss/SupportStack';
 import SetttingStackScreen from './Navigatorss/SettingStack';
+import AssetScanStackScreen from './Navigatorss/AssetStack';
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
@@ -225,6 +226,8 @@ if(Value !== "123")
             <Drawer.Screen name="Home" component={RootTabNavigation} />
             <Drawer.Screen name="SetttingStackScreen" component={SetttingStackScreen} />
             <Drawer.Screen name="SupportStackScreen" component={SupportStackScreen} />
+            <Drawer.Screen name="AssetScanStackScreen" component={AssetScanStackScreen} />
+
           </Drawer.Navigator>
 
         }

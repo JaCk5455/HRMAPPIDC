@@ -86,17 +86,12 @@ export default function MainSalarySlip({ navigation }) {
         let Maxfiscalvalue = [];
         if (fisicalapidata.length > 0) {
 
-            // fisicalapidata.map((item) => {
-            //     Maxfiscalvalue = Math.max(item.fiscalyearid)
-            // })
-
-
             Maxfiscalvalue = Math.max.apply(Math, fisicalapidata.map((item) => {
                 return item.fiscalyearid;
             }))
 
             setMaxFiscalId(Maxfiscalvalue);
-            // console.log('maxfiscalvalue', maxfiscalid)
+             console.log('maxfiscalvalue', maxfiscalid)
         }
     }, [fisicalapidata])
     // ............. End: GetMaxFiscalID ...............//
@@ -107,12 +102,12 @@ export default function MainSalarySlip({ navigation }) {
 
     // ............. Begin: GetMaxPeriodID ...............//
     useEffect(() => {
-        // let abc = [];
+        
         let maxPeriod;
         if (monthapidata.length > 0) {
 
             maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-                //   console.log('maxperiod id', item.PeriodId)
+                  // console.log('maxperiod id', item.PeriodId)
 
                 if (item.IsPayGenerated == 1) {
                     return item.PeriodId;
@@ -124,17 +119,8 @@ export default function MainSalarySlip({ navigation }) {
                 }
             }))
 
-            // maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
-            //     if (item.IsPayGenerated == 1) {
-            //         console.log('aaa', item.PeriodId)
-            //         return item.PeriodId;
-            //     }
-            //     else {
-            //         return Infinity;
-            //     }
-            // }))
             setMaxPeriodId(maxPeriod)
-            //   console.log('maxperidvalue', maxPeriod)
+               console.log('maxperidvalue', maxPeriod)
 
         }
 
@@ -167,14 +153,11 @@ export default function MainSalarySlip({ navigation }) {
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-                // console.log('aaa', payloadData)
+                 console.log('aaa', payloadData)
                 if (payloadData.length > 0) {
-                    // console.log('FiscalYear', payloadData)
+                     console.log('FiscalYear', payloadData)
                     SetFiscalApiData(payloadData);
                     // IsLoading(false);
-                }
-                else {
-                    Alert.alert('Error')
                 }
             }
         }
@@ -200,15 +183,16 @@ export default function MainSalarySlip({ navigation }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalYearId: maxfiscalid
+                  //  fiscalYearId: maxfiscalid
+                    fiscalYearId: "-1"
                 })
             });
             const responseObj = await response.json();
-            // console.log(responseObj)
+             console.log(responseObj)
 
             if (responseObj.statusCode == 200) {
                 let monthpayload = JSON.parse(responseObj.payload);
-                //  console.log('month', monthpayload)
+                  console.log('month', monthpayload)
                 if (monthpayload.length > 0) {
                     SetMonthApiData(monthpayload);
                     // IsLoading(false);
@@ -229,10 +213,7 @@ export default function MainSalarySlip({ navigation }) {
 
     //..................Begin: SalaryApiData ...................//
     const SalaryApiData = async () => {
-        try {
-            //  console.log('abc', Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + route.params.SalPeriodId)
-            // Live..... const response = await fetch(Contants.API_URL + 'EmployeeInfo/EmployeeSalarySlip?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid, {
-            // TEsting 
+        try { 
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/EmployeeSalarySlip', {
 
                 method: 'POST',
@@ -243,10 +224,11 @@ export default function MainSalarySlip({ navigation }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                    periodId: maxperiodid
+                      
+                    periodId: maxperiodid,
 
-                    // Empid: 277,                        
-                    // periodId : 98 
+                    // Empid: 0711,                  
+                    //  periodId : 108
 
                 })
             });
@@ -515,9 +497,9 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-                                        <Text style={styles.salaryempsubtxt}>1122</Text>
+                                        {/* <Text style={styles.salaryempsubtxt}>1122</Text> */}
 
-                                        {/*Change For ios <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text> */}
+                                       <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeID == null || infodata[0].EmployeeID == '' ? 'N/A' : infodata[0].EmployeeID) : 'N/A'}</Text>
                                     </View>
 
                                 </View>
@@ -528,14 +510,14 @@ export default function MainSalarySlip({ navigation }) {
                                     </View>
 
 
-                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+                                    {/* <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
                                         <Text style={styles.salaryempsubtxt}>Mr. John Doe</Text>
-                                    </View>
-
-
-                                     {/*Change For IoS <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
                                     </View> */}
+
+
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].EmployeeName == null || infodata[0].EmployeeName == '' ? 'N/A' : infodata[0].EmployeeName) : 'N/A'}</Text>
+                                    </View>
 
                                 </View>
 
@@ -573,12 +555,12 @@ export default function MainSalarySlip({ navigation }) {
 
 
 
-                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+                                    {/* <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
                                         <Text style={styles.salaryempsubtxt}>1111111111111</Text>
-                                    </View>
-                                    {/*Change For IoS <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
                                     </View> */}
+                                    <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+                                        <Text style={styles.salaryempsubtxt}>{infodata.length > 0 ? (infodata[0].BankAccountNo == null || infodata[0].BankAccountNo == '' ? 'N/A' : infodata[0].BankAccountNo) : 'N/A'}</Text>
+                                    </View>
                                 </View>
 
                             </View>
