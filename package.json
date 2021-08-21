@@ -16,6 +16,7 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "expo": "~40.0.0",
+    "expo-barcode-scanner": "~9.1.0",
     "expo-device": "~2.4.0",
     "expo-notifications": "~0.8.2",
     "expo-status-bar": "~1.0.3",
@@ -42,8 +43,7 @@
     "react-native-svg": "12.1.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "11.0.0",
-    "expo-barcode-scanner": "~9.1.0"
+    "react-native-webview": "11.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

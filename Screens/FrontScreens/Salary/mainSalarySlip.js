@@ -184,7 +184,7 @@ export default function MainSalarySlip({ navigation }) {
                 },
                 body: JSON.stringify({
                   //  fiscalYearId: maxfiscalid
-                    fiscalYearId: "-1"
+                    fiscalYearId: -1,
                 })
             });
             const responseObj = await response.json();

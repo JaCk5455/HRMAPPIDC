@@ -50,7 +50,7 @@ export default function AssetScanScreen() {
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         // style={StyleSheet.absoluteFillObject}
-        style={{ height: 400, width: 400 }}
+        style={{ height:450, width: 400 }}
 
       />
       </View>

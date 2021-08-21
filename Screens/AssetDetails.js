@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, SafeAreaView, StyleSheet , ActivityIndicator, Alert} from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
+import * as Contants from '../constants/constants';
 
 
 export default function AssetDetailsScreen({ navigation, route }) {
@@ -44,7 +44,9 @@ export default function AssetDetailsScreen({ navigation, route }) {
 
             // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
 
-            const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/FixedAsset/V1/FixedAssetDetailBy', {
+            //const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/FixedAsset/V1/FixedAssetDetailBy', {
+
+                const response = await fetch(Contants.API_URL + 'FixedAsset/V1/FixedAssetDetailBy' , {
 
                 method: 'POST',
                 headers: {
