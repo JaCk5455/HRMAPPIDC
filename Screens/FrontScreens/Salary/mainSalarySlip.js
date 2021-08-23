@@ -198,7 +198,8 @@ export default function MainSalarySlip({ navigation }) {
                     // IsLoading(false);
                 }
                 else {
-                    Alert.alert('Error')
+                    Alert.alert('Info', 'No Record Found, Please Contact HR.', 
+            [{text: "ok", onPress:()=>{navigation.navigate('HomeScreen')}}]);
                 }
             }
         }
