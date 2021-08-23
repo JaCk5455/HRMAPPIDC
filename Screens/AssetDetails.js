@@ -57,6 +57,7 @@ export default function AssetDetailsScreen({ navigation, route }) {
                     Barcode: route.params.Scandata
 
                     //   Barcode: "00001-00001"
+                    //abc
 
 
                 })

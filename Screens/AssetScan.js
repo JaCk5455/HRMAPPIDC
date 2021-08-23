@@ -38,6 +38,7 @@ export default function AssetScanScreen() {
   if (hasPermission === false) {
     return <Text style={{justifyContent:'center' , textAlign:'center'}}>No access to camera</Text>;
   }
+  //aa
 
 
 
