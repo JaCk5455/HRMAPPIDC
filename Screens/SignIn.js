@@ -88,15 +88,15 @@ export default function SignIn({ navigation }) {
         setPasswordError(false);
         setPasswordErrorMessage("");
 
-        // setTokenError(false);
-        // setTokenErrorMessage("");
+        setTokenError(false);
+        setTokenErrorMessage("");
     }
 
     const validateFields = () => {
         // console.log('api called')
         resetValidation();
 
-        if (email.trim() == '' || email == null || password.trim() == '' || password == null || token == '' || token == null) {
+        if (email.trim() == '' || email == null || password.trim() == '' || password == null) {
             // if (email.trim() == '' || email == null || password.trim() == '' || password == null ) {
 
             if (email.trim() == '' || email == null) {
@@ -109,10 +109,10 @@ export default function SignIn({ navigation }) {
                 setPasswordError(true);
                 setPasswordErrorMessage("Password is required.");
             }
-            if(token =='' || token == null){
-                setTokenError(true);
-                setTokenErrorMessage("please close your App and try again.")
-            }
+            // if(token ==''){
+            //     setTokenError(true);
+            //     setTokenErrorMessage("please close your App and try again.")
+            // }
 
         }
         else {
@@ -155,12 +155,14 @@ export default function SignIn({ navigation }) {
 
                 })
             });
+            console.log('signinapi', data);
 
             const data = await response.json();
             console.log('signinapi', data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
+
                 setUserData(payload);
                 if (payload[0].isregister == 1) {
                     signIn(payload);
