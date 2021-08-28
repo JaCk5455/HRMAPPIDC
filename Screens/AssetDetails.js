@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, SafeAreaView, StyleSheet , ActivityIndicator, Alert} from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, SafeAreaView, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Contants from '../constants/constants';
 
@@ -12,23 +12,22 @@ export default function AssetDetailsScreen({ navigation, route }) {
 
     useEffect(() => {
 
-        route.params.Scandata.length
         if (route.params.Scandata.length > 0) {
             GetDataAssetApi()
             console.log("Data after scan", route.params.Scandata);
         }
         else {
-            
-                        Alert.alert(
-                            "Info",
-                            "No Record Found.",
-                            [
 
-                                { text: "OK", onPress: () => { navigation.navigate('AssetScanScreen') } }
-                            ],
-                            { cancelable: false }
-                        )
-                 
+            Alert.alert(
+                "Info",
+                "No Record Found.",
+                [
+
+                    { text: "OK", onPress: () => { navigation.navigate('AssetScanScreen') } }
+                ],
+                { cancelable: false }
+            )
+
         }
 
     }, [])
@@ -46,7 +45,7 @@ export default function AssetDetailsScreen({ navigation, route }) {
 
             //const response = await fetch('https://reports.idc.net.pk/OrbitEmpServiceStg/api/FixedAsset/V1/FixedAssetDetailBy', {
 
-                const response = await fetch(Contants.API_URL + 'FixedAsset/V1/FixedAssetDetailBy' , {
+            const response = await fetch(Contants.API_URL + 'FixedAsset/V1/FixedAssetDetailBy', {
 
                 method: 'POST',
                 headers: {
@@ -103,165 +102,165 @@ export default function AssetDetailsScreen({ navigation, route }) {
                 <View style={{ flex: 1, justifyContent: 'center' }}>
 
                     <ActivityIndicator size="small" color="#008080" />
-                </View>: 
+                </View> :
 
 
-            <View style={styles.MainView}>
+                <View style={styles.MainView}>
 
 
-                <View>
+                    <View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: wp("4%"), textAlign: 'center', color: '#008080' }}>
-                        {
-                            data.length > 0 ? (data[0].Name == "" || data[0].Name == null ? "N/A" : data[0].Name) : "N/A"
-                        }
-                    </Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: wp("4%"), textAlign: 'center', color: '#008080' }}>
+                            {
+                                data.length > 0 ? (data[0].Name == "" || data[0].Name == null ? "N/A" : data[0].Name) : "N/A"
+                            }
+                        </Text>
 
-                    <Text style={{
-                        textAlign: "center", paddingTop: wp('2%'),
-                        fontSize: wp('3.4%'),
-                        color: '#808080'
-                    }}>
-                        {
-                            data.length > 0 ? (data[0].Specifictaion == "" || data[0].Specifictaion == null ? "N/A" : data[0].Specifictaion) : "N/A"
-                        }
-                    </Text>
+                        <Text style={{
+                            textAlign: "center", paddingTop: wp('2%'),
+                            fontSize: wp('3.4%'),
+                            color: '#808080'
+                        }}>
+                            {
+                                data.length > 0 ? (data[0].Specifictaion == "" || data[0].Specifictaion == null ? "N/A" : data[0].Specifictaion) : "N/A"
+                            }
+                        </Text>
+                    </View>
+
+
+
+
+
+
+                    <View style={{ marginTop: wp("4%") }}>
+
+
+                        <View style={styles.infoview}>
+
+                            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                <Text style={styles.infotxt}>Manufacture :</Text>
+                            </View>
+
+                            <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+
+
+
+                                <Text style={styles.infosubtxt}>
+                                    {
+                                        data.length > 0 ? (data[0].Manufacture == "" || data[0].Manufacture == null ? "N/A" : data[0].Manufacture) : "N/A"
+                                    }
+                                </Text>
+                            </View>
+
+                        </View>
+
+
+
+                        <View style={styles.infoview}>
+
+                            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                <Text style={styles.infotxt}>Inventory Type :</Text>
+                            </View>
+
+                            <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+                                <Text style={styles.infosubtxt}>
+                                    {
+                                        data.length > 0 ? (data[0].InventoryType == "" || data[0].InventoryType == null ? "N/A" : data[0].InventoryType) : "N/A"
+                                    }
+                                </Text>
+                            </View>
+
+                        </View>
+
+
+
+
+
+                        <View style={styles.infoview}>
+
+                            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                <Text style={styles.infotxt}>Location :</Text>
+                            </View>
+
+                            <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+                                <Text style={styles.infosubtxt}>
+                                    {
+                                        data.length > 0 ? (data[0].Location == "" || data[0].Location == null ? "N/A" : data[0].Location) : "N/A"
+                                    }
+                                </Text>
+                            </View>
+
+                        </View>
+
+
+
+
+                        <View style={styles.infoview}>
+
+                            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                <Text style={styles.infotxt}>Model No :</Text>
+                            </View>
+
+                            <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+                                <Text style={styles.infosubtxt}>
+                                    {
+                                        data.length > 0 ? (data[0].ModelNo == "" || data[0].ModelNo == null ? "N/A" : data[0].ModelNo) : "N/A"
+                                    }
+                                </Text>
+                            </View>
+
+                        </View>
+
+
+
+                        <View style={styles.infoview}>
+
+                            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                <Text style={styles.infotxt}>Tag No :</Text>
+                            </View>
+
+                            <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+                                <Text style={styles.infosubtxt}>
+                                    {
+                                        data.length > 0 ? (data[0].TagNo1 == "" || data[0].TagNo1 == null ? "N/A" : data[0].TagNo1) : "N/A"
+                                    }
+                                </Text>
+                            </View>
+
+                        </View>
+
+
+
+                        <View style={styles.infoview}>
+
+                            <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                <Text style={styles.infotxt}>Serial No :</Text>
+                            </View>
+
+                            <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
+
+                                <Text style={styles.infosubtxt}>
+                                    {
+                                        data.length > 0 ? (data[0].SerialNo == "" || data[0].SerialNo == null ? "N/A" : data[0].SerialNo) : "N/A"
+                                    }
+                                </Text>
+                            </View>
+
+                        </View>
+
+
+                    </View>
+
                 </View>
-
-
-
-
-
-
-                <View style={{ marginTop: wp("4%") }}>
-
-
-                    <View style={styles.infoview}>
-
-                        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                            <Text style={styles.infotxt}>Manufacture :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-
-
-
-
-                            <Text style={styles.infosubtxt}>
-                                {
-                                    data.length > 0 ? (data[0].Manufacture == "" || data[0].Manufacture == null ? "N/A" : data[0].Manufacture) : "N/A"
-                                }
-                            </Text>
-                        </View>
-
-                    </View>
-
-
-
-                    <View style={styles.infoview}>
-
-                        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                            <Text style={styles.infotxt}>Inventory Type :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-
-                            <Text style={styles.infosubtxt}>
-                                {
-                                    data.length > 0 ? (data[0].InventoryType == "" || data[0].InventoryType == null ? "N/A" : data[0].InventoryType) : "N/A"
-                                }
-                            </Text>
-                        </View>
-
-                    </View>
-
-
-
-
-
-                    <View style={styles.infoview}>
-
-                        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                            <Text style={styles.infotxt}>Location :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-
-                            <Text style={styles.infosubtxt}>
-                                {
-                                    data.length > 0 ? (data[0].Location == "" || data[0].Location == null ? "N/A" : data[0].Location) : "N/A"
-                                }
-                            </Text>
-                        </View>
-
-                    </View>
-
-
-
-
-                    <View style={styles.infoview}>
-
-                        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                            <Text style={styles.infotxt}>Model No :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-
-                            <Text style={styles.infosubtxt}>
-                                {
-                                    data.length > 0 ? (data[0].ModelNo == "" || data[0].ModelNo == null ? "N/A" : data[0].ModelNo) : "N/A"
-                                }
-                            </Text>
-                        </View>
-
-                    </View>
-
-
-
-                    <View style={styles.infoview}>
-
-                        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                            <Text style={styles.infotxt}>Tag No :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-
-                            <Text style={styles.infosubtxt}>
-                                {
-                                    data.length > 0 ? (data[0].TagNo1 == "" || data[0].TagNo1 == null ? "N/A" : data[0].TagNo1) : "N/A"
-                                }
-                            </Text>
-                        </View>
-
-                    </View>
-
-
-
-                    <View style={styles.infoview}>
-
-                        <View style={{ flex: 1.5, justifyContent: 'center' }}>
-                            <Text style={styles.infotxt}>Serial No :</Text>
-                        </View>
-
-                        <View style={{ flex: 2, alignItems: 'flex-end', paddingRight: wp('2%') }}>
-
-                            <Text style={styles.infosubtxt}>
-                                {
-                                    data.length > 0 ? (data[0].SerialNo == "" || data[0].SerialNo == null ? "N/A" : data[0].SerialNo) : "N/A"
-                                }
-                            </Text>
-                        </View>
-
-                    </View>
-
-
-                </View>
-
-            </View>
-}
+            }
 
         </View>
-                            
+
 
 
     );

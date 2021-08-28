@@ -47,12 +47,11 @@ export default function AssetScanScreen() {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor='#008080' barStyle="light-content" />
-      <View style={{}}>
+      <View>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         // style={StyleSheet.absoluteFillObject}
         style={{ height:450, width: 400 }}
-
       />
       </View>
     
