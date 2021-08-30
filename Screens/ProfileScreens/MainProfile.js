@@ -9,7 +9,6 @@ import {
     Caption,
     Text,
 
-
 } from 'react-native-paper';
 import { Spinner } from 'native-base';
 
@@ -24,6 +23,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 // import * as Device from 'expo-device';
+//Abc
 
 const { height, width } = Dimensions.get('window');
 
@@ -102,7 +102,7 @@ export default function MainProfileScreen({ navigation }) {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId
-                    // Empid: 1
+                     //Empid: 1
 
                 })
             });
