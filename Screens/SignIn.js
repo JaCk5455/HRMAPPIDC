@@ -8,6 +8,8 @@ import { AuthContext } from "../Components/Context";
 import ProgressBar from '../Components/ProgressBar';
 import { Helper } from '../Components/Helpers';
 import * as Contants from '../constants/constants';
+import { Snackbar } from 'react-native-paper';
+
 
 
 import { BackHandler } from 'react-native';
@@ -44,6 +46,16 @@ export default function SignIn({ navigation }) {
     const [data, setData] = React.useState({
         secureTextEntry: true,
     });
+
+
+
+    const [snackVisible, setSnackVisible] = React.useState(false);
+    const [snackMessage, setSnackMessage] = React.useState(null);
+    const [snackColor, setSnackColor] = React.useState('black');
+
+
+
+    const onDismissSnackBar = () => setSnackVisible(false);
 
 
 // .........Begin: Token get from helper class .........//
@@ -171,15 +183,29 @@ export default function SignIn({ navigation }) {
                     setShowOtpModel(true);
                 }
                 else if (payload[0].isregister == 2) {
-                    Alert.alert('Error', 'This Employee is already Registered against other Device. If you want to SignIn on this device, kindly Contact HR.')
+
+                    setShowProgressBar(false);
+                    setSnackColor('#c92424');
+                    setSnackVisible(true);
+                    setSnackMessage(payload[0].Register);
+
+                   // Alert.alert('Error', 'This Employee is already Registered against other Device. If you want to SignIn on this device, kindly Contact HR.')
                 }
                 else if (payload[0].isregister == 3) {
-                    Alert.alert('Error', 'This device is already Registered against other employee. If you want to register on this device, kindly Contact HR.')
+                    setShowProgressBar(false);
+                    setSnackColor('#c92424');
+                    setSnackVisible(true);
+                    setSnackMessage("This device is already Registered against other employee.");
+
+                   // Alert.alert('Error', 'This device is already Registered against other employee. If you want to register on this device, kindly Contact HR.')
                 }
             }
 
             else {
-                Alert.alert('Error', 'Username or Password is incorrect')
+                setShowProgressBar(false);
+                setSnackColor('#c92424');
+                setSnackVisible(true);
+                setSnackMessage(data.message);
             }
             setShowProgressBar(false);
 
@@ -509,8 +535,23 @@ export default function SignIn({ navigation }) {
                     </TouchableOpacity> */}
                     </View>
 
+
+                   
+
+
+
                 </ScrollView>
+             
             </Animatable.View>
+
+            <Snackbar
+                    visible={snackVisible}
+                    onDismiss={onDismissSnackBar}
+                    style={{ backgroundColor: snackColor , marginBottom:wp("10%")}}
+                >
+                    {snackMessage}
+                </Snackbar>
+            
             {/* </>} */}
 
         </View >

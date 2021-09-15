@@ -203,7 +203,7 @@ export default function MainProfileScreen({ navigation }) {
                                     source={{ uri: (personalapidata.length > 0 ? (personalapidata[0].EmployeePic ? `data:image/png;base64,${personalapidata[0].EmployeePic}` : (personalapidata[0].Gender.toUpperCase() == "M" || personalapidata[0].Gender.toUpperCase() == 'MALE' ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     // source={{ uri: (personalapidata.length > 0 ? (personalapidata[0].EmployeePic ? `data:image/png;base64,${personalapidata[0].EmployeePic}` : (personalapidata[0].Gender.toUpperCase() == "M" || personalapidata[0].Gender.toUpperCase() == 'MALE'  ? Contants.USER_IMAGE.MALE : Contants.USER_IMAGE.FEMALE)) : 'N/A') }}
                                     size={wp('27%')}
-                                    style={{ marginTop: wp('-18%') }}
+                                    style={{ marginTop: wp('-19%') }}
                                 />
 
 
@@ -379,11 +379,11 @@ const styles = StyleSheet.create({
 
     title: {
         marginTop: wp('2%'),
-        fontSize: Platform.isPad ? wp('5%') : wp('7%'),
+        fontSize: Platform.isPad ? wp('5%') : wp('6%'),
         fontWeight: 'bold',
     },
     caption: {
-        fontSize: Platform.isPad ? wp('4%') : wp('5%'),
+        fontSize: Platform.isPad ? wp('4%') : wp('4%'),
         fontWeight: '500',
         marginTop: wp('1%'),
         marginBottom: wp('1%')
