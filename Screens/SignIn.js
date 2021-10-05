@@ -448,7 +448,8 @@ export default function SignIn({ navigation }) {
                     <Text style={{
                         color: '#afb6c2',
                         fontSize: wp('4%')
-                    }}>Hello there, sign in to continue.</Text>
+                    }}>Hello there, sign in to continue.
+                    </Text>
                     <Text style={[styles.text_footer, styles.signInFormMargin]}>Username</Text>
                     <View style={styles.action}>
                         <FontAwesome

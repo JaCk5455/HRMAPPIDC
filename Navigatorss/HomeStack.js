@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions, Alert , Image , Button } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, Alert, Image, Button } from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -41,6 +41,9 @@ import MainSalarySlip from '../Screens/FrontScreens/Salary/mainSalarySlip';
 import SalaryFisicalYearScreen from '../Screens/FrontScreens/Salary/SalaryFiscalYear';
 import SalarySlipScreen from '../Screens/FrontScreens/Salary/Salary';
 
+
+import LeavesApprovalStatusScreen from '../Screens/FrontScreens/ManagersScreens/LeavesStatus';
+
 const HomeStack = createStackNavigator();
 const { height, width } = Dimensions.get('window');
 import { Foundation } from '@expo/vector-icons';
@@ -48,7 +51,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 
 export default function HomeStackScreen({ navigation }) {
-   
+
     const { signOut } = React.useContext(AuthContext);
     return (
 
@@ -60,56 +63,12 @@ export default function HomeStackScreen({ navigation }) {
                     // backgroundColor: "#0041c4"
                     backgroundColor: "#008080"
                 },
-                // headerTitleStyle: { flex: 1, textAlign: 'left' },
-
-                // headerTitle: (props) => ( // App Logo
-                //     //     // <Image
-                //     //     //     style={{ width: 200, height: 50 }}
-                //     //     //     source={require('../assets/logo.png')}
-                //     //     //     resizeMode='contain'
-                //     //     // />
-
-
-                //     // <Avatar.Image source={require('../assets/logo.png')}
-                //     //     style={{ position: 'relative', alignSelf: 'flex-end' }}
-                //     //     size={wp('13%')}
-                //     // />
-                // ),
                 headerShown: true,
                 headerLeft: () => (
                     <FontAwesome.Button name="bars" backgroundColor="#008080" onPress={() => { navigation.openDrawer(); }}>
                     </FontAwesome.Button>
                 ),
                 headerRight: () => (
-                    // <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>   
-                    //     <TouchableOpacity onPress={() => { signOut() }}>
-
-                    //         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-
-
-                    //             <Text style={{
-                    //                 fontWeight: 'bold',
-                    //                 // borderRadius: 1,
-                    //                 color: '#fff',
-                    //                 // borderRadius: 1,
-                    //                 paddingRight: wp('1%'),
-                    //                 // paddingLeft: wp('2%'),
-                    //                 justifyContent: 'center',
-                    //                 position: 'relative'
-                    //             }}>Sign Out</Text>
-                    //             <Text style={{
-                    //                 alignItems: 'center',
-                    //                 position: 'relative',
-                    //                 paddingRight: wp('2%')
-
-                    //             }}>
-                    //                 <Feather name="log-out" size={24} color="#fff" />
-                    //             </Text>
-
-                    //         </View>
-                    //     </TouchableOpacity>
-                    // </View>
-
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => {
                             <View>
@@ -165,9 +124,6 @@ export default function HomeStackScreen({ navigation }) {
 
                 )
             }} />
-
-
-
 
             <HomeStack.Screen name="MainLeaveScreen" component={MainLeaveScreen} options={{
                 title: "Leaves Status",
@@ -239,11 +195,11 @@ export default function HomeStackScreen({ navigation }) {
                     backgroundColor: "#008080"
                 },
                 headerShown: true,
-//                 headerRight : () => (
-//                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-//  <Button title="Open WebBrowser" onPress={_handlePressButtonAsync} />                 
-//                 </View>
-//                 )
+                //                 headerRight : () => (
+                //                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                //  <Button title="Open WebBrowser" onPress={_handlePressButtonAsync} />                 
+                //                 </View>
+                //                 )
             }} />
 
             <HomeStack.Screen name="SalaryFisicalYearScreen" component={SalaryFisicalYearScreen} options={{
@@ -352,7 +308,18 @@ export default function HomeStackScreen({ navigation }) {
                 //     <Ionicons.Button name="arrow-back" size={24} color="#fff" ç></Ionicons.Button>
                 // ),
             }} />
-            
+
+
+
+            <HomeStack.Screen name="LeavesApprovalStatusScreen" component={LeavesApprovalStatusScreen} options={{
+                title: "Pending Status",
+                headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: "#008080"
+                },
+                headerShown: true,
+            }} />
+
 
         </HomeStack.Navigator>
     );
