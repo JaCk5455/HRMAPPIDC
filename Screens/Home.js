@@ -21,11 +21,10 @@ export default function HomeScreen() {
         { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
         // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
         { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
-        { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' },
 
-
-        // { name: 'F.A.Q.', icon: require('../assets/qa.png'), navigateTo: 'FAQScreen' },
-
+     
+        { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' }
+        
     ];
 
     const PersonalDetail = [
@@ -33,7 +32,7 @@ export default function HomeScreen() {
             Absent: "3 Days",
             Late: "4 Days",
             Leave: "5",
-            managersst: 0,
+            managersst: 1,
             TodayEmpAbsants: "5 Employees",
             TodayEmpLate: "4 Employees",
             TodayEmpOnLeave: "1 Employee",
@@ -41,7 +40,48 @@ export default function HomeScreen() {
         },
     ]
 
+    const LeaveApprovalsRecord = [
+        {
+            name: "umer",
+            Empid: "1122",
+            LeaveType: "SickLeave",
+            Date:"12-05-2021",
+            Time: "10:00 am"
+        },
+        {
+            name: "umer",
+            Empid: "1122",
+            LeaveType: "SickLeave",
+            Date:"12-05-2021",
+            Time: "10:00 am"
+        },
 
+        {
+            name: "umer",
+            Empid: "1122",
+            LeaveType: "SickLeave",
+            Date:"12-05-2021",
+            Time: "10:00 am"
+        },
+
+        {
+            name: "umer",
+            Empid: "1122",
+            LeaveType: "SickLeave",
+            Date:"12-05-2021",
+            Time: "10:00 am"
+        },
+
+    ]
+
+const ManagersScreenView =  ()=> {
+    let isAllowed = false;
+    if(PersonalDetail.length){
+        let isAllowManagerScreenView = PersonalDetail.find(a => a.managersst == 1) ? true : false;
+        isAllowed = isAllowManagerScreenView;
+    }
+    return isAllowed;
+}
 
 
 
