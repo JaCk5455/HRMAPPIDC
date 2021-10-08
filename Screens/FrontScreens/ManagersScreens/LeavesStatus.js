@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert , Platform , Modal, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet } from 'react-native';
 import moment from 'moment';
-import {Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -9,8 +9,8 @@ const { height, width } = Dimensions.get('window');
 
 export default function LeavesApprovalStatusScreen({ navigation }) {
     const [loading, IsLoading] = React.useState(false);
-const [showalart , setShowAlart] =  React.useState(true);
-const [showotpmodel, setShowOtpModel] = React.useState(false);
+    const [obj, setObj] = React.useState([]);
+    const [showotpmodel, setShowOtpModel] = React.useState(false);
 
     const LeaveApprovalsRecord = [
         {
@@ -19,7 +19,8 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
             LeaveType: "Compensatory leave",
             Date: "12-05-2021",
             Time: "10:00 am",
-            TotalDays: "1"
+            TotalDays: "1",
+            LeaveReason: "Urgant Piece of Work"
         },
         {
             name: "JacK",
@@ -27,7 +28,8 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
             LeaveType: "Short Leave",
             Date: "12-05-2021",
             Time: "10:00 am",
-            TotalDays: "2"
+            TotalDays: "2",
+            LeaveReason: "Marrige of my Czn",
         },
 
         {
@@ -36,7 +38,8 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
             LeaveType: "Causal Leaves",
             Date: "12-05-2021",
             Time: "10:00 am",
-            TotalDays: "3"
+            TotalDays: "3",
+            LeaveReason: "Transport issue",
         },
 
         {
@@ -46,7 +49,8 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
             LeaveStartDate: "2021-02-17T00:00:00",
             LeaveEndDate: "2021-02-17T00:00:00",
             Time: "10:00 am",
-            TotalDays: "0.5"
+            TotalDays: "0.5",
+            LeaveReason: "Treveling to my HomeTown",
         },
 
     ]
@@ -163,7 +167,7 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
                                 fontSize: wp('3.8%'),
                                 fontWeight: 'bold',
                                 color: 'black',
-                                paddingTop: wp('2%')
+
                             }}>
                                 {moment(item.LeaveStartDate).format('D MMM YYYY, h:mm:ss a')}
                             </Text>
@@ -172,7 +176,7 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
                                 fontSize: wp('3.8%'),
                                 fontWeight: 'bold',
                                 color: 'black',
-                                paddingTop: wp('2%')
+
                             }}>
                                 {moment(item.LeaveStartDate).format('D MMM YYYY') + ' - ' + moment(item.LeaveEndDate).format('D MMM YYYY')}
                             </Text>
@@ -180,42 +184,57 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
 
                     </View>
 
-                    <View style={{ marginTop: wp("3%"), flexDirection: 'row' }}>
-                        <View style={{ flex: 1, alignItems:'center' }}>
-                            <TouchableOpacity 
-                           
-                            onPress={()=>{
-                         
-                                        Alert.alert(
-                                            "Confirmation",
-                                            "Are you sure, you want to Approve.",
-                                            [
+                    <View style={{ marginTop: wp("2%") }}>
+                        <Text style={{ fontSize: wp("3.8%"), color: '#004CFF', fontWeight: 'bold' }}>
+                            {item.LeaveReason}
+                        </Text>
+                    </View>
 
-                                                { text: "Yes", onPress: () => { setShowOtpModel(true); } },
-                                                {
-                                                    text: "No",
-                                                    onPress: () => {},
-                                                    style: "cancel"
-                                                },
-                                              
-                                            ],
-                                            { cancelable: true }
-                                        )
-                                    
-                               
-                            }}
-                            style={{height:wp("10%"),width:wp("30%"), backgroundColor:'green', justifyContent:'center', borderRadius:wp("2%")}}
-                         >
-                                <Text style={{textAlign:'center', color:'#fff' , fontWeight:'bold', fontSize:wp("3.5%")}}>
+
+                    <View style={{ marginTop: wp("3%"), flexDirection: 'row' }}>
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                            <TouchableOpacity
+
+                                onPress={() => {
+                                    let abj = {
+                                        LeaveReason: item.LeaveReason,
+                                        EmpName: item.name,
+                                        LeaveTypee: item.LeaveType
+
+                                    }
+                                    setObj(abj);
+                                    setShowOtpModel(true)
+
+                                    // Alert.alert(
+                                    //     "Confirmation",
+                                    //     "Are you sure, you want to Approve.",
+                                    //     [
+
+                                    //         { text: "Yes", onPress: () => { setShowOtpModel(true); } },
+                                    //         {
+                                    //             text: "No",
+                                    //             onPress: () => {},
+                                    //             style: "cancel"
+                                    //         },
+
+                                    //     ],
+                                    //     { cancelable: true }
+                                    // )
+
+
+                                }}
+                                style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
+                            >
+                                <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
                                     Accept
                                 </Text>
                             </TouchableOpacity>
                         </View>
 
 
-                        <View style={{ flex: 1, alignItems:'center' }}>
-                            <TouchableOpacity style={{height:wp("10%"),width:wp("30%"), backgroundColor:'red', justifyContent:'center', borderRadius:wp("2%")}}>
-                                <Text style={{textAlign:'center', color:'#fff', fontWeight:'bold', fontSize:wp("3.5%") }}>
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                            <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}>
+                                <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
                                     Reject
                                 </Text>
                             </TouchableOpacity>
@@ -265,7 +284,7 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
             }
 
 
-<Modal
+            <Modal
                 animationType="slide"
                 transparent={true}
                 visible={showotpmodel}
@@ -279,6 +298,21 @@ const [showotpmodel, setShowOtpModel] = React.useState(false);
                             <Ionicons name="arrow-back" size={24} color="black" />
                             <Text>Back</Text>
                         </TouchableOpacity>
+
+
+                        <View style={{ borderBottomWidth: 1 }}>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: wp("4%") }}>Are you sure, you want to Approve.</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{flex:0.7 , marginTop:wp("2%")}}>
+                                <Text style={{color:'#000000', fontSize:wp("4%"), fontWeight:'bold'}}>Name: {obj.LeaveReason}</Text>
+                            </View>
+
+                            <View style={{flex:0.7 , marginTop:wp("2%")}}>
+                                <Text style={{color:'#000000', fontSize:wp("4%"), fontWeight:'bold'}}>Name: {obj.LeaveReason}</Text>
+                            </View>
+                        </View>
 
 
                     </View>
