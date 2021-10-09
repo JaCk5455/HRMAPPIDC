@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet } from 'react-native';
 import moment from 'moment';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -305,12 +305,16 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
                         </View>
 
                         <View style={{ flexDirection: 'row' }}>
-                            <View style={{flex:0.7 , marginTop:wp("2%")}}>
-                                <Text style={{color:'#000000', fontSize:wp("4%"), fontWeight:'bold'}}>Name: {obj.LeaveReason}</Text>
+                            <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center' }}>
+
+                                <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
+                                <Text style={{ color: '#777777', fontSize: wp("4%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.EmpName}</Text>
+
                             </View>
 
-                            <View style={{flex:0.7 , marginTop:wp("2%")}}>
-                                <Text style={{color:'#000000', fontSize:wp("4%"), fontWeight:'bold'}}>Name: {obj.LeaveReason}</Text>
+                            <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center' }}>
+                                <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
+                                <Text style={{ color: '#777777', fontSize: wp("4%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.LeaveTypee}</Text>
                             </View>
                         </View>
 
