@@ -21,7 +21,7 @@ export default function MainLeaveScreen({ navigation }) {
     const [monthapidata, SetMonthApiData] = useState([]);
     const [maxfiscalid, setMaxFiscalId] = useState(null);
     const [maxperiodid, setMaxPeriodId] = useState(null);
-    const [leaverecord , setLeaveRecord] = useState(false)
+    const [leaverecord, setLeaveRecord] = useState(false)
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -54,7 +54,7 @@ export default function MainLeaveScreen({ navigation }) {
                 return item.fiscalyearid;
             }))
 
-             // console.log('maxfiscalid', Maxfiscalvalue);
+            // console.log('maxfiscalid', Maxfiscalvalue);
 
             setMaxFiscalId(Maxfiscalvalue);
         }
@@ -82,7 +82,7 @@ export default function MainLeaveScreen({ navigation }) {
             minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
 
                 if (item.IsPayGenerated == 0) {
-                    
+
                     return item.PeriodId;
 
                 }
@@ -134,7 +134,7 @@ export default function MainLeaveScreen({ navigation }) {
                 let payloadData = JSON.parse(responseObj.payload);
                 // console.log('FiscalYear', payloadData)
                 if (payloadData.length > 0) {
-                   // console.log('fescalyear', payloadData)
+                    // console.log('fescalyear', payloadData)
                     setYearApiData(payloadData);
                     // IsLoading(false);
                 }
@@ -155,7 +155,7 @@ export default function MainLeaveScreen({ navigation }) {
     const MonthApiCall = async () => {
         try {
 
-           // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+            // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
                 method: 'POST',
                 headers: {
@@ -172,7 +172,7 @@ export default function MainLeaveScreen({ navigation }) {
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloaddata = JSON.parse(responseObj.payload);
-                 // console.log('month', payloaddata)
+                // console.log('month', payloaddata)
                 if (payloaddata.length > 0) {
                     SetMonthApiData(payloaddata);
                     // IsLoading(false);
@@ -191,9 +191,9 @@ export default function MainLeaveScreen({ navigation }) {
     //..... Begin : Leave Api Call ...... //
     const LeaveApiCall = async () => {
         try {
-             // console.log('Leave URL', Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid);
+            // console.log('Leave URL', Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid);
             // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid, {
-                const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail' , {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail', {
 
                 method: 'POST',
                 headers: {
@@ -218,10 +218,10 @@ export default function MainLeaveScreen({ navigation }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-               // console.log('Leaves Data', payload) 
+                // console.log('Leaves Data', payload) 
                 if (payload.length > 0) {
                     setLeaveApiData(payload);
-                   
+
                     IsLoading(false);
                     setLeaveRecord(false)
 
@@ -260,33 +260,33 @@ export default function MainLeaveScreen({ navigation }) {
         return <ItemView item={item} />
     }
 
-    const LeaveColor = (item)=>{
+    const LeaveColor = (item) => {
         let color = '#008080'
- 
-       if(item == 'Annual leaves'){
-         color='#777777'
-       }
-        else if(item == 'Causal Leaves'){
-            color='#ff8000';
+
+        if (item == 'Annual leaves') {
+            color = '#777777'
+        }
+        else if (item == 'Causal Leaves') {
+            color = '#ff8000';
         }
 
-        else if(item == 'Short Leave'){
-            color='#004CFF';
+        else if (item == 'Short Leave') {
+            color = '#004CFF';
         }
 
-        else if(item == 'Sick Leave'){
-            color='#A37546';
+        else if (item == 'Sick Leave') {
+            color = '#A37546';
         }
 
-        else if(item == 'Leave Without Pay'){
-            color='#FF2E00';
+        else if (item == 'Leave Without Pay') {
+            color = '#FF2E00';
         }
 
-        else if(item == 'Compensatory leave'){
-            color='#008080';
+        else if (item == 'Compensatory leave') {
+            color = '#008080';
         }
 
-        else{
+        else {
             color = '#008080';
         }
 
@@ -314,16 +314,16 @@ export default function MainLeaveScreen({ navigation }) {
                         <View style={{ flex: 5 }}>
 
 
-                        <Text style={{
-    fontSize: wp('4%'),
-    fontWeight: 'bold',
-    color :LeaveColor(item.Description),
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#CBCBCB',
-    paddingTop: wp('1%')
-}}>
-    {item.Description}
-</Text>
+                            <Text style={{
+                                fontSize: wp('4%'),
+                                fontWeight: 'bold',
+                                color: LeaveColor(item.Description),
+                                // borderBottomWidth: 1,
+                                // borderBottomColor: '#CBCBCB',
+                                paddingTop: wp('1%')
+                            }}>
+                                {item.Description}
+                            </Text>
 
 
                             {/* {item.Description == "Annual leaves" ?
@@ -578,68 +578,69 @@ export default function MainLeaveScreen({ navigation }) {
                 {maxperiodid }
             </Text>
         </View> */}
-{leaverecord? 
- <View style={{flex:1, justifyContent:'center' , alignItems:'center'}}>
-    
-
-  <Text style={{fontSize:wp('4%') , color:'red' , alignItems:'center'}}>
-      No record found for the current month.
-  </Text>
-  
-  <View style={{  alignItems: 'center', marginTop: wp('3%'), }}>
-                                <TouchableOpacity
-                                    style={{ backgroundColor: '#008080', height: wp('10%'), width: wp('30%'), alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}
-                                    onPress={() => {navigation.navigate('LeaveFisicalScreen', {
-                                        // FiscalYears: yearapidata
-                                    })
-                                        
-                                    }}>
-                                    <Text style={{ color: '#fff', fontWeight: 'bold'  , fontSize:wp('3%') }}>Previous Record</Text>
-                                </TouchableOpacity>
-                            </View>
+            {leaverecord ?
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
 
+                    <Text style={{ fontSize: wp('4%'), color: 'red', alignItems: 'center' }}>
+                        No record found for the current month.
+                    </Text>
 
-  </View> : <>
+                    <View style={{ alignItems: 'center', marginTop: wp('3%'), }}>
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#008080', height: wp('10%'), width: wp('30%'), alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}
+                            onPress={() => {
+                                navigation.navigate('LeaveFisicalScreen', {
+                                    // FiscalYears: yearapidata
+                                })
 
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: wp('1%'), marginRight: wp('2%') }}>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('LeaveFisicalScreen', {
-                        FiscalYears: yearapidata
-                    })
-                }}
-                    style={{ flexDirection: 'row' }}
-                >
-                    <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
-                        Previous Record
-                                </Text>
-                    <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
+                            }}>
+                            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: wp('3%') }}>Previous Record</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
 
-                </TouchableOpacity>
-            </View>
+                </View> : <>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: wp('1%'), marginRight: wp('2%') }}>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('LeaveFisicalScreen', {
+                                FiscalYears: yearapidata
+                            })
+                        }}
+                            style={{ flexDirection: 'row' }}
+                        >
+                            <Text style={{ color: '#008080', fontWeight: 'bold', alignSelf: 'center', fontSize: wp('4%') }}>
+                                Previous Record
+                            </Text>
+                            <MaterialCommunityIcons name="skip-previous-circle-outline" size={wp('5.5%')} color="#008080" />
 
 
-            <View style={{ marginBottom: wp('8%') }}>
-                {loading ?
-                    <ActivityIndicator
-                        style={{ height: 60 }}
-                        color="#008080"
-                        size="small"
-                    /> :
 
-                    <FlatList
-                        data={leaveapidata}
-                        renderItem={_RenderItem}
-                        // keyExtractor={keyExtractorVisit}
-                        getItemLayout={getItemLayout}
-                        keyExtractor={(item, index) => index.toString()}
-                        refreshing={_Refresh}
-                    />
-                }
-            </View>
-            </> }
+                        </TouchableOpacity>
+                    </View>
+
+
+                    <View style={{ marginBottom: wp('8%') }}>
+                        {loading ?
+                            <ActivityIndicator
+                                style={{ height: 60 }}
+                                color="#008080"
+                                size="small"
+                            /> :
+
+                            <FlatList
+                                data={leaveapidata}
+                                renderItem={_RenderItem}
+                                // keyExtractor={keyExtractorVisit}
+                                getItemLayout={getItemLayout}
+                                keyExtractor={(item, index) => index.toString()}
+                                refreshing={_Refresh}
+                            />
+                        }
+                    </View>
+                </>}
         </View >
     );
 }

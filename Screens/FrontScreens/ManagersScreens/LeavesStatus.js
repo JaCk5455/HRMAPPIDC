@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet, TextInput } from 'react-native';
 import moment from 'moment';
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 
@@ -11,6 +11,7 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
     const [loading, IsLoading] = React.useState(false);
     const [obj, setObj] = React.useState([]);
     const [showotpmodel, setShowOtpModel] = React.useState(false);
+    const [approveremark, setApproveRemark] = React.useState('');
 
     const LeaveApprovalsRecord = [
         {
@@ -23,7 +24,7 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
             LeaveReason: "Urgant Piece of Work"
         },
         {
-            name: "JacK",
+            name: "JacK ",
             Empid: "IDC-1173",
             LeaveType: "Short Leave",
             Date: "12-05-2021",
@@ -197,7 +198,7 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
 
                                 onPress={() => {
                                     let abj = {
-                                        LeaveReason: item.LeaveReason,
+                                        LeaveeReason: item.LeaveReason,
                                         EmpName: item.name,
                                         LeaveTypee: item.LeaveType
 
@@ -205,21 +206,6 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
                                     setObj(abj);
                                     setShowOtpModel(true)
 
-                                    // Alert.alert(
-                                    //     "Confirmation",
-                                    //     "Are you sure, you want to Approve.",
-                                    //     [
-
-                                    //         { text: "Yes", onPress: () => { setShowOtpModel(true); } },
-                                    //         {
-                                    //             text: "No",
-                                    //             onPress: () => {},
-                                    //             style: "cancel"
-                                    //         },
-
-                                    //     ],
-                                    //     { cancelable: true }
-                                    // )
 
 
                                 }}
@@ -292,31 +278,62 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
 
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
-                            onPress={_Back}>
 
-                            <Ionicons name="arrow-back" size={24} color="black" />
-                            <Text>Back</Text>
-                        </TouchableOpacity>
-
-
-                        <View style={{ borderBottomWidth: 1 }}>
+                        <View style={{ borderBottomWidth: 0.5, borderBottomColor: "#66b2b2", }}>
                             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: wp("4%") }}>Are you sure, you want to Approve.</Text>
                         </View>
 
                         <View style={{ flexDirection: 'row' }}>
-                            <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flex: 1.3, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginRight: wp("2%") }}>
 
                                 <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
-                                <Text style={{ color: '#777777', fontSize: wp("4%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.EmpName}</Text>
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.EmpName}</Text>
 
                             </View>
 
-                            <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginLeft: wp("2%") }}>
                                 <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
-                                <Text style={{ color: '#777777', fontSize: wp("4%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.LeaveTypee}</Text>
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.LeaveTypee}</Text>
                             </View>
                         </View>
+
+
+                        <View>
+                            <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#777777' }}>
+                                {obj.LeaveeReason}
+                            </Text>
+                        </View>
+
+
+                        <View style={{ borderWidth: 0.3, borderColor: 'grey', marginTop: wp("2%") }}>
+                            <TextInput
+                                placeholder="Remarks"
+                                style={{ color: '#05375a', textAlign: 'center', height: 40 }}
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                onChangeText={(val) => setApproveRemark(val)}
+                                multiline={true} />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', marginTop: wp("4%") }}>
+                            <View style={{ flex: 1 }}>
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    onPress={_Back}>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Approve</Text>
+                                </TouchableOpacity>
+                            </View>
+
+
+                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
+                                    onPress={_Back}>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Back</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+
+
 
 
                     </View>
@@ -338,7 +355,7 @@ const styles = StyleSheet.create({
 
     },
     modalView: {
-        margin: 20,
+        margin: 15,
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 30,
