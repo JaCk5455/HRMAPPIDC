@@ -12,8 +12,7 @@ const { height, width } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    // const [personaldetail , setPersonalDetail] = React.useEffect([]);
-    const [abc, setAbc] = React.useState([]);
+    const [abc, setAbc] = React.useState();
 
     const gridItems = [
         { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen' },
@@ -22,188 +21,185 @@ export default function HomeScreen() {
         // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
         { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
 
-     
-        { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' }
-        
+      //   { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen'}
+
     ];
-
-    const PersonalDetail = [
-        {
-            Absent: "3 Days",
-            Late: "4 Days",
-            Leave: "5",
-            managersst: 1,
-            TodayEmpAbsants: "5 Employees",
-            TodayEmpLate: "4 Employees",
-            TodayEmpOnLeave: "1 Employee",
-            pendingApprovals: 5,
-        },
-    ]
-
-    const LeaveApprovalsRecord = [
-        {
-            name: "umer",
-            Empid: "1122",
-            LeaveType: "SickLeave",
-            Date:"12-05-2021",
-            Time: "10:00 am"
-        },
-        {
-            name: "umer",
-            Empid: "1122",
-            LeaveType: "SickLeave",
-            Date:"12-05-2021",
-            Time: "10:00 am"
-        },
-
-        {
-            name: "umer",
-            Empid: "1122",
-            LeaveType: "SickLeave",
-            Date:"12-05-2021",
-            Time: "10:00 am"
-        },
-
-        {
-            name: "umer",
-            Empid: "1122",
-            LeaveType: "SickLeave",
-            Date:"12-05-2021",
-            Time: "10:00 am"
-        },
-
-    ]
-
-const ManagersScreenView =  ()=> {
-    let isAllowed = false;
-    if(PersonalDetail.length){
-        let isAllowManagerScreenView = PersonalDetail.find(a => a.managersst == 1) ? true : false;
-        isAllowed = isAllowManagerScreenView;
-    }
-    return isAllowed;
-}
-
-
-
-
-    const _ListHeader = () => {
-        return (
-            <View>
-                <View style={styles.Lst_Header}>
-                    <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
-                        <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Attandance Details</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                Late:
-                            </Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {PersonalDetail[0].Late}
-                            </Text>
-
-                        </View>
-                    </View>
-
-
-                    <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                Absant:
-                            </Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {PersonalDetail[0].Absent}
-                            </Text>
-
-                        </View>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                Leaves:
-                            </Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {PersonalDetail[0].Leave}
-                            </Text>
-
-                        </View>
-                    </View>
-                </View>
-
-                {PersonalDetail[0].managersst == 1 ?
-                    <View style={styles.Lst_Header}>
-
-                        <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
-                            <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
-
-                        </View>
-
-                        <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                    Late:
-                                </Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                    {PersonalDetail[0].TodayEmpLate}
-                                </Text>
-
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                    Absant:
-                                </Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                    {PersonalDetail[0].TodayEmpAbsants}
-                                </Text>
-
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                    Leaves:
-                                </Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                    {PersonalDetail[0].TodayEmpOnLeave}
-                                </Text>
-
-                            </View>
-                        </View>
-
-                        <View style={{  marginBottom: wp("1%"),  marginTop: wp("2%") }}>
-
-                            <TouchableOpacity onPress={() => navigation.navigate('LeavesApprovalStatusScreen')}
-                                style={{ backgroundColor: 'orange' ,borderWidth: 0.5, borderRadius: wp("2%"), borderColor: 'orange', }}>
-                                <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: "absolute", right: Platform.isPad ? 5 : 2, top: "15%" }} />
-                                <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Pending Leaves Aprovals/Rejections</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View> : <></>}
-
-            </View>
-
-
-
+    if ( abc[0].managersst == 1) {
+        gridItems.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' }
         )
     }
+
+
+
+
+
+    // const PersonalDetail = [
+    //     {
+    //         Absent: "3 Days",
+    //         Late: "4 Days",
+    //         Leave: "5",
+    //         managersst: 1,
+    //         TodayEmpAbsents: "5 Employees",
+    //         TodayEmpLate: "4 Employees",
+    //         TodayEmpOnLeave: "1 Employee",
+    //         pendingApprovals: 5,
+    //     },
+    // ]
+
+
+    React.useEffect(() => {
+
+
+        const PersonalDetail = [
+            {
+                Absent: "3 Days",
+                Late: "4 Days",
+                Leave: "5",
+                managersst: 1,
+                TodayEmpAbsents: "5 Employees",
+                TodayEmpLate: "4 Employees",
+                TodayEmpOnLeave: "1 Employee",
+                pendingApprovals: 5,
+            },
+        ]
+        setAbc(PersonalDetail);
+        console.log("PersonalDatailData", abc)
+        // if (abc[0].managersst == 1) {
+        //         gridItems.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' }
+        //         )
+        //     }
+
+    }, [])
+
+
+
+    // const ManagersScreenView = () => {
+    //     let isAllowed = false;
+    //     if (PersonalDetail.length) {
+    //         let isAllowManagerScreenView = PersonalDetail.find(a => a.managersst == 1) ? true : false;
+    //         isAllowed = isAllowManagerScreenView;
+    //     }
+    //     return isAllowed;
+    // }
+
+
+
+
+    // const _ListHeader = () => {
+    //     return (
+    //         <View>
+    //             <View style={styles.Lst_Header}>
+    //                 <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
+    //                     <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Attandance Details</Text>
+    //                 </View>
+
+    //                 <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                     <View style={{ flex: 1 }}>
+    //                         <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                             Late:
+    //                         </Text>
+    //                     </View>
+    //                     <View style={{ flex: 1 }}>
+    //                         <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                             {abc.length > 0 ? (abc[0].Late == "" ||  abc[0].Late == null ? "N/A" : abc[0].Late ): 'N/A'}
+    //                         </Text>
+    //                     </View>
+    //                 </View>
+
+
+    //                 <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                     <View style={{ flex: 1 }}>
+    //                         <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                             Absant:
+    //                         </Text>
+    //                     </View>
+    //                     <View style={{ flex: 1 }}>
+    //                         <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                             {abc.length > 0 ? (abc[0].Absent == "" ||  abc[0].Absent == null ? "N/A" : abc[0].Absent ) : 'N/A'}
+    //                         </Text>
+
+    //                     </View>
+    //                 </View>
+
+    //                 <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                     <View style={{ flex: 1 }}>
+    //                         <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                             Leaves:
+    //                         </Text>
+    //                     </View>
+    //                     <View style={{ flex: 1 }}>
+    //                         <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                             {abc.length > 0 ? (abc[0].Leave == "" ||  abc[0].Leave == null ? "N/A" : abc[0].Leave ) : "N/A"}
+    //                         </Text>
+
+    //                     </View>
+    //                 </View>
+    //             </View>
+
+    //             {/* {abc[0].managersst == 1 ?
+    //                 <View style={styles.Lst_Header}>
+
+    //                     <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
+    //                         <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
+
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                         <View style={{ flex: 1 }}>
+    //                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                                 Late:
+    //                             </Text>
+    //                         </View>
+    //                         <View style={{ flex: 1 }}>
+    //                             <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                                 {abc.length > 0 ? abc[0].TodayEmpLate : "N/A"}
+    //                             </Text>
+
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                         <View style={{ flex: 1 }}>
+    //                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                                 Absant:
+    //                             </Text>
+    //                         </View>
+    //                         <View style={{ flex: 1 }}>
+    //                             <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                                 {abc.length > 0 ? abc[0].TodayEmpAbsents: "N/A"}
+    //                             </Text>
+
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                         <View style={{ flex: 1 }}>
+    //                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                                 Leaves:
+    //                             </Text>
+    //                         </View>
+    //                         <View style={{ flex: 1 }}>
+    //                             <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                                 {abc.length > 0 ? abc[0].TodayEmpOnLeave:'N/A'}
+    //                             </Text>
+
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={{ marginBottom: wp("1%"), marginTop: wp("2%") }}>
+
+    //                         <TouchableOpacity onPress={() => navigation.navigate('LeavesApprovalStatusScreen')}
+    //                             style={{ backgroundColor: 'orange', borderWidth: 0.5, borderRadius: wp("2%"), borderColor: 'orange', }}>
+    //                             <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: "absolute", right: Platform.isPad ? 5 : 2, top: "15%" }} />
+    //                             <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Pending Leaves Aprovals/Rejections</Text>
+    //                         </TouchableOpacity>
+    //                     </View>
+    //                 </View> : <></>} */}
+
+    //         </View>
+
+    //     )
+    // }
 
     return (
 
@@ -252,7 +248,7 @@ const ManagersScreenView =  ()=> {
                     )}
                     numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={_ListHeader}
+                    //  ListHeaderComponent={_ListHeader}
 
                 />
             </View>

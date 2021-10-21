@@ -7,19 +7,23 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const { height, width } = Dimensions.get('window');
 
-export default function LeavesApprovalStatusScreen({ navigation }) {
+export default function LeavesApprovalStatusScreen({ navigation, route }) {
     const [loading, IsLoading] = React.useState(false);
     const [obj, setObj] = React.useState([]);
     const [showotpmodel, setShowOtpModel] = React.useState(false);
     const [approveremark, setApproveRemark] = React.useState('');
+    const [showrejectionotpmodel, setShowRejectionOtpModel] = React.useState(false);
+    const [rejectremark, setRejectRemark] = React.useState('');
+
+
 
     const LeaveApprovalsRecord = [
         {
             name: "Umer Farooq",
             Empid: "IDC-1985",
             LeaveType: "Compensatory leave",
-            Date: "12-05-2021",
-            Time: "10:00 am",
+            LeaveStartDate: "2021-02-17T00:00:00",
+            LeaveEndDate: "2021-02-17T00:00:00",
             TotalDays: "1",
             LeaveReason: "Urgant Piece of Work"
         },
@@ -27,8 +31,8 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
             name: "JacK ",
             Empid: "IDC-1173",
             LeaveType: "Short Leave",
-            Date: "12-05-2021",
-            Time: "10:00 am",
+            LeaveStartDate: "2021-02-17T00:00:00",
+            LeaveEndDate: "2021-02-17T00:00:00",
             TotalDays: "2",
             LeaveReason: "Marrige of my Czn",
         },
@@ -37,8 +41,8 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
             name: "John",
             Empid: "IDC-1171",
             LeaveType: "Causal Leaves",
-            Date: "12-05-2021",
-            Time: "10:00 am",
+            LeaveStartDate: "2021-02-17T00:00:00",
+            LeaveEndDate: "2021-02-17T00:00:00",
             TotalDays: "3",
             LeaveReason: "Transport issue",
         },
@@ -49,7 +53,7 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
             LeaveType: "Annual leaves",
             LeaveStartDate: "2021-02-17T00:00:00",
             LeaveEndDate: "2021-02-17T00:00:00",
-            Time: "10:00 am",
+            
             TotalDays: "0.5",
             LeaveReason: "Treveling to my HomeTown",
         },
@@ -219,7 +223,22 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
 
 
                         <View style={{ flex: 1, alignItems: 'center' }}>
-                            <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}>
+                            <TouchableOpacity
+
+                                onPress={() => {
+                                    let abj = {
+                                        LeaveeReason: item.LeaveReason,
+                                        EmpName: item.name,
+                                        LeaveTypee: item.LeaveType
+
+                                    }
+                                    setObj(abj);
+                                    setShowRejectionOtpModel(true)
+
+
+
+                                }}
+                                style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}>
                                 <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
                                     Reject
                                 </Text>
@@ -235,7 +254,60 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
 
     // ....... End : FlatList_RenderItem_Function .... //
 
+    const _ListHeader = () => {
+        return (
+            <View style={styles.Lst_Header}>
 
+            <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
+                <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
+
+            </View>
+
+            <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                        Late:
+                    </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "red", fontSize: wp("3%") }}>
+                   1 Late
+                    </Text>
+
+                </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                        Absant:
+                    </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "red", fontSize: wp("3%") }}>
+                    2 Absants
+                    </Text>
+
+                </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                        Leaves:
+                    </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <Text style={{ color: "red", fontSize: wp("3%") }}>
+                        3 emp
+                    </Text>
+
+                </View>
+            </View>
+
+            
+        </View>
+        )}
 
 
     const getItemLayout = (data, index) => (
@@ -247,6 +319,12 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
     const _Back = () => {
         return (
             setShowOtpModel(false)
+        )
+    }
+
+    const _BackReject = () =>{
+        return(
+            setShowRejectionOtpModel(false)
         )
     }
     return (
@@ -266,6 +344,7 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
                     // keyExtractor={keyExtractorVisit}
                     getItemLayout={getItemLayout}
                     keyExtractor={(item, index) => index.toString()}
+                    ListHeaderComponent={_ListHeader}
                 />
             }
 
@@ -340,7 +419,75 @@ export default function LeavesApprovalStatusScreen({ navigation }) {
                 </View>
             </Modal>
 
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showrejectionotpmodel}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
 
+
+                        <View style={{ borderBottomWidth: 0.5, borderBottomColor: "#66b2b2", }}>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: wp("4%") }}>Are you sure, you want to Reject.</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1.3, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginRight: wp("2%") }}>
+
+                                <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.EmpName}</Text>
+
+                            </View>
+
+                            <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginLeft: wp("2%") }}>
+                                <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.LeaveTypee}</Text>
+                            </View>
+                        </View>
+
+
+                        <View>
+                            <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#777777' }}>
+                                {obj.LeaveeReason}
+                            </Text>
+                        </View>
+
+
+                        <View style={{ borderWidth: 0.3, borderColor: 'grey', marginTop: wp("2%") }}>
+                            <TextInput
+                                placeholder="Remarks"
+                                style={{ color: '#05375a', textAlign: 'center', height: 40 }}
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                onChangeText={(val) => setRejectRemark(val)}
+                                multiline={true} />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', marginTop: wp("4%") }}>
+                            <View style={{ flex: 1 }}>
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    onPress={_BackReject}>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
+                                </TouchableOpacity>
+                            </View>
+
+
+                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
+                                    onPress={_BackReject}>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Back</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+
+
+
+
+                    </View>
+                </View>
+            </Modal>
 
         </View>
     );
@@ -376,4 +523,17 @@ const styles = StyleSheet.create({
 
         fontSize: 16
     },
+    Lst_Header: {
+        margin: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderColor: '#D3D3D3',
+        borderWidth: 1,
+        shadowOffset: { width: 0, height: 2 },
+        shadowColor: 'black',
+        shadowOpacity: 0.1,
+        elevation: 4,
+        padding: wp('4%'),
+        shadowRadius: 3
+    }
 })
