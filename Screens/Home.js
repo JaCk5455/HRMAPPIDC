@@ -12,45 +12,36 @@ const { height, width } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    const [abc, setAbc] = React.useState();
+    const [abc, setAbc] = React.useState([]);
+    const [gridItems, setGridItems] = React.useState(
+        [
+            { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen' },
+            { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
+            { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
+            // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
+            { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
 
-    const gridItems = [
-        { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen' },
-        { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
-        { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
-        // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
-        { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
+        ]
+    )
 
-      //   { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen'}
+    // const gridItems = [
+    //     { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen' },
+    //     { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
+    //     { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
+    //     // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
+    //     { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
 
-    ];
-    if ( abc[0].managersst == 1) {
-        gridItems.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' }
-        )
-    }
+    //     { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen'}
 
+    // ];
+  
 
-
-
-
-    // const PersonalDetail = [
-    //     {
-    //         Absent: "3 Days",
-    //         Late: "4 Days",
-    //         Leave: "5",
-    //         managersst: 1,
-    //         TodayEmpAbsents: "5 Employees",
-    //         TodayEmpLate: "4 Employees",
-    //         TodayEmpOnLeave: "1 Employee",
-    //         pendingApprovals: 5,
-    //     },
-    // ]
 
 
     React.useEffect(() => {
 
 
-        const PersonalDetail = [
+        let PersonalDetail = [
             {
                 Absent: "3 Days",
                 Late: "4 Days",
@@ -64,10 +55,27 @@ export default function HomeScreen() {
         ]
         setAbc(PersonalDetail);
         console.log("PersonalDatailData", abc)
-        // if (abc[0].managersst == 1) {
-        //         gridItems.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' }
-        //         )
-        //     }
+
+
+        let A = PersonalDetail;
+        if (A.length && A[0].managersst == 1) {
+            //   console.log('abc')
+            let B = gridItems;
+            let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+            if (!checkIfLeaveApprovalExist) {
+                B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
+                setGridItems(B)
+            }
+        }
+        else {
+            let B = gridItems;
+            let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+            if (checkIfLeaveApprovalExist) {
+                B.pop()
+                setGridItems(B)
+            }
+        }
+
 
     }, [])
 
@@ -248,7 +256,7 @@ export default function HomeScreen() {
                     )}
                     numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
-                    //  ListHeaderComponent={_ListHeader}
+                //  ListHeaderComponent={_ListHeader}
 
                 />
             </View>

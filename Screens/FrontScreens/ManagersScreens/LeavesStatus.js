@@ -2,18 +2,23 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet, TextInput } from 'react-native';
 import moment from 'moment';
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
-
+import { Helper } from '../../../Components/Helpers';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as Contants from '../../../constants/constants'
+
 
 const { height, width } = Dimensions.get('window');
 
 export default function LeavesApprovalStatusScreen({ navigation, route }) {
     const [loading, IsLoading] = React.useState(false);
+    const [data, SetData] = React.useState([]);
     const [obj, setObj] = React.useState([]);
+    const [modeldata, setModelData] = React.useState([]);
     const [showotpmodel, setShowOtpModel] = React.useState(false);
     const [approveremark, setApproveRemark] = React.useState('');
     const [showrejectionotpmodel, setShowRejectionOtpModel] = React.useState(false);
     const [rejectremark, setRejectRemark] = React.useState('');
+    const [leaveaprovalapidata, setLeaveAprovalApiData] = React.useState([]);
 
 
 
@@ -53,12 +58,72 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             LeaveType: "Annual leaves",
             LeaveStartDate: "2021-02-17T00:00:00",
             LeaveEndDate: "2021-02-17T00:00:00",
-            
+
             TotalDays: "0.5",
             LeaveReason: "Treveling to my HomeTown",
         },
 
     ]
+
+
+    // ......... Begin: AsynStorageData for EmpId ........ //
+    React.useEffect(() => {
+        Helper.getLoggedInData().then((response) => {
+            SetData(response);
+            console.log("aaa", response)
+
+        }).catch((e) => {
+            console.log('eee', e);
+        });
+
+    }, [])
+    // ......... End: AsynStorageData for EmpId ........ //
+
+    React.useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+
+        getEmpLeaveAprovalRecord(signal).then((response) => {
+            if (response.statusCode == 200) {
+                if (JSON.parse(response.payload).length) {
+                    let responseObj = JSON.parse(response.payload);
+                    console.log("LeaveAprovaldata", responseObj);
+                    setLeaveAprovalApiData(responseObj);
+                    IsLoading(false);
+                }
+
+
+            }
+
+        }).catch((e) => {
+            console.log("LeaveAprovalApiIssue", e);
+        })
+    }, [])
+
+    const getEmpLeaveAprovalRecord = async (signal) => {
+        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/LeaveApprovalList', {
+            signal: signal,
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                // 'Authorization': await Helper.getJWTToken()
+            },
+            body: JSON.stringify({
+                //s "Empid": data[0].EmpId,
+
+                "Empid": "-1",
+                "FiscalYearId": "9",
+                "fromPeriodId": "99",
+                "ToPeriodId": "107"
+            })
+        });
+        const data = await response.json();
+        return data;
+    }
+
+
+
 
 
     // ....... Begin : FlatList_RenderItem_Function .... // 
@@ -118,7 +183,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     <View style={{ flexDirection: 'row' }}>
 
                         <Text style={{ fontSize: wp("4.5%"), fontWeight: 'bold', color: '#000000', textAlign: 'center' }}>
-                            {item.Empid + " - " + item.name}
+                            {item.EmployeeId + " - " + item.EmpFullName}
                         </Text>
                     </View>
 
@@ -128,16 +193,16 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <Text style={{
                                 fontSize: wp('3.8%'),
                                 fontWeight: 'bold',
-                                color: LeaveColor(item.LeaveType),
+                                color: LeaveColor(item.Description),
 
                                 alignContent: 'center'
                             }}>
-                                {item.LeaveType}
+                                {item.Description}
                             </Text>
                         </View>
 
                         <View style={{ flex: 1, paddingLeft: wp("2%") }}>
-                            {item.TotalDays > 1 ? <Text style={{
+                            {item.Totaldays > 1 ? <Text style={{
                                 fontSize: wp('3.8%'),
                                 fontWeight: 'bold',
                                 color: "#546ba9",
@@ -146,7 +211,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                 alignContent: 'center'
                             }}>
 
-                                {item.TotalDays + ' Days'}
+                                {item.Totaldays + ' Days'}
                             </Text> :
 
                                 <Text style={{
@@ -158,7 +223,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                     alignContent: 'center'
                                 }}>
 
-                                    {item.TotalDays + ' Day'}
+                                    {item.Totaldays + ' Day'}
                                 </Text>
                             }
                         </View>
@@ -166,7 +231,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                     <View style={{ marginTop: wp("2%") }}>
 
-                        {item.TotalDays <= 1 ?
+                        {item.Totaldays <= 1 ?
 
                             <Text style={{
                                 fontSize: wp('3.8%'),
@@ -191,7 +256,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                     <View style={{ marginTop: wp("2%") }}>
                         <Text style={{ fontSize: wp("3.8%"), color: '#004CFF', fontWeight: 'bold' }}>
-                            {item.LeaveReason}
+                            {item.leaveReason}
                         </Text>
                     </View>
 
@@ -201,13 +266,17 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <TouchableOpacity
 
                                 onPress={() => {
-                                    let abj = {
-                                        LeaveeReason: item.LeaveReason,
-                                        EmpName: item.name,
-                                        LeaveTypee: item.LeaveType
+                                    let AcceptModelData = {
+                                        LeaveeReason: item.leaveReason,
+                                        EmpName: item.EmpFullName,
+                                        LeaveTypee: item.Description,
+                                        LeaveId: item.ApplyLeaveId,
+                                        LeaveStartDate: item.LeaveStartDate,
+                                        LeaveEndDate: item.LeaveEndDate,
+                                        Totaldays: item.Totaldays
 
                                     }
-                                    setObj(abj);
+                                    setModelData(AcceptModelData);
                                     setShowOtpModel(true)
 
 
@@ -226,13 +295,17 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <TouchableOpacity
 
                                 onPress={() => {
-                                    let abj = {
-                                        LeaveeReason: item.LeaveReason,
-                                        EmpName: item.name,
-                                        LeaveTypee: item.LeaveType
+                                    let RejectModelData = {
+                                        LeaveeReason: item.leaveReason,
+                                        EmpName: item.EmpFullName,
+                                        LeaveTypee: item.Description,
+                                        LeaveId: item.ApplyLeaveId,
+                                        LeaveStartDate: item.LeaveStartDate,
+                                        LeaveEndDate: item.LeaveEndDate,
+                                        Totaldays: item.Totaldays
 
                                     }
-                                    setObj(abj);
+                                    setModelData(RejectModelData);
                                     setShowRejectionOtpModel(true)
 
 
@@ -254,60 +327,61 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     // ....... End : FlatList_RenderItem_Function .... //
 
-    const _ListHeader = () => {
-        return (
-            <View style={styles.Lst_Header}>
+    // const _ListHeader = () => {
+    //     return (
+    //         <View style={styles.Lst_Header}>
 
-            <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
-                <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
+    //             <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
+    //                 <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
 
-            </View>
+    //             </View>
 
-            <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                        Late:
-                    </Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: "red", fontSize: wp("3%") }}>
-                   1 Late
-                    </Text>
+    //             <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                 <View style={{ flex: 1 }}>
+    //                     <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                         Late:
+    //                     </Text>
+    //                 </View>
+    //                 <View style={{ flex: 1 }}>
+    //                     <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                         1 Late
+    //                     </Text>
 
-                </View>
-            </View>
+    //                 </View>
+    //             </View>
 
-            <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                        Absant:
-                    </Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: "red", fontSize: wp("3%") }}>
-                    2 Absants
-                    </Text>
+    //             <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                 <View style={{ flex: 1 }}>
+    //                     <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                         Absant:
+    //                     </Text>
+    //                 </View>
+    //                 <View style={{ flex: 1 }}>
+    //                     <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                         2 Absants
+    //                     </Text>
 
-                </View>
-            </View>
+    //                 </View>
+    //             </View>
 
-            <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                        Leaves:
-                    </Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Text style={{ color: "red", fontSize: wp("3%") }}>
-                        3 emp
-                    </Text>
+    //             <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+    //                 <View style={{ flex: 1 }}>
+    //                     <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+    //                         Leaves:
+    //                     </Text>
+    //                 </View>
+    //                 <View style={{ flex: 1 }}>
+    //                     <Text style={{ color: "red", fontSize: wp("3%") }}>
+    //                         3 emp
+    //                     </Text>
 
-                </View>
-            </View>
+    //                 </View>
+    //             </View>
 
-            
-        </View>
-        )}
+
+    //         </View>
+    //     )
+    // }
 
 
     const getItemLayout = (data, index) => (
@@ -322,8 +396,8 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         )
     }
 
-    const _BackReject = () =>{
-        return(
+    const _BackReject = () => {
+        return (
             setShowRejectionOtpModel(false)
         )
     }
@@ -339,12 +413,12 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 /> :
 
                 <FlatList
-                    data={LeaveApprovalsRecord}
+                    data={leaveaprovalapidata}
                     renderItem={_RenderItem}
                     // keyExtractor={keyExtractorVisit}
                     getItemLayout={getItemLayout}
                     keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={_ListHeader}
+                // ListHeaderComponent={_ListHeader}
                 />
             }
 
@@ -356,7 +430,12 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
+                            onPress={_Back}>
 
+                            <Ionicons name="arrow-back" size={24} color="black" />
+                            <Text>Back</Text>
+                        </TouchableOpacity>
 
                         <View style={{ borderBottomWidth: 0.5, borderBottomColor: "#66b2b2", }}>
                             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: wp("4%") }}>Are you sure, you want to Approve.</Text>
@@ -366,21 +445,48 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <View style={{ flex: 1.3, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginRight: wp("2%") }}>
 
                                 <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
-                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.EmpName}</Text>
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{modeldata.EmpName}</Text>
 
                             </View>
 
                             <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginLeft: wp("2%") }}>
                                 <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
-                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.LeaveTypee}</Text>
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{modeldata.LeaveTypee}</Text>
                             </View>
                         </View>
 
 
-                        <View>
-                            <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#777777' }}>
-                                {obj.LeaveeReason}
+                        <View style={{ marginTop: wp("2%") }}>
+                            <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#000000' }}>
+                                {modeldata.LeaveeReason}
                             </Text>
+                        </View>
+
+
+                        <View style={{ marginTop: wp("2%") }}>
+
+                            {modeldata.Totaldays <= 1 ?
+
+                                <Text style={{
+                                    fontSize: wp('3.8%'),
+                                    fontWeight: 'bold',
+                                    color: 'black',
+
+                                }}>
+                                    {moment(modeldata.LeaveStartDate).format('D MMM YYYY, h:mm:ss a')}
+                                </Text>
+                                :
+                                <Text style={{
+                                    fontSize: wp('3.8%'),
+                                    fontWeight: 'bold',
+                                    color: 'black',
+
+                                }}>
+                                    {moment(modeldata.LeaveStartDate).format('D MMM YYYY') + ' - ' + moment(modeldata.LeaveEndDate).format('D MMM YYYY')}
+                                </Text>
+                            }
+
+
                         </View>
 
 
@@ -396,7 +502,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                         <View style={{ flexDirection: 'row', marginTop: wp("4%") }}>
                             <View style={{ flex: 1 }}>
-                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
                                     onPress={_Back}>
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Approve</Text>
                                 </TouchableOpacity>
@@ -404,9 +510,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("37%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
                                     onPress={_Back}>
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Back</Text>
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Recommended</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

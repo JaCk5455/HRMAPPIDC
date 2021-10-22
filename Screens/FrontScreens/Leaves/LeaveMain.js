@@ -82,7 +82,6 @@ export default function MainLeaveScreen({ navigation }) {
             minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
 
                 if (item.IsPayGenerated == 0) {
-
                     return item.PeriodId;
 
                 }
