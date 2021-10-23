@@ -10,15 +10,21 @@ import * as Contants from '../../../constants/constants'
 const { height, width } = Dimensions.get('window');
 
 export default function LeavesApprovalStatusScreen({ navigation, route }) {
-    const [loading, IsLoading] = React.useState(false);
+    const [loading, IsLoading] = React.useState(true);
     const [data, SetData] = React.useState([]);
     const [obj, setObj] = React.useState([]);
     const [modeldata, setModelData] = React.useState([]);
     const [showotpmodel, setShowOtpModel] = React.useState(false);
-    const [approveremark, setApproveRemark] = React.useState('');
+
     const [showrejectionotpmodel, setShowRejectionOtpModel] = React.useState(false);
     const [rejectremark, setRejectRemark] = React.useState('');
     const [leaveaprovalapidata, setLeaveAprovalApiData] = React.useState([]);
+
+    const [remark, setRemark] = React.useState('');
+    const [remarkError, setRemarklError] = React.useState(false);
+    const [remarkErrorMessage, setRemarkErrorMessage] = React.useState('');
+
+    const [aproverejectstatus, setAproveRejectStatus] = React.useState([]);
 
 
 
@@ -70,7 +76,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     React.useEffect(() => {
         Helper.getLoggedInData().then((response) => {
             SetData(response);
-            console.log("aaa", response)
+            //  console.log("aaa", response)
 
         }).catch((e) => {
             console.log('eee', e);
@@ -107,15 +113,15 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                // 'Authorization': await Helper.getJWTToken()
+               
             },
             body: JSON.stringify({
-                //s "Empid": data[0].EmpId,
+                // "Empid": data[0].EmpId,
 
-                "Empid": "-1",
-                "FiscalYearId": "9",
-                "fromPeriodId": "99",
-                "ToPeriodId": "107"
+                Empid: -1,
+                FiscalYearId: 9,
+                fromPeriodId: 99,
+                ToPeriodId: 107
             })
         });
         const data = await response.json();
@@ -123,6 +129,104 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     }
 
 
+
+
+
+
+    const resetValidation = () => {
+        setRemarklError(false);
+        setRemarkErrorMessage("");
+    }
+
+    const validateFields = (status, leaveid) => {
+        console.log('api called', status, leaveid)
+        resetValidation();
+
+        if (remark.trim() == '' || remark == null) {
+
+            setRemarklError(true);
+            setRemarkErrorMessage("Remarks is required.");
+
+        }
+
+        else {
+            const abortController = new AbortController();
+            const signal = abortController.signal;
+
+            ApproveLeave(signal, status, leaveid);
+
+            return function cleanup() {
+                abortController.abort();
+            }
+        }
+
+    }
+
+
+    //..............Begin: ApproveRejectSubmit ApI ....................//
+    const ApproveLeave = async (signal, status, leaveid) => {
+        console.log('LId', leaveid, status)
+        try {
+            console.log('remarks', remark)
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/ApproveLeave', {
+                signal: signal,
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+
+                    status: status,
+                    Empid: 277,
+                     ApplyLeaveId: leaveid,
+                    remarks: remark
+                    //ApplyLeaveId: 100,
+
+                })
+            });
+
+
+            const data = await response.json();
+            console.log("submit", data)
+            if (data.statusCode == 200) {
+                let payload = JSON.parse(data.payload);
+
+                setAproveRejectStatus(payload);
+                Alert.alert(
+                    "Info",
+                    "Successful",
+                    [
+                        {
+                            text: "Ok",
+                            onPress: () => { _Back(), setRemark('') },
+                            style: "cancel"
+                        }
+                    ]
+                );
+
+            }
+            //setApproveRemarklError(false);
+        }
+
+        catch (e) {
+            console.log('Error', e);
+            Alert.alert(
+                "Info",
+                "Something going Wrong, Please Contact Hr.",
+                [
+                    {
+                        text: "Ok",
+                        onPress: () => { _Back(), setRemark('') },
+                        style: "cancel"
+                    }
+                ]
+            );
+
+        }
+    }
+    //..............END: ApproveRejectSubmit ApI ....................//
 
 
 
@@ -270,7 +374,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                         LeaveeReason: item.leaveReason,
                                         EmpName: item.EmpFullName,
                                         LeaveTypee: item.Description,
-                                        LeaveId: item.ApplyLeaveId,
+                                        ApplyLeaveId: item.ApplyLeaveId,
                                         LeaveStartDate: item.LeaveStartDate,
                                         LeaveEndDate: item.LeaveEndDate,
                                         Totaldays: item.Totaldays
@@ -282,7 +386,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
                                 }}
-                                style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
+                                style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
                             >
                                 <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
                                     Accept
@@ -299,7 +403,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                         LeaveeReason: item.leaveReason,
                                         EmpName: item.EmpFullName,
                                         LeaveTypee: item.Description,
-                                        LeaveId: item.ApplyLeaveId,
+                                        ApplyLeaveId: item.ApplyLeaveId,
                                         LeaveStartDate: item.LeaveStartDate,
                                         LeaveEndDate: item.LeaveEndDate,
                                         Totaldays: item.Totaldays
@@ -311,7 +415,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
                                 }}
-                                style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}>
+                                style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#ff4d4d', justifyContent: 'center', borderRadius: wp("2%") }}>
                                 <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
                                     Reject
                                 </Text>
@@ -392,15 +496,16 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const _Back = () => {
         return (
-            setShowOtpModel(false)
+
+            setShowOtpModel(false),
+            setRemarklError(false),
+            setRemarkErrorMessage(''),
+            setShowRejectionOtpModel(false)
+
         )
     }
 
-    const _BackReject = () => {
-        return (
-            setShowRejectionOtpModel(false)
-        )
-    }
+    //  
     return (
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
@@ -415,14 +520,13 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 <FlatList
                     data={leaveaprovalapidata}
                     renderItem={_RenderItem}
-                    // keyExtractor={keyExtractorVisit}
                     getItemLayout={getItemLayout}
                     keyExtractor={(item, index) => index.toString()}
                 // ListHeaderComponent={_ListHeader}
                 />
             }
 
-
+            {/* .............................Begin: AcceptModel........... */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -493,17 +597,22 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                         <View style={{ borderWidth: 0.3, borderColor: 'grey', marginTop: wp("2%") }}>
                             <TextInput
                                 placeholder="Remarks"
-                                style={{ color: '#05375a', textAlign: 'center', height: 40 }}
+                                style={{ color: '#05375a', textAlign: 'center', height: 40, justifyContent: 'center', alignContent: 'center' }}
                                 autoCapitalize="none"
                                 autoCorrect={false}
-                                onChangeText={(val) => setApproveRemark(val)}
+                                onChangeText={(val) => setRemark(val)}
                                 multiline={true} />
                         </View>
+                        {remarkError && (
+                            <Text style={{ fontSize: 11, color: 'red', marginTop: 5 }}>{remarkErrorMessage}</Text>
+                        )}
 
                         <View style={{ flexDirection: 'row', marginTop: wp("4%") }}>
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
-                                    onPress={_Back}>
+                                    onPress={() => {
+                                        validateFields(1, modeldata.ApplyLeaveId)
+                                    }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Approve</Text>
                                 </TouchableOpacity>
                             </View>
@@ -511,7 +620,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("37%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
-                                    onPress={_Back}>
+                                    onPress={() => {
+                                        validateFields(2, modeldata.ApplyLeaveId)
+                                    }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Recommended</Text>
                                 </TouchableOpacity>
                             </View>
@@ -524,7 +635,11 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     </View>
                 </View>
             </Modal>
+            {/* .............................End: AcceptModel........... */}
 
+
+
+            {/* ................Begin: RejectModel................ */}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -542,21 +657,49 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <View style={{ flex: 1.3, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginRight: wp("2%") }}>
 
                                 <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
-                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.EmpName}</Text>
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{modeldata.EmpName}</Text>
 
                             </View>
 
                             <View style={{ flex: 1, marginTop: wp("2%"), flexDirection: 'row', alignItems: 'center', marginLeft: wp("2%") }}>
                                 <FontAwesome name="circle" size={wp('3%')} color="#008080" style={{ justifyContent: 'center' }} />
-                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{obj.LeaveTypee}</Text>
+                                <Text style={{ color: '#777777', fontSize: wp("3.5%"), fontWeight: 'bold', paddingLeft: wp('1%') }}>{modeldata.LeaveTypee}</Text>
                             </View>
                         </View>
 
 
-                        <View>
-                            <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#777777' }}>
-                                {obj.LeaveeReason}
+
+                        <View style={{ marginTop: wp("2%") }}>
+                            <Text style={{ fontSize: wp('4%'), fontWeight: 'bold', color: '#000000' }}>
+                                {modeldata.LeaveeReason}
                             </Text>
+                        </View>
+
+
+                        <View style={{ marginTop: wp("2%") }}>
+
+                            {modeldata.Totaldays <= 1 ?
+
+                                <Text style={{
+                                    fontSize: wp('3.8%'),
+                                    fontWeight: 'bold',
+                                    color: 'black',
+
+                                }}>
+                                    {moment(modeldata.LeaveStartDate).format('D MMM YYYY, h:mm:ss a')}
+                                </Text>
+                                :
+                                <Text style={{
+                                    fontSize: wp('3.8%'),
+                                    fontWeight: 'bold',
+                                    color: 'black',
+
+                                }}>
+                                    {moment(modeldata.LeaveStartDate).format('D MMM YYYY') + ' - ' + moment(modeldata.LeaveEndDate).format('D MMM YYYY')}
+                                </Text>
+                            }
+
+
                         </View>
 
 
@@ -566,22 +709,27 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                 style={{ color: '#05375a', textAlign: 'center', height: 40 }}
                                 autoCapitalize="none"
                                 autoCorrect={false}
-                                onChangeText={(val) => setRejectRemark(val)}
+                                onChangeText={(val) => setRemark(val)}
                                 multiline={true} />
                         </View>
+                        {remarkError && (
+                            <Text style={{ fontSize: 11, color: 'red', marginTop: 5 }}>{remarkErrorMessage}</Text>
+                        )}
 
                         <View style={{ flexDirection: 'row', marginTop: wp("4%") }}>
                             <View style={{ flex: 1 }}>
-                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
-                                    onPress={_BackReject}>
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    onPress={() => {
+                                        validateFields(3, modeldata.ApplyLeaveId)
+                                    }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
                                 </TouchableOpacity>
                             </View>
 
 
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                <TouchableOpacity style={{ height: wp("10%"), width: wp("30%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
-                                    onPress={_BackReject}>
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
+                                    onPress={_Back}>
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Back</Text>
                                 </TouchableOpacity>
                             </View>
@@ -594,6 +742,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     </View>
                 </View>
             </Modal>
+            {/* ................End: RejectModel................ */}
 
         </View>
     );
