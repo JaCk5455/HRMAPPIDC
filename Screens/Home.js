@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons, MaterialCommunityIcons, Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
+import { Helper } from '../Components/Helpers';
+import * as Contants from '../constants/constants';
 
 const { height, width } = Dimensions.get('window');
 
@@ -13,6 +15,16 @@ const { height, width } = Dimensions.get('window');
 export default function HomeScreen() {
     const navigation = useNavigation();
     const [abc, setAbc] = React.useState([]);
+    const [data, SetData] = React.useState([]);
+    const [selfrecord , setSelfRecord] = React.useState([]);
+    const [yearapidata, setYearApiData] = React.useState([]);
+    const [maxfiscalid, setMaxFiscalId] = React.useState(null);
+    const [leave , setLeave] = React.useState([])
+    const [absent , setAbsent] = React.useState([])
+    const [late , setLate] = React.useState([])
+    const [managerst , setManagerSt] = React.useState([])
+    
+const [monthapidata, SetMonthApiData] = React.useState([]);
     const [gridItems, setGridItems] = React.useState(
         [
             { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen' },
@@ -34,180 +46,377 @@ export default function HomeScreen() {
     //     { name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen'}
 
     // ];
-  
+
+
+  // ......... Begin: AsynStorageData for EmpId ........ //
+  React.useEffect(() => {
+    Helper.getLoggedInData().then((response) => {
+        SetData(response);
+        //  console.log("aaa", response)
+
+    }).catch((e) => {
+        console.log('eee', e);
+    });
+
+}, [])
+// ......... End: AsynStorageData for EmpId ........ //
 
 
 
+    // .......... Begin: Fiscalyear useEffect ........... //
     React.useEffect(() => {
+        FicicalYearApiCall();
+
+        if(yearapidata.length && yearapidata !== '' )
+        {
+            let Maxfiscalvalue = [];
+            if (yearapidata.length > 0) {
+    
+                Maxfiscalvalue = Math.max.apply(Math, yearapidata.map((item) => {
+                    return item.fiscalyearid;
+                }))
+    
+           //  console.log('maxfiscalid', Maxfiscalvalue);
+    
+                setMaxFiscalId(Maxfiscalvalue);
+            }
+        }
+    }, [])
+    // ........... End: Fiscalyear useEffect ...........//
 
 
-        let PersonalDetail = [
-            {
-                Absent: "3 Days",
-                Late: "4 Days",
-                Leave: "5",
-                managersst: 1,
-                TodayEmpAbsents: "5 Employees",
-                TodayEmpLate: "4 Employees",
-                TodayEmpOnLeave: "1 Employee",
-                pendingApprovals: 5,
+
+ //............. Begin: Year Api Data ............... //
+ const FicicalYearApiCall = async () => {
+    try {
+
+        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
+
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
-        ]
-        setAbc(PersonalDetail);
-        console.log("PersonalDatailData", abc)
-
-
-        let A = PersonalDetail;
-        if (A.length && A[0].managersst == 1) {
-            //   console.log('abc')
-            let B = gridItems;
-            let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
-            if (!checkIfLeaveApprovalExist) {
-                B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
-                setGridItems(B)
+        });
+        const responseObj = await response.json();
+        //console.log(responseObj)
+        if (responseObj.statusCode == 200) {
+            let payloadData = JSON.parse(responseObj.payload);
+           //  console.log('FiscalYear', payloadData)
+            if (payloadData.length > 0) {
+                // console.log('fescalyear', payloadData)
+                setYearApiData(payloadData);
+              
+            }
+            else {
+                Alert.alert('Error')
             }
         }
-        else {
-            let B = gridItems;
-            let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
-            if (checkIfLeaveApprovalExist) {
-                B.pop()
-                setGridItems(B)
+    }
+    catch (e) {
+        console.log('YearApiError', e);
+    }
+}
+//............. End: Year Api Data ............... //
+
+
+
+
+
+
+  // .......... Begin: MonthApi useEffect ........... //
+  React.useEffect(() => {
+    if (maxfiscalid !== null) {
+        // console.log('maxficalId', maxfiscalid)
+        MonthApiCall();
+    }
+}, [maxfiscalid])
+// .......... End: MonthApi useEffect ........... //
+
+
+
+
+   //............. Begin: Month Api Data ............... //
+   const MonthApiCall = async () => {
+    try {
+
+        // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                fiscalYearId: maxfiscalid
+
+
+            })
+        });
+        const responseObj = await response.json();
+        if (responseObj.statusCode == 200) {
+            let payloaddata = JSON.parse(responseObj.payload);
+            // console.log('month', payloaddata)
+            if (payloaddata.length > 0) {
+                SetMonthApiData(payloaddata);
+            }
+            else {
+                Alert.alert('Error')
             }
         }
+    }
+    catch (e) {
+        console.log('MonthApiError', e);
+    }
+}
+//............. End: Month Api Data ............... //
 
 
+    // React.useEffect(() => {
+
+
+    //     let PersonalDetail = [
+    //         {
+    //             Absent: "3 Days",
+    //             Late: "4 Days",
+    //             Leave: "5",
+    //             managersst: 1,
+    //         },
+    //     ]
+    //     setAbc(PersonalDetail);
+    //    console.log("PersonalDatailData", abc)
+
+      
+
+
+
+
+    //     let A = PersonalDetail;
+    //     if (A.length && A[0].managersst == 1) {
+    //         //   console.log('abc')
+    //         let B = gridItems;
+    //         let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+    //         if (!checkIfLeaveApprovalExist) {
+    //             B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
+    //             setGridItems(B)
+    //         }
+    //     }
+    //     else {
+    //         let B = gridItems;
+    //         let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+    //         if (checkIfLeaveApprovalExist) {
+    //             B.pop()
+    //             setGridItems(B)
+    //         }
+    //     }
+
+
+    // }, [])
+
+
+
+
+
+
+    
+    React.useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+
+        getPersonalRecord(signal).then((response) => {
+           // console.log("apicalled" , response)
+            if (response.statusCode == 200) {
+            
+              let responseObj = JSON.parse(response.payload);
+              let objLeave = responseObj.Table
+              let objAbsent = responseObj.Table1
+              let objLate = responseObj.Table2
+              let objManagerSt = responseObj.Table3
+
+                if (responseObj !== '' ) {
+                   
+                    if(objLeave.length){
+                        setLeave(objLeave);
+                    }
+                    if(objAbsent.length){
+                        setAbsent(objAbsent);
+                    }
+                    if(objLate.length){
+                        setLate(objLate);
+                    }
+                    if(objManagerSt.length){
+                        setManagerSt(objManagerSt);
+                       // console.log("aaaabbbb", managerst )
+                    }
+                    
+                }
+
+                let A = objManagerSt;
+                    if (A.length && A[0].managerst == 1) {
+                        //   console.log('abc')
+                        let B = gridItems;
+                        let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+                        if (!checkIfLeaveApprovalExist) {
+                            B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
+                            setGridItems(B)
+                        }
+                    }
+                    else {
+                        let B = gridItems;
+                        let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+                        if (checkIfLeaveApprovalExist) {
+                            B.pop()
+                            setGridItems(B)
+                        }
+                    }
+              
+               
+            }
+
+        }).catch((e) => {
+            console.log("SelfListRecord", e);
+        })
     }, [])
 
+    const getPersonalRecord = async (signal) => {
+        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/SelfCount', {
+            signal: signal,
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            },
+            body: JSON.stringify({
+                // "Empid": data[0].EmpId,
+                Empid: -1,
+                FiscalYearId: 9,
+                fromPeriodId: 99,
+                ToPeriodId: 107
+            })
+        });
+        const data = await response.json();
+        console.log("data", data )
+        return data;
+    }
 
 
-    // const ManagersScreenView = () => {
-    //     let isAllowed = false;
-    //     if (PersonalDetail.length) {
-    //         let isAllowManagerScreenView = PersonalDetail.find(a => a.managersst == 1) ? true : false;
-    //         isAllowed = isAllowManagerScreenView;
-    //     }
-    //     return isAllowed;
-    // }
+
+    const _ListHeader = () => {
+        return (
+            <View>
+                <View style={styles.Lst_Header}>
+                    <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
+                        <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Attandance Details</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                                Late:
+                            </Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: "red", fontSize: wp("3%") }}>
+                                {late.length > 0 ? (late[0].Late == "" ||  late[0].Late == null ? "N/A" : (late[0].Late > 1  ?  late[0].Late + " Days" : late[0].Late + ' Day' )): 'N/A'}
+                            </Text>
+                        </View>
+                    </View>
 
 
+                    <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                                Absant:
+                            </Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: "red", fontSize: wp("3%") }}>
+                                {absent.length > 0 ? (absent[0].Absent == "" ||  absent[0].Absent == null ? "N/A" : (absent[0].Absent > 1  ?  absent[0].Absent + " Days" : absent[0].Absent + ' Day' )) : 'N/A'}
+                            </Text>
 
+                        </View>
+                    </View>
 
-    // const _ListHeader = () => {
-    //     return (
-    //         <View>
-    //             <View style={styles.Lst_Header}>
-    //                 <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
-    //                     <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Attandance Details</Text>
-    //                 </View>
+                    <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                                Leaves:
+                            </Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: "red", fontSize: wp("3%") }}>
+                                {leave.length > 0 ? (leave[0].Leave == "" ||  leave[0].Leave == null ? "N/A" : leave[0].Leave ) : "N/A"}
+                            </Text>
 
-    //                 <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                     <View style={{ flex: 1 }}>
-    //                         <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                             Late:
-    //                         </Text>
-    //                     </View>
-    //                     <View style={{ flex: 1 }}>
-    //                         <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                             {abc.length > 0 ? (abc[0].Late == "" ||  abc[0].Late == null ? "N/A" : abc[0].Late ): 'N/A'}
-    //                         </Text>
-    //                     </View>
-    //                 </View>
+                        </View>
+                    </View>
+                </View>
 
+                {/* {abc[0].managersst == 1 ?
+                    <View style={styles.Lst_Header}>
 
-    //                 <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                     <View style={{ flex: 1 }}>
-    //                         <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                             Absant:
-    //                         </Text>
-    //                     </View>
-    //                     <View style={{ flex: 1 }}>
-    //                         <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                             {abc.length > 0 ? (abc[0].Absent == "" ||  abc[0].Absent == null ? "N/A" : abc[0].Absent ) : 'N/A'}
-    //                         </Text>
+                        <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
+                            <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
 
-    //                     </View>
-    //                 </View>
+                        </View>
 
-    //                 <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                     <View style={{ flex: 1 }}>
-    //                         <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                             Leaves:
-    //                         </Text>
-    //                     </View>
-    //                     <View style={{ flex: 1 }}>
-    //                         <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                             {abc.length > 0 ? (abc[0].Leave == "" ||  abc[0].Leave == null ? "N/A" : abc[0].Leave ) : "N/A"}
-    //                         </Text>
+                        <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                                    Late:
+                                </Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: "red", fontSize: wp("3%") }}>
+                                    {abc.length > 0 ? abc[0].TodayEmpLate : "N/A"}
+                                </Text>
 
-    //                     </View>
-    //                 </View>
-    //             </View>
+                            </View>
+                        </View>
 
-    //             {/* {abc[0].managersst == 1 ?
-    //                 <View style={styles.Lst_Header}>
+                        <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                                    Absant:
+                                </Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: "red", fontSize: wp("3%") }}>
+                                    {abc.length > 0 ? abc[0].TodayEmpAbsents: "N/A"}
+                                </Text>
 
-    //                     <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
-    //                         <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
+                            </View>
+                        </View>
 
-    //                     </View>
+                        <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
+                                    Leaves:
+                                </Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={{ color: "red", fontSize: wp("3%") }}>
+                                    {abc.length > 0 ? abc[0].TodayEmpOnLeave:'N/A'}
+                                </Text>
 
-    //                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                         <View style={{ flex: 1 }}>
-    //                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                                 Late:
-    //                             </Text>
-    //                         </View>
-    //                         <View style={{ flex: 1 }}>
-    //                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                                 {abc.length > 0 ? abc[0].TodayEmpLate : "N/A"}
-    //                             </Text>
+                            </View>
+                        </View>
 
-    //                         </View>
-    //                     </View>
+                        <View style={{ marginBottom: wp("1%"), marginTop: wp("2%") }}>
 
-    //                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                         <View style={{ flex: 1 }}>
-    //                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                                 Absant:
-    //                             </Text>
-    //                         </View>
-    //                         <View style={{ flex: 1 }}>
-    //                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                                 {abc.length > 0 ? abc[0].TodayEmpAbsents: "N/A"}
-    //                             </Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('LeavesApprovalStatusScreen')}
+                                style={{ backgroundColor: 'orange', borderWidth: 0.5, borderRadius: wp("2%"), borderColor: 'orange', }}>
+                                <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: "absolute", right: Platform.isPad ? 5 : 2, top: "15%" }} />
+                                <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Pending Leaves Aprovals/Rejections</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View> : <></>} */}
 
-    //                         </View>
-    //                     </View>
+            </View>
 
-    //                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                         <View style={{ flex: 1 }}>
-    //                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                                 Leaves:
-    //                             </Text>
-    //                         </View>
-    //                         <View style={{ flex: 1 }}>
-    //                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                                 {abc.length > 0 ? abc[0].TodayEmpOnLeave:'N/A'}
-    //                             </Text>
-
-    //                         </View>
-    //                     </View>
-
-    //                     <View style={{ marginBottom: wp("1%"), marginTop: wp("2%") }}>
-
-    //                         <TouchableOpacity onPress={() => navigation.navigate('LeavesApprovalStatusScreen')}
-    //                             style={{ backgroundColor: 'orange', borderWidth: 0.5, borderRadius: wp("2%"), borderColor: 'orange', }}>
-    //                             <AntDesign name="rightcircleo" size={wp('6%')} color="#777" style={{ position: "absolute", right: Platform.isPad ? 5 : 2, top: "15%" }} />
-    //                             <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Pending Leaves Aprovals/Rejections</Text>
-    //                         </TouchableOpacity>
-    //                     </View>
-    //                 </View> : <></>} */}
-
-    //         </View>
-
-    //     )
-    // }
+        )
+    }
 
     return (
 
@@ -256,7 +465,7 @@ export default function HomeScreen() {
                     )}
                     numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
-                //  ListHeaderComponent={_ListHeader}
+                 ListHeaderComponent={_ListHeader}
 
                 />
             </View>

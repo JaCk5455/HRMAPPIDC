@@ -97,8 +97,19 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     setLeaveAprovalApiData(responseObj);
                     IsLoading(false);
                 }
-
-
+                else{
+                    Alert.alert(
+                        "Info",
+                        "No Record Found",
+                        [
+                            {
+                                text: "Ok",
+                                onPress: () => { navigation.navigate('HomeScreen') },
+                                style: "cancel"
+                            }
+                        ]
+                    );
+                }
             }
 
         }).catch((e) => {
@@ -138,7 +149,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         setRemarkErrorMessage("");
     }
 
-    const validateFields = (status, leaveid) => {
+    const validateFields = (status, leaveid , EmpId) => {
         console.log('api called', status, leaveid)
         resetValidation();
 
@@ -153,7 +164,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             const abortController = new AbortController();
             const signal = abortController.signal;
 
-            ApproveLeave(signal, status, leaveid);
+            ApproveLeave(signal, status, leaveid, EmpId);
 
             return function cleanup() {
                 abortController.abort();
@@ -164,8 +175,8 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
     //..............Begin: ApproveRejectSubmit ApI ....................//
-    const ApproveLeave = async (signal, status, leaveid) => {
-        console.log('LId', leaveid, status)
+    const ApproveLeave = async (signal, status, leaveid , EmpId) => {
+        console.log('LId', leaveid, status , EmpId)
         try {
             console.log('remarks', remark)
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/ApproveLeave', {
@@ -179,10 +190,20 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 body: JSON.stringify({
 
                     status: status,
-                    Empid: 277,
+                    Empid: EmpId,
                      ApplyLeaveId: leaveid,
-                    remarks: remark
+                    remarks: remark,
                     //ApplyLeaveId: 100,
+                    //Empid: 277,
+
+                    
+                        // status :1,
+                        // Empid : 277,
+                        // ApplyLeaveId : 100,
+                        // remarks : "dsfgvdfg"
+                        
+                    
+                        
 
                 })
             });
@@ -371,6 +392,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                                 onPress={() => {
                                     let AcceptModelData = {
+                                        EmpId:item.EmpId,
                                         LeaveeReason: item.leaveReason,
                                         EmpName: item.EmpFullName,
                                         LeaveTypee: item.Description,
@@ -400,6 +422,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                                 onPress={() => {
                                     let RejectModelData = {
+                                        EmpId:item.EmpId,
                                         LeaveeReason: item.leaveReason,
                                         EmpName: item.EmpFullName,
                                         LeaveTypee: item.Description,
@@ -611,7 +634,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'green', justifyContent: 'center', borderRadius: wp("2%") }}
                                     onPress={() => {
-                                        validateFields(1, modeldata.ApplyLeaveId)
+                                        validateFields(3, modeldata.ApplyLeaveId, modeldata.EmpId)
                                     }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Approve</Text>
                                 </TouchableOpacity>
@@ -621,7 +644,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("37%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
                                     onPress={() => {
-                                        validateFields(2, modeldata.ApplyLeaveId)
+                                        validateFields(2, modeldata.ApplyLeaveId, modeldata.EmpId)
                                     }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Recommended</Text>
                                 </TouchableOpacity>
@@ -720,7 +743,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
                                     onPress={() => {
-                                        validateFields(3, modeldata.ApplyLeaveId)
+                                        validateFields(5, modeldata.ApplyLeaveId, modeldata.EmpId)
                                     }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
                                 </TouchableOpacity>
