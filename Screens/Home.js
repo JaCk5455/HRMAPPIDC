@@ -14,24 +14,24 @@ const { height, width } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    const [abc, setAbc] = React.useState([]);
     const [data, SetData] = React.useState([]);
-    const [selfrecord , setSelfRecord] = React.useState([]);
     const [yearapidata, setYearApiData] = React.useState([]);
-    const [maxfiscalid, setMaxFiscalId] = React.useState(null);
-    const [leave , setLeave] = React.useState([])
-    const [absent , setAbsent] = React.useState([])
-    const [late , setLate] = React.useState([])
-    const [managerst , setManagerSt] = React.useState([])
+    const [monthapidata, setMonthApiData] = React.useState([]);
     
-const [monthapidata, SetMonthApiData] = React.useState([]);
+    const [maxfiscalid, setMaxFiscalId] = React.useState(null);
+    const [maxperiodid, setMaxPeriodId] = React.useState(null);
+    const [leave, setLeave] = React.useState([])
+    const [absent, setAbsent] = React.useState([])
+    const [late, setLate] = React.useState([])
+    const [managerst, setManagerSt] = React.useState([])
+
     const [gridItems, setGridItems] = React.useState(
         [
             { name: 'Leaves', icon: require('../assets/EmpLeaves.png'), navigateTo: 'MainLeaveScreen' },
             { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
             { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
             // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
-            { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
+            { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen'},
 
         ]
     )
@@ -48,212 +48,226 @@ const [monthapidata, SetMonthApiData] = React.useState([]);
     // ];
 
 
-  // ......... Begin: AsynStorageData for EmpId ........ //
-  React.useEffect(() => {
-    Helper.getLoggedInData().then((response) => {
-        SetData(response);
-        //  console.log("aaa", response)
+    // ......... Begin: AsynStorageData for EmpId ........ //
+    React.useEffect(() => {
+        Helper.getLoggedInData().then((response) => {
+            SetData(response);
+            // console.log("aaa", data)
 
-    }).catch((e) => {
-        console.log('eee', e);
-    });
+        }).catch((e) => {
+            console.log('eee', e);
+        });
 
-}, [])
-// ......... End: AsynStorageData for EmpId ........ //
+    }, [])
+    // ......... End: AsynStorageData for EmpId ........ //
 
 
 
     // .......... Begin: Fiscalyear useEffect ........... //
     React.useEffect(() => {
         FicicalYearApiCall();
-
-        if(yearapidata.length && yearapidata !== '' )
-        {
-            let Maxfiscalvalue = [];
-            if (yearapidata.length > 0) {
-    
-                Maxfiscalvalue = Math.max.apply(Math, yearapidata.map((item) => {
-                    return item.fiscalyearid;
-                }))
-    
-           //  console.log('maxfiscalid', Maxfiscalvalue);
-    
-                setMaxFiscalId(Maxfiscalvalue);
-            }
-        }
     }, [])
     // ........... End: Fiscalyear useEffect ...........//
 
+    //............. Begin: Get MaxFiscalyearValue ........//
+    React.useEffect(() => {
+        let Maxfiscalvalue = [];
+        if (yearapidata.length > 0) {
+            Maxfiscalvalue = Math.max.apply(Math, yearapidata.map((item) => {
+                return item.fiscalyearid;
+            }))
+
+            setMaxFiscalId(Maxfiscalvalue);
+            //console.log("maxFId", Maxfiscalvalue)
+        }
+
+    }, [yearapidata])
+    //............. End: Get MaxFiscalyearValue ........//
 
 
- //............. Begin: Year Api Data ............... //
- const FicicalYearApiCall = async () => {
-    try {
 
-        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
+    //............. Begin: Year Api Data ............... //
+    const FicicalYearApiCall = async () => {
+        try {
 
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        });
-        const responseObj = await response.json();
-        //console.log(responseObj)
-        if (responseObj.statusCode == 200) {
-            let payloadData = JSON.parse(responseObj.payload);
-           //  console.log('FiscalYear', payloadData)
-            if (payloadData.length > 0) {
-                // console.log('fescalyear', payloadData)
-                setYearApiData(payloadData);
-              
-            }
-            else {
-                Alert.alert('Error')
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
+
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            const responseObj = await response.json();
+            if (responseObj.statusCode == 200) {
+                let payloadData = JSON.parse(responseObj.payload);
+
+                if (payloadData.length > 0) {
+
+                    setYearApiData(payloadData);
+
+                }
+                else {
+                    Alert.alert('Error')
+                }
             }
         }
-    }
-    catch (e) {
-        console.log('YearApiError', e);
-    }
-}
-//............. End: Year Api Data ............... //
-
-
-
-
-
-
-  // .......... Begin: MonthApi useEffect ........... //
-  React.useEffect(() => {
-    if (maxfiscalid !== null) {
-        // console.log('maxficalId', maxfiscalid)
-        MonthApiCall();
-    }
-}, [maxfiscalid])
-// .......... End: MonthApi useEffect ........... //
-
-
-
-
-   //............. Begin: Month Api Data ............... //
-   const MonthApiCall = async () => {
-    try {
-
-        // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
-        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                fiscalYearId: maxfiscalid
-
-
-            })
-        });
-        const responseObj = await response.json();
-        if (responseObj.statusCode == 200) {
-            let payloaddata = JSON.parse(responseObj.payload);
-            // console.log('month', payloaddata)
-            if (payloaddata.length > 0) {
-                SetMonthApiData(payloaddata);
-            }
-            else {
-                Alert.alert('Error')
-            }
+        catch (e) {
+            console.log('YearApiError', e);
         }
     }
-    catch (e) {
-        console.log('MonthApiError', e);
+    //............. End: Year Api Data ............... //
+
+
+    React.useEffect(() => {
+
+        if (maxfiscalid !== null) {
+            MonthApiCall();
+        }
+
+    }, [maxfiscalid])
+
+
+
+
+
+
+    // .......... Begin: MonthApi useEffect ........... //
+    React.useEffect(() => {
+
+
+       
+            let minPeriod;
+            if (monthapidata.length > 0) {
+
+                minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
+
+                    if (item.IsPayGenerated == 0) {
+                        return item.PeriodId;
+
+                    }
+                    else {
+                        return Infinity;
+                    }
+
+                }))
+
+                setMaxPeriodId(minPeriod)
+
+
+                console.log('maxperidvalue', maxperiodid)
+
+            }
+   
+
+
+    }, [monthapidata])
+    // .......... End: MonthApi useEffect ........... //
+
+
+
+
+    //............. Begin: Month Api Data ............... //
+    const MonthApiCall = async () => {
+        try {
+
+            // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fiscalYearId: maxfiscalid
+
+
+                })
+            });
+            const responseObj = await response.json();
+            if (responseObj.statusCode == 200) {
+                let payloaddata = JSON.parse(responseObj.payload);
+                // console.log('month', payloaddata)
+                if (payloaddata.length > 0) {
+                    setMonthApiData(payloaddata);
+                }
+                else {
+                    Alert.alert('Error')
+                }
+            }
+        }
+        catch (e) {
+            console.log('MonthApiError', e);
+        }
     }
-}
-//............. End: Month Api Data ............... //
-
-
-    // React.useEffect(() => {
-
-
-    //     let PersonalDetail = [
-    //         {
-    //             Absent: "3 Days",
-    //             Late: "4 Days",
-    //             Leave: "5",
-    //             managersst: 1,
-    //         },
-    //     ]
-    //     setAbc(PersonalDetail);
-    //    console.log("PersonalDatailData", abc)
-
-      
+    //............. End: Month Api Data ............... //
 
 
 
 
-    //     let A = PersonalDetail;
-    //     if (A.length && A[0].managersst == 1) {
-    //         //   console.log('abc')
-    //         let B = gridItems;
-    //         let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
-    //         if (!checkIfLeaveApprovalExist) {
-    //             B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
-    //             setGridItems(B)
-    //         }
-    //     }
-    //     else {
-    //         let B = gridItems;
-    //         let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
-    //         if (checkIfLeaveApprovalExist) {
-    //             B.pop()
-    //             setGridItems(B)
-    //         }
-    //     }
-
-
-    // }, [])
-
-
-
-
-
-
-    
     React.useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
+        if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null)
+            getPersonalRecord(signal)
 
-        getPersonalRecord(signal).then((response) => {
-           // console.log("apicalled" , response)
-            if (response.statusCode == 200) {
-            
-              let responseObj = JSON.parse(response.payload);
-              let objLeave = responseObj.Table
-              let objAbsent = responseObj.Table1
-              let objLate = responseObj.Table2
-              let objManagerSt = responseObj.Table3
+    }, [data, maxfiscalid , maxperiodid ])
 
-                if (responseObj !== '' ) {
-                   
-                    if(objLeave.length){
-                        setLeave(objLeave);
-                    }
-                    if(objAbsent.length){
-                        setAbsent(objAbsent);
-                    }
-                    if(objLate.length){
-                        setLate(objLate);
-                    }
-                    if(objManagerSt.length){
-                        setManagerSt(objManagerSt);
-                       // console.log("aaaabbbb", managerst )
-                    }
-                    
+
+
+    //..................Begin: GetPersonalData .....................//
+
+    const getPersonalRecord = async (signal) => {
+        try {
+
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/SelfCount', {
+                signal: signal,
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    Empid: data[0].EmpId,
+                    // Empid: 277,
+                    // FiscalYearId: 10,
+                    // fromPeriodId: 113,
+                    // ToPeriodId: 113,
+                    FiscalYearId: maxfiscalid,
+                        fromPeriodId: maxperiodid,
+                        ToPeriodId: maxperiodid
+
+                })
+            });
+            const responseObj = await response.json();
+
+            if (responseObj.statusCode == 200) {
+
+                let payloadData = JSON.parse(responseObj.payload);
+                //  console.log("apidata", payloadData)
+                if (payloadData.Table.length > 0) {
+                    setLeave(payloadData.Table);
+
                 }
 
-                let A = objManagerSt;
+                if (payloadData.Table1.length > 0) {
+                    setAbsent(payloadData.Table1);
+
+
+                }
+
+
+                if (payloadData.Table2.length > 0) {
+                    setLate(payloadData.Table2);
+
+                }
+
+                if (payloadData.Table3.length > 0) {
+                    setManagerSt(payloadData.Table3);
+
+                    let A = payloadData.Table3;
                     if (A.length && A[0].managerst == 1) {
-                        //   console.log('abc')
                         let B = gridItems;
                         let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
                         if (!checkIfLeaveApprovalExist) {
@@ -269,36 +283,18 @@ const [monthapidata, SetMonthApiData] = React.useState([]);
                             setGridItems(B)
                         }
                     }
-              
-               
+
+
+                }
+
             }
 
-        }).catch((e) => {
-            console.log("SelfListRecord", e);
-        })
-    }, [])
-
-    const getPersonalRecord = async (signal) => {
-        const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/SelfCount', {
-            signal: signal,
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-
-            },
-            body: JSON.stringify({
-                // "Empid": data[0].EmpId,
-                Empid: -1,
-                FiscalYearId: 9,
-                fromPeriodId: 99,
-                ToPeriodId: 107
-            })
-        });
-        const data = await response.json();
-        console.log("data", data )
-        return data;
+        }
+        catch (error) {
+            console.log('Error', error);
+        }
     }
+    //..................End: GetPersonalData .....................//
 
 
 
@@ -318,7 +314,7 @@ const [monthapidata, SetMonthApiData] = React.useState([]);
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {late.length > 0 ? (late[0].Late == "" ||  late[0].Late == null ? "N/A" : (late[0].Late > 1  ?  late[0].Late + " Days" : late[0].Late + ' Day' )): 'N/A'}
+                                {late.length > 0 ? (late[0].Late == "" || late[0].Late == null ? "N/A" : (late[0].Late > 1 ? late[0].Late + " Days" : late[0].Late + ' Day')) : 'N/A'}
                             </Text>
                         </View>
                     </View>
@@ -332,7 +328,7 @@ const [monthapidata, SetMonthApiData] = React.useState([]);
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {absent.length > 0 ? (absent[0].Absent == "" ||  absent[0].Absent == null ? "N/A" : (absent[0].Absent > 1  ?  absent[0].Absent + " Days" : absent[0].Absent + ' Day' )) : 'N/A'}
+                                {absent.length > 0 ? (absent[0].Absent == "" || absent[0].Absent == null ? "N/A" : (absent[0].Absent > 1 ? absent[0].Absent + " Days" : absent[0].Absent + ' Day')) : 'N/A'}
                             </Text>
 
                         </View>
@@ -346,7 +342,7 @@ const [monthapidata, SetMonthApiData] = React.useState([]);
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {leave.length > 0 ? (leave[0].Leave == "" ||  leave[0].Leave == null ? "N/A" : leave[0].Leave ) : "N/A"}
+                                {leave.length > 0 ? (leave[0].Leave == "" || leave[0].Leave == null ? "0" : leave[0].Leave) : "N/A"}
                             </Text>
 
                         </View>
@@ -465,7 +461,7 @@ const [monthapidata, SetMonthApiData] = React.useState([]);
                     )}
                     numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
-                 ListHeaderComponent={_ListHeader}
+                    ListHeaderComponent={_ListHeader}
 
                 />
             </View>
