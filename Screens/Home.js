@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, FlatList, Image, TouchableOpacity, StatusBar, Platform } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, FlatList, Image, TouchableOpacity, StatusBar, Platform, ActivityIndicator } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Avatar } from 'react-native-paper';
@@ -14,10 +14,11 @@ const { height, width } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const navigation = useNavigation();
+    const [loading, IsLoading] = React.useState(true);
     const [data, SetData] = React.useState([]);
     const [yearapidata, setYearApiData] = React.useState([]);
     const [monthapidata, setMonthApiData] = React.useState([]);
-    
+
     const [maxfiscalid, setMaxFiscalId] = React.useState(null);
     const [maxperiodid, setMaxPeriodId] = React.useState(null);
     const [leave, setLeave] = React.useState([])
@@ -31,7 +32,7 @@ export default function HomeScreen() {
             { name: 'Salary Slip', icon: require('../assets/empsalary.png'), navigateTo: 'MainSalarySlip' },
             { name: 'Attendance', icon: require('../assets/Attendancee.png'), navigateTo: 'MainAttendanceScreen' },
             // { name: 'Encashment', icon: require('../assets/Encashment.jpg'), navigateTo: 'EncashmentScreen' },
-            { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen'},
+            { name: 'Loan Application', icon: require('../assets/loanapplication.jpg'), navigateTo: 'LoanApplicationScreen' },
 
         ]
     )
@@ -119,6 +120,10 @@ export default function HomeScreen() {
     //............. End: Year Api Data ............... //
 
 
+
+
+
+
     React.useEffect(() => {
 
         if (maxfiscalid !== null) {
@@ -136,29 +141,29 @@ export default function HomeScreen() {
     React.useEffect(() => {
 
 
-       
-            let minPeriod;
-            if (monthapidata.length > 0) {
 
-                minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
+        let minPeriod;
+        if (monthapidata.length > 0) {
 
-                    if (item.IsPayGenerated == 0) {
-                        return item.PeriodId;
+            minPeriod = Math.min.apply(Math, monthapidata.map((item) => {
 
-                    }
-                    else {
-                        return Infinity;
-                    }
+                if (item.IsPayGenerated == 0) {
+                    return item.PeriodId;
 
-                }))
+                }
+                else {
+                    return Infinity;
+                }
 
-                setMaxPeriodId(minPeriod)
+            }))
+
+            setMaxPeriodId(minPeriod)
 
 
-                console.log('maxperidvalue', maxperiodid)
+            // console.log('maxperidvalue', maxperiodid)
 
-            }
-   
+        }
+
 
 
     }, [monthapidata])
@@ -211,7 +216,7 @@ export default function HomeScreen() {
         if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null)
             getPersonalRecord(signal)
 
-    }, [data, maxfiscalid , maxperiodid ])
+    }, [data, maxfiscalid, maxperiodid])
 
 
 
@@ -230,13 +235,13 @@ export default function HomeScreen() {
 
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-                    // Empid: 277,
+                   // Empid: 1916,
                     // FiscalYearId: 10,
                     // fromPeriodId: 113,
                     // ToPeriodId: 113,
                     FiscalYearId: maxfiscalid,
-                        fromPeriodId: maxperiodid,
-                        ToPeriodId: maxperiodid
+                    fromPeriodId: maxperiodid,
+                    ToPeriodId: maxperiodid
 
                 })
             });
@@ -245,7 +250,7 @@ export default function HomeScreen() {
             if (responseObj.statusCode == 200) {
 
                 let payloadData = JSON.parse(responseObj.payload);
-                  console.log("apidata", payloadData)
+                //  console.log("apidata", payloadData)
                 if (payloadData.Table.length > 0) {
                     setLeave(payloadData.Table);
 
@@ -286,6 +291,7 @@ export default function HomeScreen() {
 
 
                 }
+                IsLoading(false);
 
             }
 
@@ -425,46 +431,52 @@ export default function HomeScreen() {
                 <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center', marginTop: wp('1%') }}> Welcome!</Text>
             </View> */}
 
+            {loading ?
+                <ActivityIndicator
+                    style={{ height: 60 }}
+                    color="#008080"
+                    size="small"
+                /> :
 
-            {/* <View style={styles.behind}> */}
-            <View style={{ flex: 1, marginHorizontal: wp("3%"), marginTop: wp("3%") }}>
+                <View style={{ flex: 1, marginHorizontal: wp("3%"), marginTop: wp("3%") }}>
 
-                <FlatList
-                    data={gridItems}
-                    // contentContainerStyle={{ paddingBottom: 200 }}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={{
-                                shadowColor: 'rgb(0,0,0)',
-                                shadowOffset: {
-                                    width: 1,
-                                    height: 1
-                                },
-                                shadowOpacity: 0.5,
-                                shadowRadius: 5,
-                                elevation: 8,
-                                backgroundColor: '#fff',
-                                padding: 10,
-                                margin: 10,
-                                width: '45%',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRadius: 10
-                            }}
-                            onPress={() => { item.navigateTo ? navigation.navigate(item.navigateTo) : "" }}
-                        >
+                    <FlatList
+                        data={gridItems}
+                        // contentContainerStyle={{ paddingBottom: 200 }}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                style={{
+                                    shadowColor: 'rgb(0,0,0)',
+                                    shadowOffset: {
+                                        width: 1,
+                                        height: 1
+                                    },
+                                    shadowOpacity: 0.5,
+                                    shadowRadius: 5,
+                                    elevation: 8,
+                                    backgroundColor: '#fff',
+                                    padding: 10,
+                                    margin: 10,
+                                    width: '45%',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderRadius: 10
+                                }}
+                                onPress={() => { item.navigateTo ? navigation.navigate(item.navigateTo) : "" }}
+                            >
 
-                            <Image source={item.icon} style={{ width: wp('13%'), height: wp('13%'), marginBottom: wp('3%'), }} />
-                            <Text style={{ color: "black" }}>{item.name}</Text>
+                                <Image source={item.icon} style={{ width: wp('13%'), height: wp('13%'), marginBottom: wp('3%'), }} />
+                                <Text style={{ color: "black" }}>{item.name}</Text>
 
-                        </TouchableOpacity>
-                    )}
-                    numColumns={2}
-                    keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={_ListHeader}
+                            </TouchableOpacity>
+                        )}
+                        numColumns={2}
+                        keyExtractor={(item, index) => index.toString()}
+                        ListHeaderComponent={_ListHeader}
 
-                />
-            </View>
+                    />
+                </View>
+            }
 
         </View>
 

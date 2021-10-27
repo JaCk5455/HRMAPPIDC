@@ -43,7 +43,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     //         TotalDays: "1",
     //         LeaveReason: "Urgant Piece of Work"
     //     },
- 
+
     // ]
 
 
@@ -75,7 +75,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 return item.fiscalyearid;
             }))
             setMaxFiscalId(Maxfiscalvalue);
-            //console.log("maxFId", Maxfiscalvalue)
+           // console.log("maxFId", Maxfiscalvalue)
         }
 
     }, [yearapidata])
@@ -97,6 +97,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
+               // console.log("fiscal", payloadData)
                 if (payloadData.length > 0) {
 
                     setYearApiData(payloadData);
@@ -143,7 +144,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 }
             }))
             setMaxPeriodId(minPeriod)
-          //  console.log('maxperidvalue', minPeriod)
+              //console.log('maxperidvalue', minPeriod)
 
         }
 
@@ -218,17 +219,17 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                 },
                 body: JSON.stringify({
-                    "Empid": data[0].EmpId,
+                   // Empid: data[0].EmpId,
 
-                    // Empid: 277,
-                    FiscalYearId: 9,
-                    fromPeriodId: 99,
-                    ToPeriodId: 107,
+                     Empid: 1,
+                    // FiscalYearId: 9,
+                    // fromPeriodId: 99,
+                    // ToPeriodId: 107,
 
                     //Empid: route.params.EmpId,
-                    // FiscalYearId: maxfiscalid,
-                    // fromPeriodId: maxperiodid,
-                    // ToPeriodId: maxfiscalid
+                    FiscalYearId: maxfiscalid,
+                    fromPeriodId: maxperiodid,
+                    ToPeriodId: maxfiscalid
 
 
 
@@ -238,7 +239,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
 
-                // console.log("aaa", payloadData)
+                // console.log("Leave Data", payloadData)
                 if (payloadData.length > 0) {
                     setLeaveAprovalApiData(payloadData);
                     IsLoading(false);
@@ -270,16 +271,15 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
 
-    // const resetValidation = () => {
-    //     setRemarklError(false);
-    //     setRemarkErrorMessage("");
-    // }
-
-    const validateFields = (status, leaveid, EmpId) => {
-        console.log('api called', status, leaveid)
-        //resetValidation();
+    const resetValidation = () => {
         setRemarklError(false);
         setRemarkErrorMessage("");
+    }
+
+    const validateFields = (status, leaveid) => {
+        console.log('api called', status, leaveid)
+        resetValidation();
+     
 
         if (remark.trim() == '' || remark == null) {
 
@@ -291,11 +291,12 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         else {
             const abortController = new AbortController();
             const signal = abortController.signal;
-if(data.length > 0 ){
-            ApproveLeave(signal, status, leaveid, EmpId);
-            setShowProgressBar(false);
-
-}
+            console.log("empid" , data[0].EmpId)
+            if(data.length > 0 ){
+                ApproveLeave(signal, status, leaveid);
+                setShowProgressBar(false);
+            }
+            
             return function cleanup() {
                 abortController.abort();
             }
@@ -305,8 +306,10 @@ if(data.length > 0 ){
 
 
     //..............Begin: ApproveRejectSubmit ApI ....................//
-    const ApproveLeave = async (signal, status, leaveid, EmpId) => {
-        console.log('LId', leaveid, status, EmpId)
+    const ApproveLeave = async (signal, status, leaveid) => {
+       // console.log('LId', leaveid, status)
+       // console.log("empid" , data[0].EmpId)
+        let empid = data[0].EmpId
         try {
             console.log('remarks', remark)
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/ApproveLeave', {
@@ -320,11 +323,10 @@ if(data.length > 0 ){
                 body: JSON.stringify({
 
                     status: status,
-                    // Empid: data[0].EmpId,
+                     //Empid: data[0].EmpId,
                     ApplyLeaveId: leaveid,
                     remarks: remark,
-                    //ApplyLeaveId: 100,
-                    Empid: 277,
+                    Empid: empid,
 
 
                     // status :1,
@@ -351,7 +353,7 @@ if(data.length > 0 ){
                     [
                         {
                             text: "Ok",
-                            onPress: () => { _Back(), setShowOtpModel(false) },
+                            onPress: () => { _Back() },
                             style: "cancel"
                         }
                     ]
@@ -369,7 +371,7 @@ if(data.length > 0 ){
                 [
                     {
                         text: "Ok",
-                        onPress: () => { _Back(), setRemark('') },
+                        onPress: () => { _Back() },
                         style: "cancel"
                     }
                 ]
@@ -531,7 +533,6 @@ if(data.length > 0 ){
 
                                     onPress={() => {
                                         let AcceptModelData = {
-                                            EmpId: item.EmpId,
                                             LeaveeReason: item.leaveReason,
                                             EmpName: item.EmpFullName,
                                             LeaveTypee: item.Description,
@@ -561,7 +562,6 @@ if(data.length > 0 ){
 
                                     onPress={() => {
                                         let RejectModelData = {
-                                            EmpId: item.EmpId,
                                             LeaveeReason: item.leaveReason,
                                             EmpName: item.EmpFullName,
                                             LeaveTypee: item.Description,
@@ -606,7 +606,7 @@ if(data.length > 0 ){
 
                                     onPress={() => {
                                         let AcceptModelData = {
-                                            EmpId: item.EmpId,
+                                     
                                             LeaveeReason: item.leaveReason,
                                             EmpName: item.EmpFullName,
                                             LeaveTypee: item.Description,
@@ -636,7 +636,7 @@ if(data.length > 0 ){
 
                                     onPress={() => {
                                         let RejectModelData = {
-                                            EmpId: item.EmpId,
+
                                             LeaveeReason: item.leaveReason,
                                             EmpName: item.EmpFullName,
                                             LeaveTypee: item.Description,
@@ -742,9 +742,12 @@ if(data.length > 0 ){
     }
 
 
-    const _Back = () => {
+
+    function _Back() {
+        
 
         // setShowOtpModel(false),
+        setShowOtpModel(false)
         setRemarklError(false)
         setShowRejectionOtpModel(false)
         setRemark('')
@@ -756,9 +759,26 @@ if(data.length > 0 ){
 
         }
 
-        return
-
     }
+
+    // const _Back = () => {
+
+    //     // setShowOtpModel(false),
+    //     setShowOtpModel(false)
+    //     setRemarklError(false)
+    //     setShowRejectionOtpModel(false)
+    //     setRemark('')
+
+    //     const abortController = new AbortController();
+    //     const signal = abortController.signal;
+    //     if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null) {
+    //         getEmpLeaveAprovalRecord(signal)
+
+    //     }
+
+    //     return
+
+    // }
 
     // ....... End : FlatList_RenderItem_Function .... //
 
@@ -825,7 +845,7 @@ if(data.length > 0 ){
         }
     );
 
-   
+
 
     //  
     return (
@@ -952,7 +972,7 @@ if(data.length > 0 ){
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
 
                                     onPress={() => {
-                                        validateFields(2, modeldata.ApplyLeaveId, modeldata.EmpId)
+                                        validateFields(2, modeldata.ApplyLeaveId)
 
                                     }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Submit</Text>
@@ -964,7 +984,7 @@ if(data.length > 0 ){
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
 
                                     onPress={() => {
-                                        validateFields(3, modeldata.ApplyLeaveId, modeldata.EmpId)
+                                        validateFields(3, modeldata.ApplyLeaveId)
                                     }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Submit</Text>
                                 </TouchableOpacity> : <></>
@@ -1078,7 +1098,7 @@ if(data.length > 0 ){
                                 {modeldata.Status == 1 ?
                                     <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
                                         onPress={() => {
-                                            validateFields(5, modeldata.ApplyLeaveId, modeldata.EmpId)
+                                            validateFields(5, modeldata.ApplyLeaveId)
                                         }} >
                                         <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
                                     </TouchableOpacity>
@@ -1087,7 +1107,7 @@ if(data.length > 0 ){
                                 {modeldata.Status == 2 ?
                                     <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
                                         onPress={() => {
-                                            validateFields(4, modeldata.ApplyLeaveId, modeldata.EmpId)
+                                            validateFields(4, modeldata.ApplyLeaveId)
                                         }} >
                                         <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
                                     </TouchableOpacity>
