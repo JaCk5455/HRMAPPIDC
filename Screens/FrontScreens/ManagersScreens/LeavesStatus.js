@@ -5,27 +5,25 @@ import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { Helper } from '../../../Components/Helpers';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Contants from '../../../constants/constants'
+import ProgressBar from '../../../Components/ProgressBar';
 
 
 const { height, width } = Dimensions.get('window');
 
 export default function LeavesApprovalStatusScreen({ navigation, route }) {
+    const [showProgressBar, setShowProgressBar] = React.useState(false);
+
     const [loading, IsLoading] = React.useState(true);
     const [data, SetData] = React.useState([]);
-    const [obj, setObj] = React.useState([]);
     const [modeldata, setModelData] = React.useState([]);
     const [showotpmodel, setShowOtpModel] = React.useState(false);
 
     const [showrejectionotpmodel, setShowRejectionOtpModel] = React.useState(false);
-    const [rejectremark, setRejectRemark] = React.useState('');
     const [leaveaprovalapidata, setLeaveAprovalApiData] = React.useState([]);
 
     const [remark, setRemark] = React.useState('');
     const [remarkError, setRemarklError] = React.useState(false);
     const [remarkErrorMessage, setRemarkErrorMessage] = React.useState('');
-
-    const [aproverejectstatus, setAproveRejectStatus] = React.useState([]);
-
 
     const [yearapidata, setYearApiData] = React.useState([]);
     const [monthapidata, setMonthApiData] = React.useState([]);
@@ -35,48 +33,18 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
 
-    const LeaveApprovalsRecord = [
-        {
-            name: "Umer Farooq",
-            Empid: "IDC-1985",
-            LeaveType: "Compensatory leave",
-            LeaveStartDate: "2021-02-17T00:00:00",
-            LeaveEndDate: "2021-02-17T00:00:00",
-            TotalDays: "1",
-            LeaveReason: "Urgant Piece of Work"
-        },
-        {
-            name: "JacK ",
-            Empid: "IDC-1173",
-            LeaveType: "Short Leave",
-            LeaveStartDate: "2021-02-17T00:00:00",
-            LeaveEndDate: "2021-02-17T00:00:00",
-            TotalDays: "2",
-            LeaveReason: "Marrige of my Czn",
-        },
-
-        {
-            name: "John",
-            Empid: "IDC-1171",
-            LeaveType: "Causal Leaves",
-            LeaveStartDate: "2021-02-17T00:00:00",
-            LeaveEndDate: "2021-02-17T00:00:00",
-            TotalDays: "3",
-            LeaveReason: "Transport issue",
-        },
-
-        {
-            name: "jade",
-            Empid: "IDC-1169",
-            LeaveType: "Annual leaves",
-            LeaveStartDate: "2021-02-17T00:00:00",
-            LeaveEndDate: "2021-02-17T00:00:00",
-
-            TotalDays: "0.5",
-            LeaveReason: "Treveling to my HomeTown",
-        },
-
-    ]
+    // const LeaveApprovalsRecord = [
+    //     {
+    //         name: "Umer Farooq",
+    //         Empid: "IDC-1985",
+    //         LeaveType: "Compensatory leave",
+    //         LeaveStartDate: "2021-02-17T00:00:00",
+    //         LeaveEndDate: "2021-02-17T00:00:00",
+    //         TotalDays: "1",
+    //         LeaveReason: "Urgant Piece of Work"
+    //     },
+ 
+    // ]
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -106,7 +74,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             Maxfiscalvalue = Math.max.apply(Math, yearapidata.map((item) => {
                 return item.fiscalyearid;
             }))
-
             setMaxFiscalId(Maxfiscalvalue);
             //console.log("maxFId", Maxfiscalvalue)
         }
@@ -130,7 +97,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-
                 if (payloadData.length > 0) {
 
                     setYearApiData(payloadData);
@@ -164,8 +130,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     // .......... Begin: MonthApi useEffect ........... //
     React.useEffect(() => {
 
-
-
         let minPeriod;
         if (monthapidata.length > 0) {
 
@@ -173,18 +137,13 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                 if (item.IsPayGenerated == 0) {
                     return item.PeriodId;
-
                 }
                 else {
                     return Infinity;
                 }
-
             }))
-
             setMaxPeriodId(minPeriod)
-
-
-            console.log('maxperidvalue', maxperiodid)
+          //  console.log('maxperidvalue', minPeriod)
 
         }
 
@@ -311,14 +270,16 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
 
-    const resetValidation = () => {
-        setRemarklError(false);
-        setRemarkErrorMessage("");
-    }
+    // const resetValidation = () => {
+    //     setRemarklError(false);
+    //     setRemarkErrorMessage("");
+    // }
 
     const validateFields = (status, leaveid, EmpId) => {
         console.log('api called', status, leaveid)
-        resetValidation();
+        //resetValidation();
+        setRemarklError(false);
+        setRemarkErrorMessage("");
 
         if (remark.trim() == '' || remark == null) {
 
@@ -332,6 +293,8 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             const signal = abortController.signal;
 
             ApproveLeave(signal, status, leaveid, EmpId);
+            setShowProgressBar(false);
+
 
             return function cleanup() {
                 abortController.abort();
@@ -381,14 +344,14 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
 
-                setAproveRejectStatus(payload);
+                //  setAproveRejectStatus(payload);
                 Alert.alert(
                     "Info",
-                    "Successful",
+                    payload[0].RetrunMessage,
                     [
                         {
                             text: "Ok",
-                            onPress: () => { _Back(), setRemark('') },
+                            onPress: () => { _Back(), setShowOtpModel(false) },
                             style: "cancel"
                         }
                     ]
@@ -560,8 +523,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     </View>
 
 
-
-
                     {item.Status == 1 ?
                         <View style={{ marginTop: wp("3%"), flexDirection: 'row' }}>
 
@@ -613,6 +574,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                         }
                                         setModelData(RejectModelData);
                                         setShowRejectionOtpModel(true)
+
 
 
 
@@ -779,6 +741,25 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         )
     }
 
+
+    const _Back = () => {
+
+        // setShowOtpModel(false),
+        setRemarklError(false)
+        setShowRejectionOtpModel(false)
+        setRemark('')
+
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null) {
+            getEmpLeaveAprovalRecord(signal)
+
+        }
+
+        return
+
+    }
+
     // ....... End : FlatList_RenderItem_Function .... //
 
     // const _ListHeader = () => {
@@ -844,21 +825,13 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         }
     );
 
-    const _Back = () => {
-        return (
-
-            setShowOtpModel(false),
-            setRemarklError(false),
-            setRemarkErrorMessage(''),
-            setShowRejectionOtpModel(false)
-
-        )
-    }
+   
 
     //  
     return (
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
+            <ProgressBar visible={showProgressBar} text="Please wait" />
 
             {loading ?
                 <ActivityIndicator
@@ -881,7 +854,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 animationType="slide"
                 transparent={true}
                 visible={showotpmodel}
+
             >
+
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -978,6 +953,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                                     onPress={() => {
                                         validateFields(2, modeldata.ApplyLeaveId, modeldata.EmpId)
+
                                     }} >
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Submit</Text>
                                 </TouchableOpacity> : <></>
