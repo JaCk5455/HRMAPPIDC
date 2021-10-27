@@ -245,7 +245,7 @@ export default function HomeScreen() {
             if (responseObj.statusCode == 200) {
 
                 let payloadData = JSON.parse(responseObj.payload);
-                //  console.log("apidata", payloadData)
+                  console.log("apidata", payloadData)
                 if (payloadData.Table.length > 0) {
                     setLeave(payloadData.Table);
 

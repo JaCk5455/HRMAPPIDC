@@ -291,11 +291,11 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         else {
             const abortController = new AbortController();
             const signal = abortController.signal;
-
+if(data.length > 0 ){
             ApproveLeave(signal, status, leaveid, EmpId);
             setShowProgressBar(false);
 
-
+}
             return function cleanup() {
                 abortController.abort();
             }
@@ -320,11 +320,11 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 body: JSON.stringify({
 
                     status: status,
-                    Empid: EmpId,
+                    // Empid: data[0].EmpId,
                     ApplyLeaveId: leaveid,
                     remarks: remark,
                     //ApplyLeaveId: 100,
-                    //Empid: 277,
+                    Empid: 277,
 
 
                     // status :1,
@@ -1078,7 +1078,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                 {modeldata.Status == 1 ?
                                     <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
                                         onPress={() => {
-                                            validateFields(4, modeldata.ApplyLeaveId, modeldata.EmpId)
+                                            validateFields(5, modeldata.ApplyLeaveId, modeldata.EmpId)
                                         }} >
                                         <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
                                     </TouchableOpacity>
@@ -1087,7 +1087,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                                 {modeldata.Status == 2 ?
                                     <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
                                         onPress={() => {
-                                            validateFields(5, modeldata.ApplyLeaveId, modeldata.EmpId)
+                                            validateFields(4, modeldata.ApplyLeaveId, modeldata.EmpId)
                                         }} >
                                         <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
                                     </TouchableOpacity>
