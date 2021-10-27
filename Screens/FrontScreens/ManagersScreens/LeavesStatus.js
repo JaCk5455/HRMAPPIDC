@@ -210,6 +210,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const getEmpLeaveAprovalRecord = async (signal) => {
         try {
+            console.log("aaa" , maxfiscalid , maxperiodid)
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/LeaveApprovalList', {
                 signal: signal,
                 method: 'POST',
@@ -219,9 +220,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                 },
                 body: JSON.stringify({
-                   // Empid: data[0].EmpId,
+                   Empid: data[0].EmpId,
 
-                     Empid: 1,
+                    // Empid: 277,
                     // FiscalYearId: 9,
                     // fromPeriodId: 99,
                     // ToPeriodId: 107,
@@ -229,7 +230,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     //Empid: route.params.EmpId,
                     FiscalYearId: maxfiscalid,
                     fromPeriodId: maxperiodid,
-                    ToPeriodId: maxfiscalid
+                    ToPeriodId: maxperiodid
 
 
 
@@ -239,7 +240,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
 
-                // console.log("Leave Data", payloadData)
+                 console.log("Leave Data", payloadData)
                 if (payloadData.length > 0) {
                     setLeaveAprovalApiData(payloadData);
                     IsLoading(false);

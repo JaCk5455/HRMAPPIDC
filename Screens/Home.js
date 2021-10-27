@@ -234,7 +234,7 @@ export default function HomeScreen() {
                 },
 
                 body: JSON.stringify({
-                    Empid: data[0].EmpId,
+                   Empid: data[0].EmpId,
                    // Empid: 1916,
                     // FiscalYearId: 10,
                     // fromPeriodId: 113,
