@@ -235,7 +235,8 @@ export default function HomeScreen() {
 
                 body: JSON.stringify({
                    Empid: data[0].EmpId,
-                   // Empid: 1916,
+                   
+                  //Empid: 1916,
                     // FiscalYearId: 10,
                     // fromPeriodId: 113,
                     // ToPeriodId: 113,
@@ -250,7 +251,7 @@ export default function HomeScreen() {
             if (responseObj.statusCode == 200) {
 
                 let payloadData = JSON.parse(responseObj.payload);
-                //  console.log("apidata", payloadData)
+                  console.log("apidata", payloadData)
                 if (payloadData.Table.length > 0) {
                     setLeave(payloadData.Table);
 
@@ -259,14 +260,15 @@ export default function HomeScreen() {
                 if (payloadData.Table1.length > 0) {
                     setAbsent(payloadData.Table1);
 
-
                 }
 
 
                 if (payloadData.Table2.length > 0) {
                     setLate(payloadData.Table2);
+                    console.log("late", payloadData.Table2[0])
 
                 }
+                
 
                 if (payloadData.Table3.length > 0) {
                     setManagerSt(payloadData.Table3);
@@ -291,6 +293,7 @@ export default function HomeScreen() {
 
 
                 }
+                
                 IsLoading(false);
 
             }
@@ -306,6 +309,7 @@ export default function HomeScreen() {
 
     const _ListHeader = () => {
         return (
+           // console.log("aaaa" ,late[0].Late ),
             <View>
                 <View style={styles.Lst_Header}>
                     <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
@@ -319,8 +323,10 @@ export default function HomeScreen() {
                             </Text>
                         </View>
                         <View style={{ flex: 1 }}>
+                            
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {late.length > 0 ? (late[0].Late == "" || late[0].Late == null ? "N/A" : (late[0].Late > 1 ? late[0].Late + " Days" : late[0].Late + ' Day')) : 'N/A'}
+                                
+                                {late.length > 0 ?(late[0].Late == null ? "N/A" :  (late[0].Late > 1 ? late[0].Late + " Days" : late[0].Late + ' Day')): 'N/A'}
                             </Text>
                         </View>
                     </View>
@@ -329,12 +335,12 @@ export default function HomeScreen() {
                     <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-                                Absant:
+                                Absent:
                             </Text>
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {absent.length > 0 ? (absent[0].Absent == "" || absent[0].Absent == null ? "N/A" : (absent[0].Absent > 1 ? absent[0].Absent + " Days" : absent[0].Absent + ' Day')) : 'N/A'}
+                                {absent.length > 0 ? (absent[0].Absent == null ? "N/A" : (absent[0].Absent > 1 ? absent[0].Absent + " Days" : absent[0].Absent + ' Day')) : 'N/A'}
                             </Text>
 
                         </View>
@@ -348,7 +354,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                {leave.length > 0 ? (leave[0].Leave == "" || leave[0].Leave == null ? "0" : leave[0].Leave) : "N/A"}
+                                {leave.length > 0 ? (leave[0].Leave == null ? "N/A" : leave[0].Leave) : "N/A"}
                             </Text>
 
                         </View>
