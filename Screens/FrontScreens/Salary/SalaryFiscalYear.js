@@ -6,7 +6,6 @@ import { Picker, Item } from "native-base";
 import { Icon } from 'react-native-elements'
 import { AntDesign } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native-paper';
-import { round } from 'react-native-reanimated';
 import { BaseRouter } from '@react-navigation/native';
 
 

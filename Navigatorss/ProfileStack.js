@@ -8,6 +8,8 @@ import ContactInformationScreen from '../Screens/ProfileScreens/ContactInformati
 import DependentScreen from '../Screens/ProfileScreens/Dependent';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
+//import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 
 const NotiStack = createStackNavigator();

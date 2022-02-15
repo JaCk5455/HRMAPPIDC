@@ -8,7 +8,9 @@ import { Avatar } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const { height, width } = Dimensions.get('window');
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+
+// import { createStackNavigator } from '@react-navigation/stack';
+
 // import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 // const HomeStack = createStackNavigator();
@@ -30,9 +32,13 @@ export default function RootTabNavigation() {
             //     backgroundColor: '#0041c4'
             // }}
             tabBarPosition='bottom'
-            tabBarOptions={{
-                activeTintColor: '#f0edf6',
+            activeTintColor= 'red'
+            screenOptions={{
+                // activeTintColor: '#B0B0B0',
+                // inactiveTintColor: '#f0edf6',
+               
                 inactiveTintColor: '#B0B0B0',
+
                 style: {
                     // backgroundColor: '#0041c4',
                     backgroundColor: '#008080'
@@ -45,6 +51,7 @@ export default function RootTabNavigation() {
         >
             <RootTab.Screen name='HomeStackScreen' component={HomeStackScreen}
                 options={{
+                    headerShown: false,
                     unmountOnBlur: true,
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color }) => (
@@ -61,6 +68,7 @@ export default function RootTabNavigation() {
                 }} /> */}
             <RootTab.Screen name='ProfileStackScreen' component={ProfileStackScreen}
                 options={{
+                    headerShown: false,
                     unmountOnBlur: true,
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (

@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { View, ActivityIndicator, Text, LogBox } from 'react-native';
 import RootTabNavigation from './Navigatorss/RootTabs';
 import SignIn from './Screens/SignIn';
 import DrawerContent from './Screens/DrawerContents'
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthContext } from './Components/Context';
@@ -14,56 +15,115 @@ import AssetScanStackScreen from './Navigatorss/AssetStack';
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
+// import Constants from 'expo-constants';
 import Constants from 'expo-constants';
+
 
 const Drawer = createDrawerNavigator();
 LogBox.ignoreAllLogs();
 export default function App() {
 
-
+  const [loading, IsLoading] = React.useState(true);
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
 
+  // React.useEffect(() => {
+  //   registerForPushNotificationsAsync().then((token) => {
+  //     console.log('getTokenExpo', token);
+  //     storeTokenInLocalStorage(token);
+
+  //   }).catch((e) => {
+  //     console.log('Notification Error', e);
+  //   });
+
+  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+  //     console.log('abc', notification);
+  //   });
+
+  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+  //     console.log('abbb', response);
+  //   });
+
+  //   return () => {
+  //     Notifications.removeNotificationSubscription(notificationListener);
+  //     Notifications.removeNotificationSubscription(responseListener);
+  //   };
+  // }, []);
+
   React.useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
+    registerForPushNotificationsAsync().then(token => {
       console.log('Token', token);
       storeTokenInLocalStorage(token);
-
-    }).catch((e) => {
-      console.log('Notification Error', e);
-    });
+    })
+      .catch((e) => {
+        console.log("Notification Error", e);
+      });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      console.log('abc', notification);
+      console.log("Notification1stTimeLogin", notification);
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log('abbb', response);
+      console.log("abbb", response);
     });
 
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
+  }, []);;
 
   storeTokenInLocalStorage = async (token) => {
     try {
       await AsyncStorage.setItem('@Token', token)
+      console.log("StoreToken",token);
+      IsLoading(false);
     }
     catch {
       console.log('Token not save in storage')
     }
   }
 
-  registerForPushNotificationsAsync = async () => {
+  // registerForPushNotificationsAsync = async () => {
+
+  //   let token;
+  //   if (Constants.isDevice) {
+  //     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+  //     let finalStatus = existingStatus;
+  //     if (existingStatus !== 'granted') {
+  //       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  //       finalStatus = status;
+  //     }
+  //     if (finalStatus !== 'granted') {
+  //       alert('Failed to get push token for push notification!');
+  //       return;
+  //     }
+  //     token = (await Notifications.getExpoPushTokenAsync()).data;
+
+  //   } else {
+  //     alert('Must use physical device for Push Notifications');
+
+  //   }
+
+  //   if (Platform.OS === 'android') {
+  //     Notifications.setNotificationChannelAsync('default', {
+  //       name: 'default',
+  //       importance: Notifications.AndroidImportance.MAX,
+  //       vibrationPattern: [0, 250, 250, 250],
+  //       lightColor: '#FF231F7C',
+  //     });
+  //   }
+  //   return token;
+  // };
+
+  async function registerForPushNotificationsAsync() {
 
     let token;
     if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
@@ -71,10 +131,8 @@ export default function App() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-
     } else {
       alert('Must use physical device for Push Notifications');
-
     }
 
     if (Platform.OS === 'android') {
@@ -87,11 +145,6 @@ export default function App() {
     }
     return token;
   };
-
-
-
-
-
 
   const initialLoginState = {
 
@@ -171,10 +224,6 @@ export default function App() {
   }), []);
 
 
-
-
-
-
   React.useEffect(() => {
     setTimeout(async () => {
       let isLoggedIn;
@@ -200,9 +249,6 @@ if(Value !== "123")
   }, []);
 
 
-
-
-
   if (loginState.checkingLoginState) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -212,27 +258,26 @@ if(Value !== "123")
   }
 
 
-
-
   return (
-
-
-
+    (loading ?
+      <View style={{ flex: 1, justifyContent: 'center' }} >
+        <ActivityIndicator size="small" color="#0078D4" />
+      </View> 
+      :
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {(loginState.isLoggedIn == 'false' || loginState.isLoggedIn == null || loginState.isLoggedIn == undefined) ?
           <SignIn /> :
           <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Home" component={RootTabNavigation} />
-            <Drawer.Screen name="SetttingStackScreen" component={SetttingStackScreen} />
-            <Drawer.Screen name="SupportStackScreen" component={SupportStackScreen} />
-            <Drawer.Screen name="AssetScanStackScreen" component={AssetScanStackScreen} />
-
+            <Drawer.Screen name="Home" component={RootTabNavigation} options={{ headerShown: false,}} />
+            <Drawer.Screen name="SetttingStackScreen" component={SetttingStackScreen} options={{ headerShown: false,}} />
+            <Drawer.Screen name="SupportStackScreen" component={SupportStackScreen} options={{ headerShown: false,}} />
+            <Drawer.Screen name="AssetScanStackScreen" component={AssetScanStackScreen} options={{ headerShown: false,}} />
           </Drawer.Navigator>
-
         }
       </NavigationContainer>
     </AuthContext.Provider>
+    )
 
 
 

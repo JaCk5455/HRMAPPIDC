@@ -5,6 +5,8 @@ import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createStackNavigator } from '@react-navigation/stack';
+//import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 const SprtStack = createStackNavigator();
 const { height, width } = Dimensions.get('window');

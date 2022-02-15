@@ -2,7 +2,11 @@ import React from 'react';
 import { View, TouchableOpacity, Text, Dimensions, Alert, Image, Button } from 'react-native';
 import HomeScreen from '../Screens/Home';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { createStackNavigator } from '@react-navigation/stack';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from "@react-navigation/stack";
+
+
 import { AuthContext } from "../Components/Context";
 import { Ionicons, AntDesign, FontAwesome, Feather } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
@@ -55,7 +59,9 @@ export default function HomeStackScreen({ navigation }) {
     const { signOut } = React.useContext(AuthContext);
     return (
 
-        <HomeStack.Navigator>
+        <HomeStack.Navigator screenOptions={{
+            headerShown: false,
+        }}>
             <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{
                 title: "Home",
                 headerTintColor: "#fff",
@@ -69,7 +75,7 @@ export default function HomeStackScreen({ navigation }) {
                     </FontAwesome.Button>
                 ),
                 headerRight: () => (
-                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => {
                             <View>
                                 <Text style={{ color: 'red' }}>

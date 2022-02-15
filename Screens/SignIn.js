@@ -167,7 +167,7 @@ export default function SignIn({ navigation }) {
 
                 })
             });
-            console.log('signinapi', data);
+            //console.log('signinapi', data);
 
             const data = await response.json();
             console.log('signinapi', data);

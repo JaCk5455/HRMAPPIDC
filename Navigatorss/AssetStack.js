@@ -3,7 +3,8 @@ import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
 import AssetScanScreen from "../Screens/AssetScan";
 import AssetDetailsScreen from "../Screens/AssetDetails";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { createStackNavigator } from '@react-navigation/stack';
+ import { createStackNavigator } from '@react-navigation/stack';
+
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
 
