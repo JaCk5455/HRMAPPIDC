@@ -1,11 +1,16 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar, FlatList, Alert, Platform, Modal, StyleSheet, TextInput, Button } from 'react-native';
 import moment from 'moment';
+import { SearchBar } from 'react-native-elements';
+
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { Helper } from '../../../Components/Helpers';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Contants from '../../../constants/constants'
 import ProgressBar from '../../../Components/ProgressBar';
+import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
+// import filter from 'lodash.filter';
+
 
 
 const { height, width } = Dimensions.get('window');
@@ -20,6 +25,13 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const [showrejectionotpmodel, setShowRejectionOtpModel] = React.useState(false);
     const [leaveaprovalapidata, setLeaveAprovalApiData] = React.useState([]);
+    const [filterleaveaprovalapidata, setFilterLeaveAprovalApiData] = React.useState([]);
+    const [txtSearch, SetTxtSearch] = React.useState("");
+
+    const [query, setQuery] = React.useState('');
+    const [fullData, setFullData] = React.useState([]);
+
+
 
     const [remark, setRemark] = React.useState('');
     const [remarkError, setRemarklError] = React.useState(false);
@@ -30,21 +42,10 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const [maxfiscalid, setMaxFiscalId] = React.useState(null);
     const [maxperiodid, setMaxPeriodId] = React.useState(null);
+    const [emptylist, setEmptyList] = React.useState(false);
+    const [showtick, setshowTick] = React.useState(false);
 
 
-
-    // const LeaveApprovalsRecord = [
-    //     {
-    //         name: "Umer Farooq",
-    //         Empid: "IDC-1985",
-    //         LeaveType: "Compensatory leave",
-    //         LeaveStartDate: "2021-02-17T00:00:00",
-    //         LeaveEndDate: "2021-02-17T00:00:00",
-    //         TotalDays: "1",
-    //         LeaveReason: "Urgant Piece of Work"
-    //     },
-
-    // ]
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -75,7 +76,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 return item.fiscalyearid;
             }))
             setMaxFiscalId(Maxfiscalvalue);
-           // console.log("maxFId", Maxfiscalvalue)
+            // console.log("maxFId", Maxfiscalvalue)
         }
 
     }, [yearapidata])
@@ -97,7 +98,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
-               // console.log("fiscal", payloadData)
+                //console.log("fiscal", payloadData)
                 if (payloadData.length > 0) {
 
                     setYearApiData(payloadData);
@@ -113,10 +114,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         }
     }
     //............. End: Year Api Data ............... //
-
-
-
-
 
 
     React.useEffect(() => {
@@ -144,7 +141,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 }
             }))
             setMaxPeriodId(minPeriod)
-              //console.log('maxperidvalue', minPeriod)
+            //console.log('maxperidvalue', minPeriod)
 
         }
 
@@ -174,7 +171,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payloaddata = JSON.parse(responseObj.payload);
-                // console.log('month', payloaddata)
+                //console.log('month', payloaddata)
                 if (payloaddata.length > 0) {
                     setMonthApiData(payloaddata);
                 }
@@ -190,14 +187,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     //............. End: Month Api Data ............... //
 
 
-
-
-
-
-
-
-
-
     React.useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -210,7 +199,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const getEmpLeaveAprovalRecord = async (signal) => {
         try {
-            console.log("aaa" , maxfiscalid , maxperiodid)
+            // console.log("aaa", maxfiscalid, maxperiodid)
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/LeaveApprovalList', {
                 signal: signal,
                 method: 'POST',
@@ -220,17 +209,17 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                 },
                 body: JSON.stringify({
-                   Empid: data[0].EmpId,
+                    Empid: data[0].EmpId,
 
                     // Empid: 277,
-                    // FiscalYearId: 9,
-                    // fromPeriodId: 99,
-                    // ToPeriodId: 107,
+                    FiscalYearId: 9,
+                    fromPeriodId: 101,
+                    ToPeriodId: 101,
 
                     //Empid: route.params.EmpId,
-                    FiscalYearId: maxfiscalid,
-                    fromPeriodId: maxperiodid,
-                    ToPeriodId: maxperiodid
+                    // FiscalYearId: maxfiscalid,
+                    // fromPeriodId: maxperiodid,
+                    // ToPeriodId: maxperiodid
 
 
 
@@ -240,23 +229,28 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
 
-                 console.log("Leave Data", payloadData)
+                // console.log("Leave Data", payloadData)
                 if (payloadData.length > 0) {
                     setLeaveAprovalApiData(payloadData);
+
+                    setFullData(payloadData);
                     IsLoading(false);
+                    setEmptyList(true);
                 }
                 else {
-                    Alert.alert(
-                        "Info",
-                        "No Record Found",
-                        [
-                            {
-                                text: "Ok",
-                                onPress: () => { navigation.navigate('HomeScreen') },
-                                style: "cancel"
-                            }
-                        ]
-                    );
+                    // Alert.alert(
+                    //     "Info",
+                    //     "No Record Found",
+                    //     [
+                    //         {
+                    //             text: "Ok",
+                    //             onPress: () => { navigation.navigate('HomeScreen') },
+                    //             style: "cancel"
+                    //         }
+                    //     ]
+                    // );
+                    setEmptyList(true);
+                    IsLoading(false);
                 }
             }
 
@@ -268,10 +262,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     }
 
 
-
-
-
-
     const resetValidation = () => {
         setRemarklError(false);
         setRemarkErrorMessage("");
@@ -280,7 +270,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     const validateFields = (status, leaveid) => {
         console.log('api called', status, leaveid)
         resetValidation();
-     
+
 
         if (remark.trim() == '' || remark == null) {
 
@@ -292,12 +282,12 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         else {
             const abortController = new AbortController();
             const signal = abortController.signal;
-            console.log("empid" , data[0].EmpId)
-            if(data.length > 0 ){
+            console.log("empid", data[0].EmpId)
+            if (data.length > 0) {
                 ApproveLeave(signal, status, leaveid);
                 setShowProgressBar(false);
             }
-            
+
             return function cleanup() {
                 abortController.abort();
             }
@@ -308,8 +298,8 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     //..............Begin: ApproveRejectSubmit ApI ....................//
     const ApproveLeave = async (signal, status, leaveid) => {
-       // console.log('LId', leaveid, status)
-       // console.log("empid" , data[0].EmpId)
+        // console.log('LId', leaveid, status)
+        // console.log("empid" , data[0].EmpId)
         let empid = data[0].EmpId
         try {
             console.log('remarks', remark)
@@ -324,7 +314,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 body: JSON.stringify({
 
                     status: status,
-                     //Empid: data[0].EmpId,
+                    //Empid: data[0].EmpId,
                     ApplyLeaveId: leaveid,
                     remarks: remark,
                     Empid: empid,
@@ -343,7 +333,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
             const data = await response.json();
-            console.log("submit", data)
+            // console.log("submit", data)
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
 
@@ -425,317 +415,278 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     function ItemView({ item }) {
         return (
 
-            <View style={{ flex: 1, backgroundColor: '#fff', padding: wp('1%') }}>
+            <View style={{ flex: 1, backgroundColor: '#FBFCFF', padding: wp('1%') }}>
+
 
                 <View style={{
+                    // borderWidth: 1,
+                    // borderColor: '#CBCBCB',
+                    padding: wp('2%'),
+                    marginHorizontal: wp("1%"),
+                    marginVertical: wp("1%"),
+                    // borderRadius: 10,
+                    flexDirection: "row",
+                    // backgroundColor:"#fff"
+                    borderRadius: 5,
+                    borderColor: '#D3D3D3',
                     borderWidth: 1,
-                    borderColor: '#CBCBCB',
-                    padding: wp('2.5%'),
-                    marginHorizontal: wp("2%"),
-                    marginVertical: wp("1.7%"),
-                    borderRadius: 10,
-
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: 'black',
+                    shadowOpacity: 0.1,
+                    elevation: 4,
+                    shadowRadius: 3,
+                    backgroundColor: '#fff'
                 }}>
 
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 2.3 }}>
+                        <Collapse>
 
-                        <Text style={{ fontSize: wp("4.5%"), fontWeight: 'bold', color: '#000000', textAlign: 'center' }}>
-                            {item.EmployeeId + " - " + item.EmpFullName}
-                        </Text>
+                            <CollapseHeader>
+                                <View style={{ flexDirection: 'row' }}>
+
+                                    {/* <Text style={{ fontSize: wp("4.5%"), fontWeight: 'bold', color: '#000000', textAlign: 'center' }}> */}
+                                    <Text style={{ color: '#4A4B4D', fontSize: wp('3.5%'), fontWeight: 'bold', textAlign: 'center' }}>
+
+                                        {item.EmployeeId + " - " + item.EmpFullName}
+                                    </Text>
+                                </View>
+
+
+                                <View style={{ flexDirection: 'row', marginTop: wp("1%"), alignContent: 'center' }}>
+                                    <View style={{ flex: 1, borderRightWidth: 2, borderRightColor: '#008080' }}>
+                                        <Text style={{
+                                            fontSize: wp('3.5%'),
+                                            fontWeight: 'bold',
+                                            color: LeaveColor(item.Description),
+
+                                            alignContent: 'center'
+                                        }}>
+                                            {item.Description}
+                                        </Text>
+                                    </View>
+
+                                    <View style={{ flex: 0.3, paddingLeft: wp("2%") }}>
+                                        {item.Totaldays > 1 ? <Text style={{
+                                            fontSize: wp('3%'),
+                                            // fontWeight: 'bold',
+                                            color: "#546ba9",
+                                            // color: '#777',
+
+                                            alignContent: 'center'
+                                        }}>
+
+                                            {item.Totaldays + ' Days'}
+                                        </Text> :
+
+                                            <Text style={{
+                                                fontSize: wp('3%'),
+                                                fontWeight: 'bold',
+                                                // color: "brown",
+                                                color: '#546ba9',
+
+                                                alignContent: 'center'
+                                            }}>
+
+                                                {item.Totaldays + ' Day'}
+                                            </Text>
+                                        }
+                                    </View>
+
+
+                                </View>
+
+                                <View style={{ marginTop: wp("1%") }}>
+
+                                    {item.Totaldays <= 1 ?
+
+                                        <Text style={{
+                                            // fontSize: wp('3.8%'),
+                                            fontWeight: 'bold',
+                                            // color: 'black',
+                                            color: '#4A4B4D', fontSize: wp('3.5%'),
+
+                                        }}>
+                                            {moment(item.LeaveStartDate).format('D MMM YYYY, h:mm:ss a')}
+                                        </Text>
+                                        :
+                                        <Text style={{
+                                            fontSize: wp('3.8%'),
+                                            fontWeight: 'bold',
+                                            color: 'black',
+
+                                        }}>
+                                            {moment(item.LeaveStartDate).format('D MMM YYYY') + ' - ' + moment(item.LeaveEndDate).format('D MMM YYYY')}
+                                        </Text>
+                                    }
+
+                                </View>
+
+                            </CollapseHeader>
+
+                            <CollapseBody>
+
+                                <View style={{ marginTop: wp("1%") }}>
+                                    <Text style={{ fontSize: wp("3.5%"), color: '#4A4B4D', fontWeight: 'bold' }}>
+                                        {item.Title}
+                                    </Text>
+                                </View>
+
+                                <View style={{ marginTop: wp("1%") }}>
+                                    <Text style={{ fontSize: wp("3.5%"), color: '#004CFF', fontWeight: 'bold' }}>
+                                        {item.leaveReason}
+                                    </Text>
+                                </View>
+
+                            </CollapseBody>
+
+                        </Collapse>
                     </View>
 
+                    <View style={{ flex: 1 }}>
 
-                    <View style={{ flexDirection: 'row', marginTop: wp("3%"), alignContent: 'center' }}>
-                        <View style={{ flex: 1, borderRightWidth: 2, borderRightColor: '#008080' }}>
-                            <Text style={{
-                                fontSize: wp('3.8%'),
-                                fontWeight: 'bold',
-                                color: LeaveColor(item.Description),
+                        {item.Status == 1 ?
+                            <View>
 
-                                alignContent: 'center'
-                            }}>
-                                {item.Description}
-                            </Text>
-                        </View>
+                                <View style={{ alignItems: 'center' }}>
+                                    <TouchableOpacity
 
-                        <View style={{ flex: 1, paddingLeft: wp("2%") }}>
-                            {item.Totaldays > 1 ? <Text style={{
-                                fontSize: wp('3.8%'),
-                                fontWeight: 'bold',
-                                color: "#546ba9",
-                                // color: '#777',
+                                        onPress={() => {
+                                            let AcceptModelData = {
+                                                LeaveeReason: item.leaveReason,
+                                                EmpName: item.EmpFullName,
+                                                LeaveTypee: item.Description,
+                                                ApplyLeaveId: item.ApplyLeaveId,
+                                                LeaveStartDate: item.LeaveStartDate,
+                                                LeaveEndDate: item.LeaveEndDate,
+                                                Totaldays: item.Totaldays,
+                                                Status: item.Status
 
-                                alignContent: 'center'
-                            }}>
+                                            }
+                                            setModelData(AcceptModelData);
+                                            setShowOtpModel(true)
 
-                                {item.Totaldays + ' Days'}
-                            </Text> :
 
-                                <Text style={{
-                                    fontSize: wp('3.8%'),
-                                    fontWeight: 'bold',
-                                    // color: "brown",
-                                    color: '#546ba9',
 
-                                    alignContent: 'center'
-                                }}>
+                                        }}
+                                        style={{ height: wp("8%"), width: wp("25%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    >
+                                        <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3%") }}>
+                                            Recommend
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                                    {item.Totaldays + ' Day'}
-                                </Text>
-                            }
-                        </View>
-                    </View>
+                                <View style={{ marginTop: wp("1.5%"), alignItems: 'center' }}>
+                                    <TouchableOpacity
 
-                    <View style={{ marginTop: wp("2%") }}>
+                                        onPress={() => {
+                                            let RejectModelData = {
+                                                LeaveeReason: item.leaveReason,
+                                                EmpName: item.EmpFullName,
+                                                LeaveTypee: item.Description,
+                                                ApplyLeaveId: item.ApplyLeaveId,
+                                                LeaveStartDate: item.LeaveStartDate,
+                                                LeaveEndDate: item.LeaveEndDate,
+                                                Totaldays: item.Totaldays,
+                                                Status: item.Status
 
-                        {item.Totaldays <= 1 ?
+                                            }
+                                            setModelData(RejectModelData);
+                                            setShowRejectionOtpModel(true)
+                                            //  setShowProgressBar(true);
 
-                            <Text style={{
-                                fontSize: wp('3.8%'),
-                                fontWeight: 'bold',
-                                color: 'black',
+                                        }}
+                                        style={{ height: wp("8%"), width: wp("25%"), backgroundColor: '#ff4d4d', justifyContent: 'center', borderRadius: wp("2%") }}>
+                                        <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3%") }}>
+                                            Reject
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                            }}>
-                                {moment(item.LeaveStartDate).format('D MMM YYYY, h:mm:ss a')}
-                            </Text>
+
+
+
+
+                            </View>
                             :
-                            <Text style={{
-                                fontSize: wp('3.8%'),
-                                fontWeight: 'bold',
-                                color: 'black',
+                            <></>
 
-                            }}>
-                                {moment(item.LeaveStartDate).format('D MMM YYYY') + ' - ' + moment(item.LeaveEndDate).format('D MMM YYYY')}
-                            </Text>
                         }
 
-                    </View>
+                        {item.Status == 2 ?
 
+                            <View>
 
-                    <View style={{ marginTop: wp("2%") }}>
-                        <Text style={{ fontSize: wp("3.8%"), color: 'black', fontWeight: 'bold' }}>
-                            {item.Title}
-                        </Text>
-                    </View>
+                                <View style={{ alignItems: 'center' }}>
+                                    <TouchableOpacity
 
-                    <View style={{ marginTop: wp("2%") }}>
-                        <Text style={{ fontSize: wp("3.8%"), color: '#004CFF', fontWeight: 'bold' }}>
-                            {item.leaveReason}
-                        </Text>
-                    </View>
+                                        onPress={() => {
+                                            let AcceptModelData = {
 
+                                                LeaveeReason: item.leaveReason,
+                                                EmpName: item.EmpFullName,
+                                                LeaveTypee: item.Description,
+                                                ApplyLeaveId: item.ApplyLeaveId,
+                                                LeaveStartDate: item.LeaveStartDate,
+                                                LeaveEndDate: item.LeaveEndDate,
+                                                Totaldays: item.Totaldays,
+                                                Status: item.Status
 
-                    {item.Status == 1 ?
-                        <View style={{ marginTop: wp("3%"), flexDirection: 'row' }}>
-
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                                <TouchableOpacity
-
-                                    onPress={() => {
-                                        let AcceptModelData = {
-                                            LeaveeReason: item.leaveReason,
-                                            EmpName: item.EmpFullName,
-                                            LeaveTypee: item.Description,
-                                            ApplyLeaveId: item.ApplyLeaveId,
-                                            LeaveStartDate: item.LeaveStartDate,
-                                            LeaveEndDate: item.LeaveEndDate,
-                                            Totaldays: item.Totaldays,
-                                            Status: item.Status
-
-                                        }
-                                        setModelData(AcceptModelData);
-                                        setShowOtpModel(true)
+                                            }
+                                            setModelData(AcceptModelData);
+                                            setShowOtpModel(true)
 
 
 
-                                    }}
-                                    style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
-                                >
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
-                                        Recommend
-                                    </Text>
-                                </TouchableOpacity>
+                                        }}
+                                        style={{ height: wp("8%"), width: wp("25%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    >
+                                        <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3%") }}>
+                                            Approve
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={{ marginTop: wp("1%"), alignItems: 'center' }}>
+                                    <TouchableOpacity
+
+                                        onPress={() => {
+                                            let RejectModelData = {
+
+                                                LeaveeReason: item.leaveReason,
+                                                EmpName: item.EmpFullName,
+                                                LeaveTypee: item.Description,
+                                                ApplyLeaveId: item.ApplyLeaveId,
+                                                LeaveStartDate: item.LeaveStartDate,
+                                                LeaveEndDate: item.LeaveEndDate,
+                                                Totaldays: item.Totaldays,
+                                                Status: item.Status
+
+                                            }
+                                            setModelData(RejectModelData);
+                                            setShowRejectionOtpModel(true)
+
+
+
+                                        }}
+                                        style={{ height: wp("8%"), width: wp("25%"), backgroundColor: '#ff4d4d', justifyContent: 'center', borderRadius: wp("2%") }}>
+                                        <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3%") }}>
+                                            Reject
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+
+
+
+
                             </View>
+                            :
+                            <></>
 
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                                <TouchableOpacity
-
-                                    onPress={() => {
-                                        let RejectModelData = {
-                                            LeaveeReason: item.leaveReason,
-                                            EmpName: item.EmpFullName,
-                                            LeaveTypee: item.Description,
-                                            ApplyLeaveId: item.ApplyLeaveId,
-                                            LeaveStartDate: item.LeaveStartDate,
-                                            LeaveEndDate: item.LeaveEndDate,
-                                            Totaldays: item.Totaldays,
-                                            Status: item.Status
-
-                                        }
-                                        setModelData(RejectModelData);
-                                        setShowRejectionOtpModel(true)
-
-
-
-
-                                    }}
-                                    style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#ff4d4d', justifyContent: 'center', borderRadius: wp("2%") }}>
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
-                                        Reject
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-
-
-
-
-                        </View>
-                        :
-                        <></>
-
-                    }
-
-
-                    {item.Status == 2 ?
-
-                        <View style={{ marginTop: wp("3%"), flexDirection: 'row' }}>
-
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                                <TouchableOpacity
-
-                                    onPress={() => {
-                                        let AcceptModelData = {
-                                     
-                                            LeaveeReason: item.leaveReason,
-                                            EmpName: item.EmpFullName,
-                                            LeaveTypee: item.Description,
-                                            ApplyLeaveId: item.ApplyLeaveId,
-                                            LeaveStartDate: item.LeaveStartDate,
-                                            LeaveEndDate: item.LeaveEndDate,
-                                            Totaldays: item.Totaldays,
-                                            Status: item.Status
-
-                                        }
-                                        setModelData(AcceptModelData);
-                                        setShowOtpModel(true)
-
-
-
-                                    }}
-                                    style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
-                                >
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
-                                        Approve
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                                <TouchableOpacity
-
-                                    onPress={() => {
-                                        let RejectModelData = {
-
-                                            LeaveeReason: item.leaveReason,
-                                            EmpName: item.EmpFullName,
-                                            LeaveTypee: item.Description,
-                                            ApplyLeaveId: item.ApplyLeaveId,
-                                            LeaveStartDate: item.LeaveStartDate,
-                                            LeaveEndDate: item.LeaveEndDate,
-                                            Totaldays: item.Totaldays,
-                                            Status: item.Status
-
-                                        }
-                                        setModelData(RejectModelData);
-                                        setShowRejectionOtpModel(true)
-
-
-
-                                    }}
-                                    style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#ff4d4d', justifyContent: 'center', borderRadius: wp("2%") }}>
-                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
-                                        Reject
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-
-
-
-
-
-                        </View>
-                        :
-                        <></>
-
-                    }
-
-
-
-
-
-
-
-                    {/* <View style={{ flex: 1, alignItems: 'center' }}>
-                        <TouchableOpacity
-
-                            onPress={() => {
-                                let AcceptModelData = {
-                                    EmpId: item.EmpId,
-                                    LeaveeReason: item.leaveReason,
-                                    EmpName: item.EmpFullName,
-                                    LeaveTypee: item.Description,
-                                    ApplyLeaveId: item.ApplyLeaveId,
-                                    LeaveStartDate: item.LeaveStartDate,
-                                    LeaveEndDate: item.LeaveEndDate,
-                                    Totaldays: item.Totaldays
-
-                                }
-                                setModelData(AcceptModelData);
-                                setShowOtpModel(true)
-
-
-
-                            }}
-                            style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#008080', justifyContent: 'center', borderRadius: wp("2%") }}
-                        >
-                            <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
-                                Accept
-                            </Text>
-                        </TouchableOpacity>
+                        }
                     </View>
-
-
-                    <View style={{ flex: 1, alignItems: 'center' }}>
-                        <TouchableOpacity
-
-                            onPress={() => {
-                                let RejectModelData = {
-                                    EmpId: item.EmpId,
-                                    LeaveeReason: item.leaveReason,
-                                    EmpName: item.EmpFullName,
-                                    LeaveTypee: item.Description,
-                                    ApplyLeaveId: item.ApplyLeaveId,
-                                    LeaveStartDate: item.LeaveStartDate,
-                                    LeaveEndDate: item.LeaveEndDate,
-                                    Totaldays: item.Totaldays
-
-                                }
-                                setModelData(RejectModelData);
-                                setShowRejectionOtpModel(true)
-
-
-
-                            }}
-                            style={{ height: wp("10%"), width: wp("30%"), backgroundColor: '#ff4d4d', justifyContent: 'center', borderRadius: wp("2%") }}>
-                            <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp("3.5%") }}>
-                                Reject
-                            </Text>
-                        </TouchableOpacity>
-                    </View> */}
-
-
 
                 </View>
             </View >
@@ -745,13 +696,16 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
 
     function _Back() {
-        
+
 
         // setShowOtpModel(false),
         setShowOtpModel(false)
         setRemarklError(false)
         setShowRejectionOtpModel(false)
         setRemark('')
+        setQuery('');
+        setshowTick(false);
+        // handleSearch(query)
 
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -762,93 +716,189 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     }
 
-    // const _Back = () => {
 
-    //     // setShowOtpModel(false),
-    //     setShowOtpModel(false)
-    //     setRemarklError(false)
-    //     setShowRejectionOtpModel(false)
-    //     setRemark('')
+    const onRefresh = () => {
 
-    //     const abortController = new AbortController();
-    //     const signal = abortController.signal;
-    //     if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null) {
-    //         getEmpLeaveAprovalRecord(signal)
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null) {
+            // console.log("aaa" , maxperiodid , maxfiscalid ,data[0].EmpId ) 
+            getEmpLeaveAprovalRecord(signal)
 
-    //     }
-
-    //     return
-
-    // }
-
-    // ....... End : FlatList_RenderItem_Function .... //
-
-    // const _ListHeader = () => {
-    //     return (
-    //         <View style={styles.Lst_Header}>
-
-    //             <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
-    //                 <Text style={{ fontSize: wp("4%"), padding: wp("2%"), color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>Employee Daily Report</Text>
-
-    //             </View>
-
-    //             <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                 <View style={{ flex: 1 }}>
-    //                     <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                         Late:
-    //                     </Text>
-    //                 </View>
-    //                 <View style={{ flex: 1 }}>
-    //                     <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                         1 Late
-    //                     </Text>
-
-    //                 </View>
-    //             </View>
-
-    //             <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                 <View style={{ flex: 1 }}>
-    //                     <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                         Absant:
-    //                     </Text>
-    //                 </View>
-    //                 <View style={{ flex: 1 }}>
-    //                     <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                         2 Absants
-    //                     </Text>
-
-    //                 </View>
-    //             </View>
-
-    //             <View style={{ flexDirection: 'row', borderBottomWidth: 0.3, borderColor: 'grey', padding: wp("1%") }}>
-    //                 <View style={{ flex: 1 }}>
-    //                     <Text style={{ color: 'grey', fontSize: wp("4%"), fontWeight: 'bold' }}>
-    //                         Leaves:
-    //                     </Text>
-    //                 </View>
-    //                 <View style={{ flex: 1 }}>
-    //                     <Text style={{ color: "red", fontSize: wp("3%") }}>
-    //                         3 emp
-    //                     </Text>
-
-    //                 </View>
-    //             </View>
-
-
-    //         </View>
-    //     )
-    // }
-
+        }
+    }
 
     const getItemLayout = (data, index) => (
-        {
-            length: 30, offset: 30 * index, index
-        }
+        { length: 80, offset: 80 * index, index }
     );
 
+    const keyExtractor = React.useCallback((item) => item.ApplyLeaveId.toString(), []);
 
 
-    //  
+    // const EmptyListMessage = ({ item }) => {
+    //     return (
+
+    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+
+    //             <Text
+    //                 style={styles.emptyListStyle}
+    //             >
+    //                 No Record Found.
+    //             </Text>
+
+
+    //             <Button
+    //                 title="Home"
+    //                 onPress={() => {
+    //                     navigation.navigate('HomeScreen')
+    //                 }}
+    //             />
+    //         </View>
+
+
+
+
+    //     );
+    // };
+
+    const EmptyList = () => {
+        return (
+            emptylist ?
+                <View style={{ backgroundColor: '#FBFCFF', flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: wp("50%") }}>
+                    <Text style={{
+                        padding: 10,
+                        fontSize: 18,
+                        textAlign: 'center',
+                    }}> No Record Found.</Text>
+                    <Button
+                        title="Home"
+                        onPress={() => {
+                            navigation.navigate('HomeScreen')
+                        }}
+                    />
+
+                </View> : <></>
+        )
+
+    }
+
+    const renderHeader = () => {
+        return (
+            // <SearchBar
+            //     placeholder="Type Here..."
+            //     lightTheme
+            //     round
+            //     value={txtSearch}
+            //     onChangeText={(text) => searchFilterFunction(text)}
+            //     autoCorrect={false}
+            // />
+            // console.log("Abc")
+
+            <View
+                style={{
+                    // backgroundColor: '#fff',
+                    // padding: 10,
+                    // marginVertical: 10,
+                    // borderRadius: 20,
+                    // borderWidth:1
+
+                    // padding: wp('2.5%'),
+                    padding: 10,
+                    marginHorizontal: wp("1%"),
+                    marginVertical: wp("1%"),
+                    borderRadius: 5,
+                    borderColor: '#D3D3D3',
+                    borderWidth: 1,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowColor: 'black',
+                    shadowOpacity: 0.1,
+                    elevation: 4,
+                    shadowRadius: 3,
+                    backgroundColor: '#fff',
+                    flexDirection: "row"
+
+
+
+
+                }}
+            >
+                {showtick ?
+                    <TouchableOpacity
+                        onPress={_Back}>
+
+                        <Ionicons name="arrow-back" size={24} color="black" />
+                        {/* <Text>Back</Text> */}
+                    </TouchableOpacity>
+                    : <></>}
+
+                <TextInput
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    // clearButtonMode="always"
+                    value={query}
+
+                    onChangeText={queryText => handleSearch(queryText)}
+                    placeholder="Search EmpID / Name"
+                    style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}
+                    placeholderTextColor="#008080"
+
+                />
+
+            </View>
+
+
+
+
+        );
+    };
+
+
+
+    // const searchFilterFunction = (text) => {
+    //     SetTxtSearch(text);
+
+    //     const newData = leaveaprovalapidata.filter(item => {
+    //         item.EmpFullName.toUpperCase();
+    //         setLeaveAprovalApiData(newData);
+    //         //    const textData = text.toUpperCase();
+
+    //         //    return itemData.indexOf(textData) > -1;    
+    //     })
+
+
+    // };
+
+
+    const handleSearch = text => {
+        setshowTick(true);
+        console.log("fulldata", fullData);
+        const formattedQuery = text.toLowerCase();
+        const filteredData = fullData.filter(element => {
+            return (element.EmpFullName + element.EmployeeId || '').toLowerCase().indexOf(formattedQuery) > -1;
+        });
+        setLeaveAprovalApiData(filteredData);
+        setQuery(text);
+    };
+
+    // const contains = ({ EmpFullName, email }, query) => {
+    //     // const { first, last } = name;
+
+    //     // if (first.includes(query) || last.includes(query) || email.includes(query)) {
+    //     if (EmpFullName.includes(query)) {
+    //         return true;
+    //     }
+
+    //     return false;
+    // };
+
+
+
+
+
+
+
+
     return (
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
@@ -863,9 +913,20 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                 <FlatList
                     data={leaveaprovalapidata}
+                    initialNumToRender={10}
+                    maxToRenderPerBatch={7}
+                    windowSize={2}
                     renderItem={_RenderItem}
                     getItemLayout={getItemLayout}
-                    keyExtractor={(item, index) => index.toString()}
+                    //keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={keyExtractor}
+                    removeClippedSubviews={true}
+                    updateCellsBatchingPeriod={100}
+                    ListEmptyComponent={EmptyList}
+                    onRefresh={() => onRefresh()}
+                    refreshing={loading}
+                    ListHeaderComponent={renderHeader()}
+                    contentContainerStyle={{ paddingBottom: 50, backgroundColor: '#FBFCFF' }}
                 // ListHeaderComponent={_ListHeader}
                 />
             }
@@ -1024,6 +1085,12 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
+                            onPress={_Back}>
+
+                            <Ionicons name="arrow-back" size={24} color="black" />
+                            <Text>Back</Text>
+                        </TouchableOpacity>
 
 
                         <View style={{ borderBottomWidth: 0.5, borderBottomColor: "#66b2b2", }}>
@@ -1093,36 +1160,37 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                             <Text style={{ fontSize: 11, color: 'red', marginTop: 5 }}>{remarkErrorMessage}</Text>
                         )}
 
-                        <View style={{ flexDirection: 'row', marginTop: wp("4%") }}>
-                            <View style={{ flex: 1 }}>
+                        {/* <View style={{ flexDirection: 'row', marginTop: wp("4%") }}> */}
+                        <View style={{ marginTop: wp("4%"), alignItems: 'center' }}>
+                            {/* <View style={{ flex: 1 }}> */}
 
-                                {modeldata.Status == 1 ?
-                                    <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
-                                        onPress={() => {
-                                            validateFields(5, modeldata.ApplyLeaveId)
-                                        }} >
-                                        <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
-                                    </TouchableOpacity>
-                                    : <></>}
+                            {modeldata.Status == 1 ?
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    onPress={() => {
+                                        validateFields(5, modeldata.ApplyLeaveId)
+                                    }} >
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
+                                </TouchableOpacity>
+                                : <></>}
 
-                                {modeldata.Status == 2 ?
-                                    <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
-                                        onPress={() => {
-                                            validateFields(4, modeldata.ApplyLeaveId)
-                                        }} >
-                                        <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
-                                    </TouchableOpacity>
-                                    : <></>}
+                            {modeldata.Status == 2 ?
+                                <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'red', justifyContent: 'center', borderRadius: wp("2%") }}
+                                    onPress={() => {
+                                        validateFields(4, modeldata.ApplyLeaveId)
+                                    }} >
+                                    <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Reject</Text>
+                                </TouchableOpacity>
+                                : <></>}
 
-                            </View>
+                            {/* </View> */}
 
 
-                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                            {/* <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                 <TouchableOpacity style={{ height: wp("10%"), width: wp("35%"), backgroundColor: 'blue', justifyContent: 'center', borderRadius: wp("2%"), }}
                                     onPress={_Back}>
                                     <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: wp('3.5%') }}>Back</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
                         </View>
 
 
