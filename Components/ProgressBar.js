@@ -18,7 +18,7 @@ export default function ProgressBar(props) {
                 <View style={styles.modalView}>
                     <ActivityIndicator
                         style={{ height: 40 }}
-                        color="blue"
+                        color="#008080"
                         size="large"
                     />
                     <Text style={styles.modalText}>{props.text}</Text>

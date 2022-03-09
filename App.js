@@ -252,7 +252,7 @@ if(Value !== "123")
   if (loginState.checkingLoginState) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color="#0000ff" size="large" />
+        <ActivityIndicator color="#008080" size="large" />
       </View>
     );
   }
@@ -261,7 +261,7 @@ if(Value !== "123")
   return (
     (loading ?
       <View style={{ flex: 1, justifyContent: 'center' }} >
-        <ActivityIndicator size="small" color="#0078D4" />
+        <ActivityIndicator size="small" color="#008080" />
       </View> 
       :
     <AuthContext.Provider value={authContext}>

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, StatusBar,
 import moment from 'moment';
 import { SearchBar } from 'react-native-elements';
 
-import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Helper } from '../../../Components/Helpers';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Contants from '../../../constants/constants'
@@ -25,13 +25,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const [showrejectionotpmodel, setShowRejectionOtpModel] = React.useState(false);
     const [leaveaprovalapidata, setLeaveAprovalApiData] = React.useState([]);
-    const [filterleaveaprovalapidata, setFilterLeaveAprovalApiData] = React.useState([]);
-    const [txtSearch, SetTxtSearch] = React.useState("");
 
     const [query, setQuery] = React.useState('');
     const [fullData, setFullData] = React.useState([]);
-
-
 
     const [remark, setRemark] = React.useState('');
     const [remarkError, setRemarklError] = React.useState(false);
@@ -694,7 +690,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     }
 
 
-
     function _Back() {
 
 
@@ -735,33 +730,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     const keyExtractor = React.useCallback((item) => item.ApplyLeaveId.toString(), []);
 
 
-    // const EmptyListMessage = ({ item }) => {
-    //     return (
-
-    //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-
-    //             <Text
-    //                 style={styles.emptyListStyle}
-    //             >
-    //                 No Record Found.
-    //             </Text>
-
-
-    //             <Button
-    //                 title="Home"
-    //                 onPress={() => {
-    //                     navigation.navigate('HomeScreen')
-    //                 }}
-    //             />
-    //         </View>
-
-
-
-
-    //     );
-    // };
-
     const EmptyList = () => {
         return (
             emptylist ?
@@ -785,25 +753,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const renderHeader = () => {
         return (
-            // <SearchBar
-            //     placeholder="Type Here..."
-            //     lightTheme
-            //     round
-            //     value={txtSearch}
-            //     onChangeText={(text) => searchFilterFunction(text)}
-            //     autoCorrect={false}
-            // />
-            // console.log("Abc")
 
             <View
                 style={{
-                    // backgroundColor: '#fff',
-                    // padding: 10,
-                    // marginVertical: 10,
-                    // borderRadius: 20,
-                    // borderWidth:1
-
-                    // padding: wp('2.5%'),
                     padding: 10,
                     marginHorizontal: wp("1%"),
                     marginVertical: wp("1%"),
@@ -816,21 +768,12 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     elevation: 4,
                     shadowRadius: 3,
                     backgroundColor: '#fff',
-                    flexDirection: "row"
-
-
-
+                    flexDirection: "row",
+                    alignContent: "center"
 
                 }}
             >
-                {showtick ?
-                    <TouchableOpacity
-                        onPress={_Back}>
 
-                        <Ionicons name="arrow-back" size={24} color="black" />
-                        {/* <Text>Back</Text> */}
-                    </TouchableOpacity>
-                    : <></>}
 
                 <TextInput
                     autoCapitalize="none"
@@ -840,10 +783,22 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
                     onChangeText={queryText => handleSearch(queryText)}
                     placeholder="Search EmpID / Name"
-                    style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}
+                    style={{ backgroundColor: '#fff', paddingHorizontal: 20, width: "90%" }}
                     placeholderTextColor="#008080"
 
                 />
+
+
+
+                {showtick ?
+                    <TouchableOpacity
+                        onPress={_Back}>
+
+                        {/* <Ionicons name="arrow-back" size={20} color="black" /> */}
+                        <MaterialCommunityIcons name="close-circle-outline" size={24} color="red" />
+                        {/* <Text>Back</Text> */}
+                    </TouchableOpacity>
+                    : <></>}
 
             </View>
 
@@ -854,25 +809,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     };
 
 
-
-    // const searchFilterFunction = (text) => {
-    //     SetTxtSearch(text);
-
-    //     const newData = leaveaprovalapidata.filter(item => {
-    //         item.EmpFullName.toUpperCase();
-    //         setLeaveAprovalApiData(newData);
-    //         //    const textData = text.toUpperCase();
-
-    //         //    return itemData.indexOf(textData) > -1;    
-    //     })
-
-
-    // };
-
-
     const handleSearch = text => {
         setshowTick(true);
-        console.log("fulldata", fullData);
+       // console.log("fulldata", fullData);
         const formattedQuery = text.toLowerCase();
         const filteredData = fullData.filter(element => {
             return (element.EmpFullName + element.EmployeeId || '').toLowerCase().indexOf(formattedQuery) > -1;
@@ -880,21 +819,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         setLeaveAprovalApiData(filteredData);
         setQuery(text);
     };
-
-    // const contains = ({ EmpFullName, email }, query) => {
-    //     // const { first, last } = name;
-
-    //     // if (first.includes(query) || last.includes(query) || email.includes(query)) {
-    //     if (EmpFullName.includes(query)) {
-    //         return true;
-    //     }
-
-    //     return false;
-    // };
-
-
-
-
 
 
 
