@@ -12,11 +12,6 @@ import { Snackbar } from 'react-native-paper';
 
 
 
-import { BackHandler } from 'react-native';
-// import { ActivityIndicator } from 'react-native-paper';
-
-
-
 export default function SignIn({ navigation }) {
     const { signIn } = React.useContext(AuthContext); // Sign In Function exists in App.js
 
@@ -143,9 +138,9 @@ export default function SignIn({ navigation }) {
 
 //..............Begin: SignIN ApI ....................//
     const signInCall = async (signal) => {
-        // console.log('api called')
-        try {
+        console.log('otpapi called')
 
+        try {
             // const response = await fetch('http://reports.idc.net.pk/orbitempservicestg/api/V1/Login/EmployeeLogin?username=' + email + '&password=' + password + '&SourceLogin=' + 2 + '&MobileDeviceToken=' + 52005452, {
                 const response = await fetch(Contants.API_URL + 'Login/V1/EmployeeLogin', {
                 signal: signal,
@@ -160,21 +155,20 @@ export default function SignIn({ navigation }) {
                     username: email, // username string
                     password: password, // string
                     SourceLogin: Platform.OS == 'ios' ? 1 : 2,
-                    MobileDeviceToken: token
+                    MobileDeviceToken: token 
 
                     // MobileDeviceToken: 52005452,
 
 
                 })
             });
-            //console.log('signinapi', data);
 
             const data = await response.json();
             console.log('signinapi', data);
 
             if (data.statusCode == 200) {
                 let payload = JSON.parse(data.payload);
-
+                setShowProgressBar(false);
                 setUserData(payload);
                 if (payload[0].isregister == 1) {
                     signIn(payload);
@@ -211,9 +205,9 @@ export default function SignIn({ navigation }) {
 
         }
         catch (e) {
+            setShowProgressBar(false);
             console.log('Error', e);
             Alert.alert('Error', 'Connection Error, please try again!')
-            setShowProgressBar(false);
 
         }
     }
@@ -419,7 +413,7 @@ export default function SignIn({ navigation }) {
                         }
                         <View style={{ marginVertical: 20, alignItems: 'center' }}>
                             <Button
-                                title=" Submit "
+                                title=" Submit"
                                 onPress={otpConfirm}
                             />
 

@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons, MaterialCommunityIcons, Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { Helper } from '../Components/Helpers';
 import * as Contants from '../constants/constants';
+import { AuthContext } from '../Components/Context';
+
 
 const { height, width } = Dimensions.get('window');
 
@@ -25,6 +27,8 @@ export default function HomeScreen() {
     const [absent, setAbsent] = React.useState([])
     const [late, setLate] = React.useState([])
     const [managerst, setManagerSt] = React.useState([])
+
+    const { signOut } = React.useContext(AuthContext);
 
     const [gridItems, setGridItems] = React.useState(
         [
@@ -133,10 +137,6 @@ export default function HomeScreen() {
     }, [maxfiscalid])
 
 
-
-
-
-
     // .......... Begin: MonthApi useEffect ........... //
     React.useEffect(() => {
 
@@ -168,9 +168,6 @@ export default function HomeScreen() {
 
     }, [monthapidata])
     // .......... End: MonthApi useEffect ........... //
-
-
-
 
     //............. Begin: Month Api Data ............... //
     const MonthApiCall = async () => {
@@ -207,9 +204,6 @@ export default function HomeScreen() {
     }
     //............. End: Month Api Data ............... //
 
-
-
-
     React.useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
@@ -217,8 +211,6 @@ export default function HomeScreen() {
             getPersonalRecord(signal)
 
     }, [data, maxfiscalid, maxperiodid])
-
-
 
     //..................Begin: GetPersonalData .....................//
 
@@ -234,9 +226,9 @@ export default function HomeScreen() {
                 },
 
                 body: JSON.stringify({
-                   Empid: data[0].EmpId,
-                   
-                  //Empid: 1916,
+                    Empid: data[0].EmpId,
+
+                    //Empid: 2,
                     // FiscalYearId: 10,
                     // fromPeriodId: 113,
                     // ToPeriodId: 113,
@@ -251,49 +243,66 @@ export default function HomeScreen() {
             if (responseObj.statusCode == 200) {
 
                 let payloadData = JSON.parse(responseObj.payload);
-                  console.log("apidata", payloadData)
-                if (payloadData.Table.length > 0) {
-                    setLeave(payloadData.Table);
+                console.log("apidata", payloadData)
+                if (payloadData.Table4.length > 0) {
+                    console.log("apidata", payloadData.Table4)
 
-                }
-
-                if (payloadData.Table1.length > 0) {
-                    setAbsent(payloadData.Table1);
-
-                }
-
-
-                if (payloadData.Table2.length > 0) {
-                    setLate(payloadData.Table2);
-                    console.log("late", payloadData.Table2[0])
-
-                }
-                
-
-                if (payloadData.Table3.length > 0) {
-                    setManagerSt(payloadData.Table3);
-
-                    let A = payloadData.Table3;
-                    if (A.length && A[0].managerst == 1) {
-                        let B = gridItems;
-                        let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
-                        if (!checkIfLeaveApprovalExist) {
-                            B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
-                            setGridItems(B)
+                    if (payloadData.Table4[0].IsResigned == 1) {
+                        
+                        if (payloadData.Table.length > 0) {
+                            setLeave(payloadData.Table);
+                        }
+        
+                        if (payloadData.Table1.length > 0) {
+                            setAbsent(payloadData.Table1);
+                        }
+        
+                        if (payloadData.Table2.length > 0) {
+                            setLate(payloadData.Table2);
+                            console.log("late", payloadData.Table2[0])
+                        }
+                        
+                        if (payloadData.Table3.length > 0) {
+                            setManagerSt(payloadData.Table3);
+        
+                            let A = payloadData.Table3;
+                            if (A.length && A[0].managerst == 1) {
+                                let B = gridItems;
+                                let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+                                if (!checkIfLeaveApprovalExist) {
+                                    B.push({ name: 'Leaves Approvals', icon: require('../assets/LeaveAprove.png'), navigateTo: 'LeavesApprovalStatusScreen' })
+                                    setGridItems(B)
+                                }
+                            }
+                            else {
+                                let B = gridItems;
+                                let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
+                                if (checkIfLeaveApprovalExist) {
+                                    B.pop()
+                                    setGridItems(B)
+                                }
+                            }
+        
+        
                         }
                     }
-                    else {
-                        let B = gridItems;
-                        let checkIfLeaveApprovalExist = B.filter(x => x.name == 'Leaves Approvals').length;
-                        if (checkIfLeaveApprovalExist) {
-                            B.pop()
-                            setGridItems(B)
-                        }
+                    else{
+                        signOut();
                     }
-
-
+                } else {
+                    console.log("table4 empty")
                 }
-                
+
+
+                // if (payloadData.Table4.length > 0 ) {
+                //     if(payloadData.Table4.IsResigned == 0 ){
+                //         signOut();
+                //         IsLoading(false);
+                //     }
+                // }else{
+                //     console.log("table4 empty")
+                // }
+
                 IsLoading(false);
 
             }
@@ -305,11 +314,9 @@ export default function HomeScreen() {
     }
     //..................End: GetPersonalData .....................//
 
-
-
     const _ListHeader = () => {
         return (
-           // console.log("aaaa" ,late[0].Late ),
+            // console.log("aaaa" ,late[0].Late ),
             <View>
                 <View style={styles.Lst_Header}>
                     <View style={{ borderWidth: 0.5, borderRadius: wp("1%"), marginBottom: wp("3%"), borderColor: '#008080', backgroundColor: '#008080' }}>
@@ -323,10 +330,10 @@ export default function HomeScreen() {
                             </Text>
                         </View>
                         <View style={{ flex: 1 }}>
-                            
+
                             <Text style={{ color: "red", fontSize: wp("3%") }}>
-                                
-                                {late.length > 0 ?(late[0].Late == null ? "N/A" :  (late[0].Late > 1 ? late[0].Late + " Days" : late[0].Late + ' Day')): 'N/A'}
+
+                                {late.length > 0 ? (late[0].Late == null ? "N/A" : (late[0].Late > 1 ? late[0].Late + " Days" : late[0].Late + ' Day')) : 'N/A'}
                             </Text>
                         </View>
                     </View>
@@ -485,8 +492,6 @@ export default function HomeScreen() {
             }
 
         </View>
-
-
 
     );
 }

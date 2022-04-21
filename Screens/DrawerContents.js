@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
         paddingLeft: wp('3%'),
     },
     title: {
-        fontSize: Platform.isPad ? wp('1.7%') : wp('4%'),
+        fontSize: Platform.isPad ? wp('1.7%') : wp('3.5%'),
         marginTop: wp('1%'),
         fontWeight: 'bold',
     },
     caption: {
-        fontSize: Platform.isPad ? wp('1.2%') : wp('3.5%'),
+        fontSize: Platform.isPad ? wp('1.2%') : wp('3%'),
 
     },
     row: {

@@ -76,7 +76,7 @@ export default function App() {
   storeTokenInLocalStorage = async (token) => {
     try {
       await AsyncStorage.setItem('@Token', token)
-      console.log("StoreToken",token);
+      console.log("StoreToken", token);
       IsLoading(false);
     }
     catch {
@@ -127,12 +127,14 @@ export default function App() {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+        // alert('Please Allow Notifications First!');
+        console.log("notification not allow")
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
     } else {
-      alert('Must use physical device for Push Notifications');
+      console.log("Must use physical device for Push Notifications")
+     // alert('Must use physical device for Push Notifications');
     }
 
     if (Platform.OS === 'android') {
@@ -200,7 +202,7 @@ export default function App() {
         await AsyncStorage.setItem('@loggedIn', 'true');
         await AsyncStorage.setItem('@loggedInPayload', JSON.stringify(payload));
 
-        await AsyncStorage.setItem('@value' , '123')
+        await AsyncStorage.setItem('@value', '123')
 
 
       } catch (e) {
@@ -234,12 +236,11 @@ export default function App() {
       try {
         isLoggedIn = await AsyncStorage.getItem('@loggedIn');
         payLoad = await AsyncStorage.getItem('@loggedInPayload');
-let Value = await AsyncStorage.getItem('@value')
-if(Value !== "123")
-{
-        await AsyncStorage.removeItem('@loggedIn');
-        await AsyncStorage.removeItem('@loggedInPayload');
-}
+        let Value = await AsyncStorage.getItem('@value')
+        if (Value !== "123") {
+          await AsyncStorage.removeItem('@loggedIn');
+          await AsyncStorage.removeItem('@loggedInPayload');
+        }
         // console.log(payLoad);
       } catch (e) {
         console.log(e);
@@ -262,27 +263,23 @@ if(Value !== "123")
     (loading ?
       <View style={{ flex: 1, justifyContent: 'center' }} >
         <ActivityIndicator size="small" color="#008080" />
-      </View> 
+      </View>
       :
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        {(loginState.isLoggedIn == 'false' || loginState.isLoggedIn == null || loginState.isLoggedIn == undefined) ?
-          <SignIn /> :
-          <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Home" component={RootTabNavigation} options={{ headerShown: false,}} />
-            <Drawer.Screen name="SetttingStackScreen" component={SetttingStackScreen} options={{ headerShown: false,}} />
-            <Drawer.Screen name="SupportStackScreen" component={SupportStackScreen} options={{ headerShown: false,}} />
-            <Drawer.Screen name="AssetScanStackScreen" component={AssetScanStackScreen} options={{ headerShown: false,}} />
-          </Drawer.Navigator>
-        }
-      </NavigationContainer>
-    </AuthContext.Provider>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          {(loginState.isLoggedIn == 'false' || loginState.isLoggedIn == null || loginState.isLoggedIn == undefined) ?
+            <SignIn /> :
+            <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+              <Drawer.Screen name="Home" component={RootTabNavigation} options={{ headerShown: false, }} />
+              <Drawer.Screen name="SetttingStackScreen" component={SetttingStackScreen} options={{ headerShown: false, }} />
+              <Drawer.Screen name="SupportStackScreen" component={SupportStackScreen} options={{ headerShown: false, }} />
+              <Drawer.Screen name="AssetScanStackScreen" component={AssetScanStackScreen} options={{ headerShown: false, }} />
+            </Drawer.Navigator>
+          }
+        </NavigationContainer>
+      </AuthContext.Provider>
     )
-
-
-
 
   );
 }
-
 

@@ -217,28 +217,13 @@ export default function MainLeaveScreen({ navigation }) {
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
-                // console.log('Leaves Data', payload) 
                 if (payload.length > 0) {
                     setLeaveApiData(payload);
-
                     IsLoading(false);
                     setLeaveRecord(false)
 
                 }
                 else {
-                    // Alert.alert(
-                    //      "",
-                    //     "No record found for current year.",
-                    //     [
-                    //         {
-                    //             text: "Previous Record",
-                    //             onPress: () => navigation.navigate("LeaveFisicalScreen"),
-                    //             style: "cancel"
-                    //         },
-                    //         { text: "Home", onPress: () => navigation.navigate("HomeScreen") }
-                    //     ],
-                    //     { cancelable: false }
-                    // )
                     setLeaveRecord(true);
                 }
             }

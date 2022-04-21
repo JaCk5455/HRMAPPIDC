@@ -134,9 +134,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
     //............. Begin: Year Api Data ............... //   
     const FicicalYearApiCall = async () => {
         try {
-
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
-
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

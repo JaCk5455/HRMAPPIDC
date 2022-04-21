@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "457227390684",
-    "project_id": "idc-hrm",
-    "storage_bucket": "idc-hrm.appspot.com"
+    "project_number": "895120885147",
+    "project_id": "idc-hrm-16674",
+    "storage_bucket": "idc-hrm-16674.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:457227390684:android:f6238d09577350da4d2e19",
+        "mobilesdk_app_id": "1:895120885147:android:32ede9d516e62e10084d3e",
         "android_client_info": {
           "package_name": "com.idc.hrm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "457227390684-jjqeru2l22cqv8t04s1qsc07ru5gpj7k.apps.googleusercontent.com",
+          "client_id": "895120885147-9uiuch8b7u3c8hpfl2v865k7is1mhtgr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsfSCOrNq69vZTTxRHOMiRRoLPIYK9OcE"
+          "current_key": "AIzaSyCdHNM7Zg4JhNLjzpTHDnPS7sWNvhYz5j4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "457227390684-jjqeru2l22cqv8t04s1qsc07ru5gpj7k.apps.googleusercontent.com",
+              "client_id": "895120885147-9uiuch8b7u3c8hpfl2v865k7is1mhtgr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
