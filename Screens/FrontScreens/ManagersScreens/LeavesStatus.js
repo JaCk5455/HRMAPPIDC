@@ -38,7 +38,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const [maxfiscalid, setMaxFiscalId] = React.useState(null);
     const [maxperiodid, setMaxPeriodId] = React.useState(null);
-    const [emptylist, setEmptyList] = React.useState(false);
+    const [emptylist, setEmptyList] = React.useState(true);
     const [showtick, setshowTick] = React.useState(false);
 
 
@@ -195,7 +195,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const getEmpLeaveAprovalRecord = async (signal) => {
         try {
-             console.log("aaa", data[0].EmpId , maxfiscalid, maxperiodid)
+            // console.log("aaa", data[0].EmpId , maxfiscalid, maxperiodid)
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/LeaveApprovalList', {
                 signal: signal,
                 method: 'POST',
@@ -206,45 +206,32 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                 },
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
-
-                    // Empid: 277,
-                    // FiscalYearId: 9,
-                    // fromPeriodId: 101,
-                    // ToPeriodId: 101,
-
-                    //Empid: route.params.EmpId,
                     FiscalYearId: maxfiscalid,
                     fromPeriodId: maxperiodid,
                     ToPeriodId: maxperiodid
 
 
-
+                    // Empid: 277,
+                    // FiscalYearId: 9,
+                    // fromPeriodId: 101,
+                    // ToPeriodId: 101,
                 })
             });
             const responseObj = await response.json();
             if (responseObj.statusCode == 200) {
                 let payloadData = JSON.parse(responseObj.payload);
 
-                 console.log("Leave Data", payloadData)
+                //  console.log("Leave Data", payloadData)
                 if (payloadData.length > 0) {
+                    // console.log("araha ha")
                     setLeaveAprovalApiData(payloadData);
-
                     setFullData(payloadData);
                     IsLoading(false);
-                    setEmptyList(true);
+                     setEmptyList(false);
                 }
                 else {
-                    // Alert.alert(
-                    //     "Info",
-                    //     "No Record Found",
-                    //     [
-                    //         {
-                    //             text: "Ok",
-                    //             onPress: () => { navigation.navigate('HomeScreen') },
-                    //             style: "cancel"
-                    //         }
-                    //     ]
-                    // );
+                    // console.log("ni aya")
+                    // setLeaveAprovalApiData([]);
                     setEmptyList(true);
                     IsLoading(false);
                 }
@@ -264,7 +251,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
     }
 
     const validateFields = (status, leaveid) => {
-        console.log('api called', status, leaveid)
+       // console.log('api called', status, leaveid)
         resetValidation();
 
 
@@ -278,7 +265,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         else {
             const abortController = new AbortController();
             const signal = abortController.signal;
-            console.log("empid", data[0].EmpId)
+           // console.log("empid", data[0].EmpId)
             if (data.length > 0) {
                 ApproveLeave(signal, status, leaveid);
                 setShowProgressBar(false);
@@ -290,7 +277,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         }
 
     }
-
 
     //..............Begin: ApproveRejectSubmit ApI ....................//
     const ApproveLeave = async (signal, status, leaveid) => {
@@ -367,7 +353,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         }
     }
     //..............END: ApproveRejectSubmit ApI ....................//
-
 
 
     // ....... Begin : FlatList_RenderItem_Function .... // 
@@ -689,9 +674,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         )
     }
 
-
     function _Back() {
-
 
         // setShowOtpModel(false),
         setShowOtpModel(false)
@@ -706,11 +689,9 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         const signal = abortController.signal;
         if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null) {
             getEmpLeaveAprovalRecord(signal)
-
         }
 
     }
-
 
     const onRefresh = () => {
 
@@ -719,7 +700,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         if (data.length > 0 && maxfiscalid !== null && maxperiodid !== null) {
             // console.log("aaa" , maxperiodid , maxfiscalid ,data[0].EmpId ) 
             getEmpLeaveAprovalRecord(signal)
-
         }
     }
 
@@ -732,6 +712,7 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
 
     const EmptyList = () => {
         return (
+            console.log("Ni aya 2"),
             emptylist ?
                 <View style={{ backgroundColor: '#FBFCFF', flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: wp("50%") }}>
                     <Text style={{
@@ -746,7 +727,8 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                         }}
                     />
 
-                </View> : <></>
+                </View>
+                 : <></>
         )
 
     }
@@ -808,7 +790,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         );
     };
 
-
     const handleSearch = text => {
         setshowTick(true);
        // console.log("fulldata", fullData);
@@ -819,8 +800,6 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
         setLeaveAprovalApiData(filteredData);
         setQuery(text);
     };
-
-
 
 
     return (
@@ -834,6 +813,26 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     color="#008080"
                     size="small"
                 /> :
+                (
+                emptylist ?
+                    
+                    <View style={{ backgroundColor: '#fff',   justifyContent: 'center', alignItems: 'center', marginTop: wp("50%") }}>
+                <Text style={{
+                    padding: 10,
+                    fontSize: 18,
+                    textAlign: 'center',
+                }}> No Record Found.</Text>
+                <Button
+                    title="Home"
+                    onPress={() => {
+                        navigation.navigate('HomeScreen')
+                    }}
+                />
+
+            </View>
+                    
+                    
+                    :
 
                 <FlatList
                     data={leaveaprovalapidata}
@@ -853,7 +852,8 @@ export default function LeavesApprovalStatusScreen({ navigation, route }) {
                     contentContainerStyle={{ paddingBottom: 50, backgroundColor: '#FBFCFF' }}
                 // ListHeaderComponent={_ListHeader}
                 />
-            }
+                )}
+            
 
             {/* .............................Begin: AcceptModel........... */}
             <Modal

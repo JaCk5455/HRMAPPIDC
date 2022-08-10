@@ -23,7 +23,7 @@ const Drawer = createDrawerNavigator();
 LogBox.ignoreAllLogs();
 export default function App() {
 
-  const [loading, IsLoading] = React.useState(true);
+  const [loading, IsLoading] = React.useState(false);
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
 

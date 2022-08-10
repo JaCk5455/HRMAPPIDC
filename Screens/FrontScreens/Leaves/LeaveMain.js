@@ -101,6 +101,31 @@ export default function MainLeaveScreen({ navigation }) {
         }
     }, [monthapidata])
 
+    // useEffect(() => {
+
+    //     let maxPeriod;
+    //     if (monthapidata.length > 0) {
+
+    //         maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
+    //             // console.log('maxperiod id', item.PeriodId)
+
+    //             if (item.IsPayGenerated == 1) {
+    //                 return item.PeriodId;
+
+
+    //             }
+    //             else {
+    //                 return -Infinity;
+    //             }
+    //         }))
+
+    //         setMaxPeriodId(maxPeriod)
+    //         //console.log('maxperidvalue', maxPeriod)
+
+    //     }
+
+    // }, [monthapidata])
+
     useEffect(() => {
         if (data.length > 0 && maxperiodid !== null) {
             // console.log(route.params.SalPeriodId[0].PeriodId);
@@ -153,7 +178,7 @@ export default function MainLeaveScreen({ navigation }) {
     //............. Begin: Month Api Data ............... //
     const MonthApiCall = async () => {
         try {
-
+           // console.log("fiscalyear" , maxfiscalid)
             // const response = await fetch(Contants.API_URL + 'EmployeeInfo/FiscalYearPeriodList?fiscalyearId=' + maxfiscalid, {
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalYearPeriodList', {
                 method: 'POST',
@@ -162,7 +187,8 @@ export default function MainLeaveScreen({ navigation }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalYearId: maxfiscalid
+                     fiscalYearId: maxfiscalid
+                   // fiscalYearId: -1
 
 
                 })
@@ -190,6 +216,7 @@ export default function MainLeaveScreen({ navigation }) {
     //..... Begin : Leave Api Call ...... //
     const LeaveApiCall = async () => {
         try {
+           // console.log("macpid"  , maxperiodid)
             // console.log('Leave URL', Contants.API_URL + 'EmployeeInfo/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid);
             // const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail?Empid=' + data[0].EmpId + '&FiscalYearId=' + maxfiscalid + '&fromPeriodId=' + maxperiodid + '&ToPeriodId=' + maxperiodid, {
             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/IndividualLeaveDetail', {

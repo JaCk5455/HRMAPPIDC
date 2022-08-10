@@ -193,8 +193,6 @@ export default function MainSalarySlip({ navigation }) {
     //........... End: Month ApiCall ............... //
 
 
-
-
     //..................Begin: SalaryApiData ...................//
     const SalaryApiData = async () => {
         try {
@@ -208,7 +206,7 @@ export default function MainSalarySlip({ navigation }) {
 
                 body: JSON.stringify({
                      Empid: data[0].EmpId,
-                   // Empid: 438,
+                    //Empid: 291,
                     periodId: maxperiodid,
 
                 })

@@ -23,7 +23,7 @@ export default function MainAttendanceScreen({ navigation, route }) {
     const [monthapidata, SetMonthApiData] = useState([]);
     const [maxfiscalid, setMaxFiscalId] = useState(null);
     const [maxperiodid, setMaxPeriodId] = useState(null);
-const [empworkinghrs, setEmpWorkingHrs] = useState('')
+    const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
 
     // ......... Begin: AsynStorageData for EmpId ........ //
@@ -127,8 +127,30 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
     }, [monthapidata])
 
+    // useEffect(() => {
+
+    //     let maxPeriod;
+    //     if (monthapidata.length > 0) {
+
+    //         maxPeriod = Math.max.apply(Math, monthapidata.map((item) => {
+    //             // console.log('maxperiod id', item.PeriodId)
+
+    //             if (item.IsPayGenerated == 1) {
+    //                 return item.PeriodId;
 
 
+    //             }
+    //             else {
+    //                 return -Infinity;
+    //             }
+    //         }))
+
+    //         setMaxPeriodId(maxPeriod)
+    //         //console.log('maxperidvalue', maxPeriod)
+
+    //     }
+
+    // }, [monthapidata])
 
 
     //............. Begin: Year Api Data ............... //   
@@ -163,7 +185,6 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
     //............. End: Year Api Data ............... //
 
 
-
     //............. Begin: Month Api Data ............... //
     const MonthApiCall = async () => {
         try {
@@ -177,7 +198,8 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fiscalYearId: maxfiscalid
+                     fiscalYearId: maxfiscalid
+                   // fiscalYearId: -1,
 
                 })
             });
@@ -185,7 +207,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
             //console.log(responseObj)
             if (responseObj.statusCode == 200) {
                 let payloaddata = JSON.parse(responseObj.payload);
-                // console.log('month', payloaddata)
+                console.log('month', payloaddata)
                 if (payloaddata.length > 0) {
                     SetMonthApiData(payloaddata);
                     // IsLoading(false);
@@ -202,12 +224,12 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
     //............. End: Month Api Data ............... //
 
 
-
     // ........... Begin: AttandanceApiCall ....... //
     const AttandanceApiCall = async () => {
         try {
+             console.log("MaxPeriodId", maxperiodid)
             //  console.log('abc', Contants.API_URL + 'EmployeeInfo/IndividualAttendanceDetail?Empid=' + data[0].EmpId + '&periodId=' + maxperiodid)
-             const response = await fetch(Contants.API_URL + 'EmployeeInfo/V2/IndividualAttendanceDetail' , {
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V2/IndividualAttendanceDetail', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -217,43 +239,42 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                 body: JSON.stringify({
                     Empid: data[0].EmpId,
                     periodId: maxperiodid,
-                    // periodId: 104,
+                     //periodId: 119,
                     //   Empid: 1916
 
                 })
             });
             const responseObj = await response.json();
-             console.log('Apidataassending', responseObj)
+            // console.log('Apidataassending', responseObj)
             if (responseObj.statusCode == 200) {
                 let payload = JSON.parse(responseObj.payload);
                 payload = payload.reverse();
-                 console.log('reverse', payload)
+                  // console.log('reverse', payload)
                 if (payload.length > 0) {
 
 
-                    let newPayload = payload.filter((item) => {                       
-                        if(moment(new Date()).isSameOrAfter(item.AttendanceDate)){
+                    let newPayload = payload.filter((item) => {
+                        if (moment(new Date()).isSameOrAfter(item.AttendanceDate)) {
                             return true;
                         }
-                        else
-                        {
+                        else {
                             return false;
-                        }           
+                        }
                     })
-                   // console.log('less data' , newPayload)
+                    //    console.log('less data' , newPayload)
                     setApiData(newPayload)
                     // setApiData(payload);
                     IsLoading(false);
 
 
-//    let WorkingHour = newPayload.map((item)=>{
-//                         if(item.EmpWorkingHours !== null){
-//                             return item.EmpWorkingHours;
- 
-//                         } 
-//                         console.log('aaa', WorkingHour)
-                         
-//                     })
+                    //    let WorkingHour = newPayload.map((item)=>{
+                    //                         if(item.EmpWorkingHours !== null){
+                    //                             return item.EmpWorkingHours;
+
+                    //                         } 
+                    //                         console.log('aaa', WorkingHour)
+
+                    //                     })
 
                     let WorkingHour = newPayload.filter(v => v.EmpWorkingHours !== null).map((item, Index) => {
                         return item.EmpWorkingHours
@@ -261,8 +282,8 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                     // let EmpWorkingHours = WorkingHour[0];
                     setEmpWorkingHrs(WorkingHour);
 
-                   
-                   // console.log('Abc' , empworkinghrs)
+
+                    // console.log('Abc' , empworkinghrs)
 
 
 
@@ -307,21 +328,20 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
     // ........... End: AttandanceApiCall ....... //
 
 
- // ........... Begin: Convert MinutesTo Hours ....... //
+    // ........... Begin: Convert MinutesTo Hours ....... //
 
-        function timeConvert(n) {
-            let num = (n || 0);
-            let hours = (num / 60);
-            let rhours = Math.floor(hours);
-            let rminutes = num - rhours * 60;
-            return addPadding(rhours, 2) + ":" + addPadding(rminutes) + " Hrs";
-           }
-           function addPadding(num, pad = 2) {
-            return (num || 0).toString().padStart(pad, '0');
-           }
-        
-// ........... End: Convert MinutesTo Hours ....... //
+    function timeConvert(n) {
+        let num = (n || 0);
+        let hours = (num / 60);
+        let rhours = Math.floor(hours);
+        let rminutes = num - rhours * 60;
+        return addPadding(rhours, 2) + ":" + addPadding(rminutes) + " Hrs";
+    }
+    function addPadding(num, pad = 2) {
+        return (num || 0).toString().padStart(pad, '0');
+    }
 
+    // ........... End: Convert MinutesTo Hours ....... //
 
 
     // .........Begin: FlatList Function(_RenderItem) ........... //
@@ -367,7 +387,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
 
 
-//Absent case.............
+                        //Absent case.............
                         <View style={styles.Attanempinfoview}>
                             <View style={{ flex: 1.7, justifyContent: 'center' }}>
                                 <Text style={styles.listtxt}>Status :</Text>
@@ -376,7 +396,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                 <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#FF2E00', fontWeight: "700" }}>
                                     Absent
-                            </Text>
+                                </Text>
 
                             </View>
 
@@ -386,7 +406,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                         :
                         <>
 
-{/* Leave_case............. */}
+                            {/* Leave_case............. */}
                             {item.LeaveType !== null ?
                                 <>
                                     {item.AttendanceTimeIN !== null && item.LeaveType !== null ?
@@ -432,7 +452,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                                                 <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                     <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#0041c4', fontWeight: "700" }}>
-                                                        {item.LeaveType +' (' + item.AttStatus + ')'}
+                                                        {item.LeaveType + ' (' + item.AttStatus + ')'}
                                                     </Text>
 
                                                 </View>
@@ -454,7 +474,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                 <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: '#0041c4', fontWeight: "700" }}>
-                                                    {item.LeaveType +' (' + item.AttStatus + ')'}
+                                                    {item.LeaveType + ' (' + item.AttStatus + ')'}
                                                 </Text>
 
                                             </View>
@@ -525,13 +545,13 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                                             <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-end' }}>
                                                 {item.TimeInMins > 0 ?
-                                                // <Text style={styles.listSubtxt}>{moment().startOf('day').add(item.TimeInMins, 'minutes').format('hh:mm') + ' Hrs'}</Text>
-                                                <Text style={styles.listSubtxt}>{timeConvert(item.TimeInMins)}</Text>
+                                                    // <Text style={styles.listSubtxt}>{moment().startOf('day').add(item.TimeInMins, 'minutes').format('hh:mm') + ' Hrs'}</Text>
+                                                    <Text style={styles.listSubtxt}>{timeConvert(item.TimeInMins)}</Text>
 
-                                               
-                                                :
 
-                                               <Text style={{padding: wp('1%'),fontSize: wp('3.6%'),color: 'red',fontWeight: "700"}}>0</Text>
+                                                    :
+
+                                                    <Text style={{ padding: wp('1%'), fontSize: wp('3.6%'), color: 'red', fontWeight: "700" }}>0</Text>
                                                 }
                                             </View>
 
@@ -562,7 +582,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                         </>
 
                     }
-                    
+
 
 
 
@@ -661,8 +681,8 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                     <Text style={{ fontSize: wp('3.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>
                         {empworkinghrs.length > 0 ? (empworkinghrs[0] == null || empworkinghrs[0] == '' ? 'N/A' : empworkinghrs[0]) + ' Hrs' : 'N/A'}
-   
-                    </Text> 
+
+                    </Text>
                 </View>
 
 
@@ -686,7 +706,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
 
                         <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: wp('3.5%') }}>
                             Previous Record
-                                </Text>
+                        </Text>
 
 
                     </TouchableOpacity>
@@ -695,16 +715,9 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
         )
     }
 
-
-
     return (
         <View style={styles.AttanMainContainer}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
-
-
-
-
-
             {/* <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 3, backgroundColor: '#008080', marginHorizontal: wp('2%'), marginTop: wp('2%'), borderRadius: 8, flexDirection: 'column', padding: wp('1%') }}>
                     <Text style={{ fontSize: wp('4.5%'), fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>Total Working Hours</Text>
@@ -787,8 +800,7 @@ const [empworkinghrs, setEmpWorkingHrs] = useState('')
                     </View>
                 </>
             }
-        </View >
-
+        </View>
     );
 }
 const styles = StyleSheet.create({

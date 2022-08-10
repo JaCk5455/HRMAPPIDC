@@ -18,6 +18,7 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
 
     const [monthapidata, setMonthApiData] = useState([]);
     const [selectedmonthvalue, setSelectedMonthValue] = useState(null);
+    const [selectfiscalyearlabel, setSelectedFiscalYearLabel] = useState('');
     const [loading, IsLoading] = useState(true);
 
 
@@ -28,10 +29,10 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
 
     useEffect(() => {
         // console.log('abbbbbbbb', route.params.FiscalYears)
-        if (route.params.FiscalYears.length > 0) {
-            IsLoading(false)
-
-        }
+        // if (route.params.FiscalYears.length > 0) {
+        //     IsLoading(false)
+        // }
+        FicicalYearApiCall();
     }, [])
 
     useEffect(() => {
@@ -42,6 +43,39 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
 
 
     }, [selectedyearvalue])
+
+       //............. Begin: Year Api Data ............... //
+       const FicicalYearApiCall = async () => {
+        try {
+
+            const response = await fetch(Contants.API_URL + 'EmployeeInfo/V1/FiscalyearList', {
+
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+            const responseObj = await response.json();
+            //console.log(responseObj)
+            if (responseObj.statusCode == 200) {
+                let payloadData = JSON.parse(responseObj.payload);
+                // console.log('aaa', payloadData)
+                if (payloadData.length > 0) {
+                    // console.log('bbb', payloadData)
+                    setYearApiData(payloadData);
+                    IsLoading(false);
+                }
+                else {
+                    Alert.alert('Error')
+                }
+            }
+        }
+        catch (e) {
+            console.log('AttandanceFiscalError', e);
+        }
+    }
+        //............. End: Year Api Data ............... //
 
 
     // month Api Data
@@ -81,10 +115,6 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
     }
 
 
-
-
-
-
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
             <StatusBar backgroundColor='#008080' barStyle="light-content" />
@@ -105,6 +135,7 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
 
 
 
+                    
                     <View style={{
                         alignItems: "center",
                         // marginHorizontal: 30
@@ -120,40 +151,46 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
                                     selectedValue={selectedyearvalue}
                                     onValueChange={(itemValue, itemIndex) => {
                                         setSelectedYearValue(itemValue)
+                                        yearapidata.map((item, index) => {
+                                            if (item.fiscalyearid == itemValue) {
+                                                setSelectedFiscalYearLabel(item.name)
+                                            }
+                                        })
                                     }
                                     }
-
                                 >
                                     <Picker.Item label="Select Year" value="" />
-                                    {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
+                                    {yearapidata.length > 0 ? yearapidata.map((item, index) => {
+                                        return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
+                                    }) : null}
+                                </Picker>
+                            ) : (
+                                <Picker
+                                    mode="dropdown"
+                                    iosIcon={<AntDesign name="down" size={24} color="#66b2b2"
+                                        style={{ paddingRight: wp('1.3%') }} />}
+
+                                    placeholder="Select Year"
+                                    placeholderStyle={{ color: "#66b2b2" }}
+                                    // placeholderIconColor="#4000ff"
+                                    style={{ borderWidth: 1, borderColor: '#b2d8d8', width: wp('90%') }}
+
+                                    note={false}
+                                    selectedValue={selectedyearvalue}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setSelectedYearValue(itemValue)
+                                        yearapidata.map((item, index) => {
+                                            if (item.fiscalyearid == itemValue) {
+                                                setSelectedFiscalYearLabel(item.name)
+                                            }
+                                        })
+                                    }}>
+                                    {yearapidata.length > 0 ? yearapidata.map((item, index) => {
                                         return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
 
                                     }) : null}
                                 </Picker>
-                            ) : (
-                                    <Picker
-                                        mode="dropdown"
-                                        iosIcon={<AntDesign name="down" size={24} color="#66b2b2"
-                                            style={{ paddingRight: wp('1.3%') }} />}
-                                        placeholder="Select Year"
-                                        placeholderStyle={{ color: "#66b2b2" }}
-                                        placeholderIconColor="#4000ff"
-                                        style={{ borderWidth: 1, borderColor: '#b2d8d8', width: wp('90%') }}
-
-                                        note={false}
-                                        selectedValue={selectedyearvalue}
-                                        onValueChange={(itemValue, itemIndex) => {
-                                            setSelectedYearValue(itemValue)
-                                        }
-                                        }
-
-                                    >
-                                        {route.params.FiscalYears.length > 0 ? route.params.FiscalYears.map((item, index) => {
-                                            return (<Picker.Item label={item.name} value={item.fiscalyearid} />)
-
-                                        }) : null}
-                                    </Picker>
-                                )}
+                            )}
                         </Item>
                     </View>
 
@@ -198,7 +235,6 @@ export default function SalaryFisicalYearScreen({ navigation, route }) {
                                                 placeholder="Select Month"
                                                 placeholderStyle={{ color: "#66b2b2" }}
                                                 placeholderIconColor="#007aff"
-                                                selectedValue={selectedmonthvalue}
                                                 style={{ borderWidth: 1, borderColor: '#b2d8d8', width: wp('90%') }}
                                                 note={false}
                                                 selectedValue={selectedmonthvalue}
